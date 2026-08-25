@@ -1,0 +1,38 @@
+// Global variables for Aura Datatable
+
+// Highlight settings
+$aura-highlight-bg: #fff3cd !default;
+$aura-highlight-color: inherit !default;
+$aura-highlight-duration: 3000ms !default;
+
+// Sticky header/footer settings
+// Background painted behind the sticky header/footer (scrolled body rows must not
+// show through it). Defaults to the Bootstrap theme background so dark mode works too.
+$aura-sticky-bg: var(--bs-body-bg, #fff) !default;
+$aura-sticky-z-index: 2 !default;
+
+// Loading overlay settings
+// Translucent veil over the table while a request runs. The theme background keeps
+// it correct in dark mode; the z-index must stay above $aura-sticky-z-index so the
+// overlay is not covered by a sticky header/footer.
+$aura-loading-overlay-bg: rgba(var(--bs-body-bg-rgb, 255, 255, 255), 0.65) !default;
+$aura-loading-overlay-z-index: 3 !default;
+
+// Loading progress bar settings
+// Thin indeterminate band pinned to the top edge of the table area. It shows for
+// every request, including the short ones the overlay deliberately sits out, so
+// it has to stay visible once the overlay does appear on top of the rows — hence
+// a z-index above $aura-loading-overlay-z-index.
+$aura-loading-bar-height: 3px !default;
+$aura-loading-bar-z-index: 4 !default;
+$aura-loading-bar-track-bg: rgba(var(--bs-primary-rgb, 13, 110, 253), 0.2) !default;
+$aura-loading-bar-color: var(--bs-primary, #0d6efd) !default;
+$aura-loading-bar-duration: 1.1s !default;
+
+// Vertical rhythm
+// The gap the Toolbar leaves under itself (Bootstrap's `mb-3`) is the unit the
+// rest of the table follows. Pagination brings its own `py-2`, so the table area
+// only has to contribute the other half for the gap below the table to match the
+// one above it.
+$aura-section-gap: 1rem !default;
+$aura-table-area-margin-bottom: $aura-section-gap * 0.5 !default;

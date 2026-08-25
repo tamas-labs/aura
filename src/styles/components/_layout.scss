@@ -1,0 +1,13 @@
+@use '../variables' as *;
+
+// Vertical rhythm of the table's three bands: Toolbar → table area → Pagination.
+//
+// The Toolbar carries Bootstrap's `mb-3` (1rem) and Pagination its own `py-2`
+// (0.5rem top and bottom), which left the gap under the table 1.5× the one above
+// it. The table area contributes the missing half here, so both gaps come out at
+// $aura-section-gap and the block reads as one unit rather than three stacked
+// ones.
+
+.aura-table-area {
+    margin-bottom: $aura-table-area-margin-bottom;
+}

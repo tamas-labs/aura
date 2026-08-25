@@ -1,0 +1,29 @@
+@use '../variables' as *;
+
+// Sticky header/footer — the `header.settings.sticky` / `footer.settings.sticky`
+// response switches put these classes on the rendered `<thead>` / `<tfoot>`. The
+// background must be inherited down to the cells: without it the scrolled body rows
+// would show through the sticky band.
+
+.aura-thead-sticky {
+    position: sticky;
+    top: 0;
+    z-index: $aura-sticky-z-index;
+    background-color: $aura-sticky-bg;
+
+    th {
+        background-color: inherit;
+    }
+}
+
+.aura-tfoot-sticky {
+    position: sticky;
+    bottom: 0;
+    z-index: $aura-sticky-z-index;
+    background-color: $aura-sticky-bg;
+
+    th,
+    td {
+        background-color: inherit;
+    }
+}

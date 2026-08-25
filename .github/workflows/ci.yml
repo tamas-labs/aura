@@ -1,0 +1,92 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Cancel older in-flight runs on the same ref (only the latest one matters).
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: Lint · type-check · test · build (Node ${{ matrix.node }})
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ['20.x', '22.x']
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node ${{ matrix.node }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Audit the production tree only (dependencies + peerDependencies): that is what
+      # reaches users. Dev-tree vulnerabilities do not break the build.
+      - name: Security audit (production tree)
+        run: npm audit --omit=dev --audit-level=high
+
+      - name: Type-check
+        run: npm run type-check
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Format check
+        run: npm run format:check
+
+      # Run with coverage so the vitest.config.ts thresholds (statements/functions/lines 95,
+      # branches 88) actually gate: a coverage regression turns the build red.
+      - name: Test + coverage gate
+        run: npm run test:coverage:ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Bundle size check
+        run: npm run size
+
+  # The peer range allows `isomorphic-dompurify` 3.x, but the lockfile resolves the 2.x
+  # floor — so `npm ci` alone never exercises the upper half of what we advertise. This job
+  # installs the newest 3.x on top and re-runs the suite, so a break in the major we promise
+  # support for fails here rather than in a host application.
+  #
+  # Node 24 because 3.x keeps raising its own engine floor (3.22 already wants >= 22.22.2);
+  # the range this job checks is the library's, not Aura's, so the Node used here says
+  # nothing about Aura's own >= 20 support — that is what the matrix above covers.
+  peer-compat:
+    name: Peer range · isomorphic-dompurify 3.x
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24.x'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install the newest isomorphic-dompurify 3.x
+        run: npm install isomorphic-dompurify@3 --no-save
+
+      - name: Test
+        run: npm test -- run

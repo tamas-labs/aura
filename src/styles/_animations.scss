@@ -1,0 +1,27 @@
+@use 'variables' as *;
+
+@keyframes aura-fade-out {
+    0% {
+        background-color: $aura-highlight-bg;
+        color: $aura-highlight-color;
+    }
+    100% {
+        background-color: transparent;
+        color: inherit;
+    }
+}
+
+// Indeterminate loading bar: a short segment sweeping the full width. There is
+// no progress to report — the point is to show the table is waiting on the
+// network without claiming to know how long it will take.
+@keyframes aura-loading-bar-sweep {
+    0% {
+        transform: translateX(-100%) scaleX(0.4);
+    }
+    50% {
+        transform: translateX(20%) scaleX(0.7);
+    }
+    100% {
+        transform: translateX(100%) scaleX(0.4);
+    }
+}

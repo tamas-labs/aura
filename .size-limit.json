@@ -1,0 +1,16 @@
+[
+  {
+    "name": "main chunk (dist/index-*.js, gzip)",
+    "path": "dist/index-*.js",
+    "limit": "70 kB",
+    "gzip": true,
+    "brotli": false
+  },
+  {
+    "name": "full dist (all JS incl. lazy schema chunks, gzip)",
+    "path": "dist/*.js",
+    "limit": "80 kB",
+    "gzip": true,
+    "brotli": false
+  }
+]

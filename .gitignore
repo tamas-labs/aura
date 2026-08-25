@@ -1,0 +1,60 @@
+# Dependencies
+node_modules
+# NOTE: package-lock.json IS committed — the CI uses `npm ci` for reproducible installs.
+yarn.lock
+pnpm-lock.yaml
+
+# Build outputs
+dist
+*.local
+
+# Cache and logs
+.cache
+.vite
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Test coverage
+coverage
+.nyc_output
+
+# Code duplication reports
+report
+
+# IDE
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Temporary files
+*.tmp
+*.temp
+.tmp
+.temp
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Build analysis
+stats.html
+
+# Internal, local-only dev material (never committed; npm publishes only dist/ via "files").
+# The reference docs, audit reports and agent tooling all live here now.
+CLAUDE.md
+.claude/
+
+# NOTE: .github/ is intentionally NOT ignored — it is reserved for real GitHub-platform
+# files (CI workflows, issue/PR templates) that must be committed. The former Copilot-era
+# agent material was removed; internal docs moved to .claude/docs/.

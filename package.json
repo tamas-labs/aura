@@ -1,0 +1,113 @@
+{
+    "name": "@tamas-labs/aura",
+    "version": "0.2.0",
+    "description": "Vue 3 data-table plugin built on Bootstrap 5, with TypeScript and Zod-validated API responses",
+    "type": "module",
+    "sideEffects": [
+        "*.css",
+        "*.scss"
+    ],
+    "main": "./dist/index.js",
+    "module": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.js"
+        },
+        "./style.css": "./dist/style.css"
+    },
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "dev": "vite",
+        "build": "tsc && vite build",
+        "preview": "vite preview",
+        "test": "vitest",
+        "test:ui": "vitest --ui",
+        "test:coverage": "vitest --coverage",
+        "test:coverage:ci": "vitest run --coverage",
+        "lint": "eslint .",
+        "lint:fix": "eslint . --fix",
+        "type-check": "tsc --noEmit",
+        "analyze": "analyze",
+        "jscpd": "jscpd src",
+        "size": "size-limit",
+        "graph": "dpdm --circular --exit-code circular:1 src/index.ts",
+        "format": "prettier --write src/",
+        "format:check": "prettier --check src/",
+        "quality": "npm run type-check && npm run lint && npm run format:check && npm test -- run",
+        "prepublishOnly": "npm run quality && npm run build"
+    },
+    "peerDependencies": {
+        "axios": "^1.7.0",
+        "bootstrap": "^5.3.3",
+        "isomorphic-dompurify": "^2.31.0 || ^3.0.0",
+        "libphonenumber-js": "^1.12.37",
+        "pinia": "^3.0.3",
+        "vue": "^3.4.0"
+    },
+    "dependencies": {
+        "zod": "^4.1.12"
+    },
+    "overrides": {
+        "esbuild": "^0.28.1"
+    },
+    "devDependencies": {
+        "@eslint/js": "^9.39.1",
+        "@fortawesome/fontawesome-free": "^7.1.0",
+        "@size-limit/file": "^12.1.0",
+        "@types/node": "^24.10.0",
+        "@typescript-eslint/eslint-plugin": "^8.46.3",
+        "@typescript-eslint/parser": "^8.46.3",
+        "@vitejs/plugin-vue": "^6.0.1",
+        "@vitejs/plugin-vue-jsx": "^5.1.1",
+        "@vitest/coverage-v8": "^4.0.9",
+        "@vitest/ui": "^4.0.9",
+        "@vue/test-utils": "^2.4.0",
+        "dpdm": "^3.14.0",
+        "eslint": "^9.39.1",
+        "eslint-plugin-sonarjs": "^4.0.0",
+        "happy-dom": "^20.0.10",
+        "jscpd": "^4.0.5",
+        "prettier": "^3.8.1",
+        "rollup-plugin-visualizer": "^6.0.5",
+        "sass": "^1.83.4",
+        "size-limit": "^12.1.0",
+        "terser": "^5.44.1",
+        "typescript": "^5.6.3",
+        "vite": "^7.1.12",
+        "vite-bundle-analyzer": "^1.2.3",
+        "vite-plugin-dts": "^4.3.0",
+        "vitest": "^4.0.9",
+        "vue": "^3.5.12"
+    },
+    "keywords": [
+        "vue",
+        "vue3",
+        "plugin",
+        "table",
+        "datatable",
+        "bootstrap",
+        "typescript",
+        "pinia"
+    ],
+    "author": "tamas-labs",
+    "license": "MIT",
+    "engines": {
+        "node": ">=20"
+    },
+    "packageManager": "npm@10.9.4",
+    "publishConfig": {
+        "access": "public"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/tamas-labs/aura.git"
+    },
+    "bugs": {
+        "url": "https://github.com/tamas-labs/aura/issues"
+    },
+    "homepage": "https://github.com/tamas-labs/aura#readme"
+}

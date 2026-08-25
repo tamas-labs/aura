@@ -1,0 +1,8 @@
+@use '../variables' as *;
+@use '../animations';
+
+.aura-highlight {
+    animation: aura-fade-out $aura-highlight-duration ease-out forwards;
+    padding: 0 0.2rem;
+    border-radius: 0.2rem;
+}

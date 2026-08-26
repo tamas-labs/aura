@@ -1,6 +1,6 @@
 {
     "name": "@tamas-labs/aura",
-    "version": "0.2.0",
+    "version": "1.0.0",
     "description": "Vue 3 data-table plugin built on Bootstrap 5, with TypeScript and Zod-validated API responses",
     "type": "module",
     "sideEffects": [

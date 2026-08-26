@@ -54,7 +54,7 @@ npm install vue@^3.4.0 pinia@^3.0.3 bootstrap@^5.3.3 axios@^1.7.0 isomorphic-dom
 ### Bundle méret
 
 Az Aura egy fő ES modult publikál, plusz néhány validátor chunkot, amelyek lustán, az első API
-válaszkor töltődnek be. **v0.2.0**-n mérve (produkciós build, peer dependency-k nélkül):
+válaszkor töltődnek be. **v1.0.0**-n mérve (produkciós build, peer dependency-k nélkül):
 
 | Chunk                                                    | Minifikált | Gzip-elt    |
 | -------------------------------------------------------- | ---------- | ----------- |

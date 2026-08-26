@@ -54,7 +54,7 @@ npm install vue@^3.4.0 pinia@^3.0.3 bootstrap@^5.3.3 axios@^1.7.0 isomorphic-dom
 ### Bundle size
 
 Aura ships one main ES module plus a few validator chunks that are loaded lazily, on the first
-API response. Measured on **v0.2.0** (production build, peer dependencies excluded):
+API response. Measured on **v1.0.0** (production build, peer dependencies excluded):
 
 | Chunk                                              | Minified   | Gzipped     |
 | -------------------------------------------------- | ---------- | ----------- |

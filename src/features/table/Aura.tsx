@@ -125,17 +125,6 @@ export const Aura = defineComponent({
         const isBusy = computed(() => resource.loading === true);
 
         /**
-         * Whether the thin progress bar should be on screen.
-         *
-         * Unlike the overlay this follows `loading` with no delay — it takes up no
-         * layout space and does not dim the rows, so showing it for a short
-         * request is feedback rather than flicker.
-         */
-        const showLoadingBar = computed(() => {
-            return core.config.showLoadingBar !== false && isBusy.value;
-        });
-
-        /**
          * Whether the built-in loading overlay should be on screen.
          *
          * Delayed on purpose: the overlay veils the rows and blocks the pointer,
@@ -148,6 +137,21 @@ export const Aura = defineComponent({
             return core.config.showLoadingOverlay !== false && isBusy.value;
         });
         const showOverlay = useDelayedFlag(() => overlayRequested.value, LOADING_OVERLAY_DELAY_MS);
+
+        /**
+         * Whether the thin progress bar should be on screen.
+         *
+         * Unlike the overlay this follows `loading` with no delay — it takes up no
+         * layout space and does not dim the rows, so showing it for a short
+         * request is feedback rather than flicker.
+         *
+         * The two indicators hand over rather than stack: once the overlay's delay
+         * has passed and the spinner is up, the bar steps aside, so the same
+         * request is never reported by two indicators at once.
+         */
+        const showLoadingBar = computed(() => {
+            return core.config.showLoadingBar !== false && isBusy.value && !showOverlay.value;
+        });
 
         /**
          * The table area element, tracked through a function ref.

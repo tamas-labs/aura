@@ -1169,6 +1169,25 @@ describe('Aura Component', () => {
             expect(wrapper.find(LOADING_BAR_SELECTOR).exists()).toBe(true);
         });
 
+        // The two indicators hand over instead of stacking: the bar covers the delay
+        // window, the overlay everything after it, so the same request is never
+        // reported twice on screen.
+        it('should hand the request over from the bar to the overlay after the delay', async () => {
+            vi.useFakeTimers();
+            const wrapper = mountWithLoading('bar-handover', true);
+            await wrapper.vm.$nextTick();
+
+            expect(wrapper.find(LOADING_BAR_SELECTOR).exists()).toBe(true);
+            expect(wrapper.find(OVERLAY_SELECTOR).exists()).toBe(false);
+
+            await vi.advanceTimersByTimeAsync(LOADING_OVERLAY_DELAY_MS);
+            vi.useRealTimers();
+            await wrapper.vm.$nextTick();
+
+            expect(wrapper.find(LOADING_BAR_SELECTOR).exists()).toBe(false);
+            expect(wrapper.find(OVERLAY_SELECTOR).exists()).toBe(true);
+        });
+
         // `aria-busy` tracks the request itself, not the delayed overlay: assistive
         // technology should not be kept waiting on a purely visual anti-flicker delay.
         it('should mark the table aria-busy while loading, without waiting for the delay', async () => {

@@ -7,6 +7,15 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Changed
+
+- **The two loading indicators now hand over instead of stacking.** The thin progress bar
+  (`showLoadingBar`) is removed from the screen as soon as the delayed overlay
+  (`showLoadingOverlay`) appears, so a request longer than the 250 ms delay is no longer reported by
+  a bar and a spinner at the same time. Short requests are still covered by the bar alone, and with
+  the overlay switched off the bar stays up for the whole request as before. Both config keys keep
+  their meaning and their `true` default — no public API change.
+
 ### Fixed
 
 - **The record count no longer contradicts the pager.** The toolbar's `results-info` line was fed

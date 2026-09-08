@@ -766,6 +766,8 @@ The Aura component supports the following props:
   that resolves in a few dozen milliseconds would flash it on and off. Requests below that threshold
   are signalled by [`showLoadingBar`](#showloadingbar) alone. The delay is not configurable — it is a
   single shared constant. `aria-busy` on the `<table>` is **not** delayed.
+- **It takes over from the bar.** Once the veil is up the progress bar is removed, so a single request
+  is never reported by two indicators at the same time.
 - **Requires Aura's stylesheet** (`import '@tamas-labs/aura/style.css'`) — the veil's positioning,
   background and stacking come from there. The background and the z-index are customizable with the
   `$aura-loading-overlay-bg` / `$aura-loading-overlay-z-index` SCSS variables; the z-index default
@@ -787,8 +789,11 @@ The Aura component supports the following props:
   [`showLoadingOverlay`](#showloadingoverlay) waits out a short delay first. A request that resolves
   inside that delay is therefore signalled by the bar alone — which is what keeps a fast update from
   flashing a veil over the table.
-- **Independent of the overlay.** The two are separate switches: keep the bar and drop the veil for
-  feedback that never blocks the pointer, or the other way round.
+- **The two indicators hand over, they do not stack.** The bar covers the delay window, the overlay
+  everything after it: as soon as [`showLoadingOverlay`](#showloadingoverlay) puts the veil up, the
+  bar is removed. With the overlay switched off the bar stays for the whole request instead.
+- **Independent switches.** Keep the bar and drop the veil for feedback that never blocks the
+  pointer, or the other way round.
 - **Requires Aura's stylesheet** (`import '@tamas-labs/aura/style.css'`) — without it the bar has no
   height, no color and no animation. Customizable with the `$aura-loading-bar-height`,
   `$aura-loading-bar-color`, `$aura-loading-bar-track-bg`, `$aura-loading-bar-duration` and

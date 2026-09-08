@@ -762,6 +762,8 @@ Az Aura komponens a következő prop-okat támogatja:
   alatti kéréseket egyedül a [`showLoadingBar`](#showloadingbar) jelzi. A késleltetés nem
   konfigurálható — egyetlen közös konstans. A `<table>` `aria-busy` attribútuma **nincs**
   késleltetve.
+- **Átveszi a sáv szerepét.** Amint a fátyol megjelenik, a folyamatjelző sáv eltűnik, így ugyanazt
+  a kérést sosem jelzi egyszerre két indikátor.
 - **Az Aura stíluslapját igényli** (`import '@tamas-labs/aura/style.css'`) — a fátyol pozicionálása,
   háttere és rétegsorrendje onnan jön. A háttér és a z-index a `$aura-loading-overlay-bg` /
   `$aura-loading-overlay-z-index` SCSS-változókkal testreszabható; a z-index alapértéke (`3`)
@@ -783,8 +785,11 @@ Az Aura komponens a következő prop-okat támogatja:
   [`showLoadingOverlay`](#showloadingoverlay) előbb kivár egy rövid késleltetést. Egy ezen a
   késleltetésen belül befutó kérést így egyedül a sáv jelez — ettől nem villan fel fátyol egy gyors
   frissítés alatt.
-- **Az overlaytől független.** A kettő külön kapcsoló: maradhat a sáv a fátyol nélkül (a
-  visszajelzés sosem blokkolja az egérmutatót), vagy fordítva.
+- **A két indikátor váltja egymást, nem adódik össze.** A sáv a késleltetési ablakot fedi le, az
+  overlay az az utáni részt: amint a [`showLoadingOverlay`](#showloadingoverlay) felteszi a fátylat,
+  a sáv eltűnik. Kikapcsolt overlay mellett a sáv marad a kérés teljes idejére.
+- **Külön kapcsolók.** Maradhat a sáv a fátyol nélkül (a visszajelzés sosem blokkolja az
+  egérmutatót), vagy fordítva.
 - **Az Aura stíluslapját igényli** (`import '@tamas-labs/aura/style.css'`) — enélkül a sávnak nincs
   magassága, színe és animációja. A `$aura-loading-bar-height`, `$aura-loading-bar-color`,
   `$aura-loading-bar-track-bg`, `$aura-loading-bar-duration` és `$aura-loading-bar-z-index`

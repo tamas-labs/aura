@@ -16,8 +16,9 @@ Laravel-compatible API responses.
 - 🔄 **Pinia**-backed state, with multiple independent table instances per page (`storeId`)
 - ✅ **Zod**-validated API responses, sanitized HTML rendering (DOMPurify)
 - 🛡️ Built-in **error handling** (ECS-compatible error objects), optional remote error reporting
-- ⏳ Built-in **loading state** — a `loading` store property plus two optional, independent
-  indicators: a thin progress bar (`showLoadingBar`) and a delayed overlay (`showLoadingOverlay`)
+- ⏳ Built-in **loading state** — a `loading` store property plus two optional indicators that
+  hand over rather than stack: a thin progress bar (`showLoadingBar`) for the first 250 ms,
+  then a delayed overlay (`showLoadingOverlay`)
 - 🌐 **Localizable UI labels** (`labels` config) and `Intl`-based number/date/currency formatting
 - ⚡ Server-side or client-side pagination, sorting, search, and filtering
 - 🧩 Nine column types: `static`, `icon`, `link`, `button`, `badge`, `progress`, `reference`,

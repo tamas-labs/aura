@@ -52,7 +52,7 @@ export interface AuraRenderContext {
     tableClasses: string;
     /** Whether the dimming loading overlay is on screen (delayed). */
     showOverlay: boolean;
-    /** Whether the thin progress bar is on screen (undelayed). */
+    /** Whether the thin progress bar is on screen (undelayed, and off once the overlay is up). */
     showLoadingBar: boolean;
     /** Whether a request is in flight, independent of what is drawn for it. */
     isBusy: boolean;
@@ -156,6 +156,9 @@ export function renderToolbar(context: AuraRenderContext, paginateValues: number
  * It carries no `aria-valuenow`, which is what marks a progressbar as indeterminate;
  * `aria-busy` on the table itself already says *what* is being updated.
  *
+ * Only ever on screen while the overlay is not: the two indicators cover different
+ * halves of a request's lifetime instead of doubling up on the same one.
+ *
  * @param context - The render context
  * @returns The progress bar
  */
@@ -198,7 +201,7 @@ function renderLoadingOverlay(context: AuraRenderContext): VNode {
 }
 
 /**
- * The table itself (header, body, footer) plus the two loading indicators.
+ * The table itself (header, body, footer) plus whichever loading indicator is due.
  *
  * The wrapper reserves the measured height of a full page so the pagination below it
  * stays put: without it the last page — the one page allowed to be short — pulls the

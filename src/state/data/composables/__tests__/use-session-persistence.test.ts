@@ -26,6 +26,7 @@ const createSources = (): SessionSources => ({
     filterItems: ref([]),
     globalSearchTerm: ref(null),
     selectedRows: ref([]),
+    hiddenColumns: ref([]),
 });
 
 interface Harness {

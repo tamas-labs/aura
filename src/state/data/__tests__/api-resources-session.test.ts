@@ -85,6 +85,56 @@ describe('Api Resources Store - Session Integration', () => {
             expect(store2.globalSearchTerm).toBe('global search term');
         });
 
+        it('should persist and restore the hidden column list', () => {
+            const core1 = useCoreStore(coreStoreId, createMockProps(false));
+            const store1 = useApiResourcesStore(apiStoreId, core1);
+
+            store1.hideColumn('email');
+            store1.hideColumn('createdAt');
+            flushSessionWrite();
+
+            const saved = loadFromSessionStorage(sessionKey) as { hiddenColumns: string[] };
+            expect(saved.hiddenColumns).toEqual(['email', 'createdAt']);
+
+            store1.$dispose();
+            core1.$dispose();
+            setActivePinia(createPinia());
+
+            const core2 = useCoreStore(coreStoreId, createMockProps(false));
+            const store2 = useApiResourcesStore(apiStoreId, core2);
+
+            expect(store2.hiddenColumns).toEqual(['email', 'createdAt']);
+            expect(store2.isColumnHidden('email')).toBe(true);
+        });
+
+        it('should keep the hidden list out of the query params', () => {
+            const core = useCoreStore(coreStoreId, createMockProps(false));
+            const store = useApiResourcesStore(apiStoreId, core);
+
+            store.hideColumn('email');
+
+            expect(store.queryParams).not.toHaveProperty('hiddenColumns');
+        });
+
+        it('should restore an empty list from a session written before the feature', () => {
+            window.sessionStorage.setItem(
+                sessionKey,
+                JSON.stringify({
+                    page: 2,
+                    limit: 10,
+                    sortItems: [],
+                    searchItems: [],
+                    globalSearchTerm: null,
+                })
+            );
+
+            const core = useCoreStore(coreStoreId, createMockProps(false));
+            const store = useApiResourcesStore(apiStoreId, core);
+
+            expect(store.queryParams.page).toBe(2);
+            expect(store.hiddenColumns).toEqual([]);
+        });
+
         it('should not restore state when disableSession is true', () => {
             // Set up session data
             const sessionData = {

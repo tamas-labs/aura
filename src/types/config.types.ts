@@ -112,6 +112,19 @@ export interface AuraLabels {
     filterOptions: string;
     /** Label of the apply button inside the filter dropdown */
     filterApply: string;
+    // Settings panel
+    /** Heading of the column-visibility section in the settings panel */
+    columnVisibility: string;
+    /** Label of the button that makes every hidden column visible again */
+    showAllColumns: string;
+    /** Heading of the active-filters section in the settings panel */
+    activeFilters: string;
+    /** Text shown in place of the badge list when nothing is filtered */
+    noActiveFilters: string;
+    /** Label of the button that clears every active filter at once */
+    clearAllFilters: string;
+    /** aria-label of the remove (X) button on an active-filter badge */
+    removeFilter: string;
     // Loading
     /** Screen-reader text of the loading overlay's spinner */
     loading: string;

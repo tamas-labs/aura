@@ -22,7 +22,8 @@ function cellToCsvColumn(cell: HeaderCell): CsvColumn {
  * Group of action buttons: Refresh, Export, Settings
  *
  * The `export` button downloads the rows of the **current view** (`displayItems`),
- * based on the visible columns, as a client-side CSV (`buildCsv` + `triggerCsvDownload`),
+ * based on the visible columns — the ones the user hid in the settings panel are left
+ * out, so the file matches what is on screen — as a client-side CSV (`buildCsv` + `triggerCsvDownload`),
  * with no external dependency. A real `.xlsx` (Excel) export would need a host-side
  * library — the raw data (`items`) is available for it. `refresh` and `settings` are fully functional.
  *
@@ -54,7 +55,7 @@ export const ActionButtons = defineComponent({
             const rows = resource.header?.rows;
             const lastRow = rows && rows.length > 0 ? rows[rows.length - 1] : undefined;
             const cells = (lastRow?.cells ?? []) as HeaderCell[];
-            const columns = filterVisibleCells(cells).map(cellToCsvColumn);
+            const columns = filterVisibleCells(cells, resource.hiddenColumns).map(cellToCsvColumn);
 
             triggerCsvDownload(CSV_FILENAME, buildCsv(columns, resource.displayItems ?? []));
         };

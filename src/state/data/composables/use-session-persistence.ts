@@ -25,6 +25,7 @@ export interface SessionSources {
     filterItems: Ref<FilterItem[]>;
     globalSearchTerm: Ref<string | null>;
     selectedRows: Ref<RowId[]>;
+    hiddenColumns: Ref<string[]>;
 }
 
 /** The arguments of `useSessionPersistence`, grouped into one options object. */
@@ -42,7 +43,7 @@ export interface SessionPersistenceOptions {
 /**
  * Persists the query state into sessionStorage, debounced.
  *
- * Every one of the seven sources used to trigger a full `JSON.stringify` +
+ * Every one of the eight sources used to trigger a full `JSON.stringify` +
  * `sessionStorage.setItem` on **every** change. `selectedRows` made that fire on every
  * row checkbox click, and a "select all" serialized the entire set — on the main
  * thread, since `setItem` is synchronous. (The real cost was higher than one write:
@@ -79,6 +80,7 @@ export const useSessionPersistence = (
             filterItems: sources.filterItems.value,
             globalSearchTerm: sources.globalSearchTerm.value,
             selectedRows: sources.selectedRows.value,
+            hiddenColumns: sources.hiddenColumns.value,
         };
 
         saveToSessionStorage(
@@ -100,6 +102,7 @@ export const useSessionPersistence = (
             sources.filterItems,
             sources.globalSearchTerm,
             sources.selectedRows,
+            sources.hiddenColumns,
         ],
         () => {
             if (isDisabled() || isRestoring.value) {

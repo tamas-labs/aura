@@ -17,6 +17,7 @@ import { useSearching } from './composables/use-searching';
 import { useFiltering } from './composables/use-filtering';
 import { useGlobalSearch } from './composables/use-global-search';
 import { useSelection } from './composables/use-selection';
+import { useColumnVisibility } from './composables/use-column-visibility';
 import { useResponseData } from './composables/use-response-data';
 import { useSessionPersistence } from './composables/use-session-persistence';
 
@@ -59,6 +60,7 @@ export const useApiResourcesStore = (storeId: string, core: CoreStore): ApiResou
         const filtering = useFiltering();
         const globalSearch = useGlobalSearch();
         const selection = useSelection();
+        const columnVisibility = useColumnVisibility();
 
         const { page, limit } = pagination;
         const { sortItems } = sorting;
@@ -66,6 +68,7 @@ export const useApiResourcesStore = (storeId: string, core: CoreStore): ApiResou
         const { filterItems } = filtering;
         const { globalSearchTerm } = globalSearch;
         const { selectedRows } = selection;
+        const { hiddenColumns } = columnVisibility;
 
         // --- Cross-cutting: composed query params ---
         const queryParams = computed(() => {
@@ -152,6 +155,9 @@ export const useApiResourcesStore = (storeId: string, core: CoreStore): ApiResou
                     filterItems.value = sessionState.filterItems || [];
                     globalSearchTerm.value = sessionState.globalSearchTerm;
                     selectedRows.value = sessionState.selectedRows || [];
+                    // Purely presentational, so it stays out of `queryParams` — a restored
+                    // hidden list must not look like a query change.
+                    columnVisibility.setHiddenColumns(sessionState.hiddenColumns || []);
                 } finally {
                     // Reset flags
                     autoRefetch.value = originalAutoRefetch;
@@ -262,6 +268,7 @@ export const useApiResourcesStore = (storeId: string, core: CoreStore): ApiResou
                 filterItems,
                 globalSearchTerm,
                 selectedRows,
+                hiddenColumns,
             },
         });
 
@@ -310,6 +317,14 @@ export const useApiResourcesStore = (storeId: string, core: CoreStore): ApiResou
             globalSearchTerm: readonly(globalSearchTerm),
             setGlobalSearch: globalSearch.setGlobalSearch,
             clearGlobalSearch: globalSearch.clearGlobalSearch,
+            // Column visibility exports
+            hiddenColumns: readonly(hiddenColumns),
+            isColumnHidden: columnVisibility.isColumnHidden,
+            hideColumn: columnVisibility.hideColumn,
+            showColumn: columnVisibility.showColumn,
+            toggleColumn: columnVisibility.toggleColumn,
+            setHiddenColumns: columnVisibility.setHiddenColumns,
+            showAllColumns: columnVisibility.showAllColumns,
             // Row selection exports
             selectedRows: readonly(selectedRows),
             isRowSelected: selection.isRowSelected,

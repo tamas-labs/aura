@@ -720,6 +720,23 @@ Az Aura komponens a következő prop-okat támogatja:
   eltávolítja. **A tisztán numerikus értékek kivételt képeznek** (`-5`, `+1.5`, `-1e3`
   változatlan marad), tehát a negatív számok nem kapnak aposztrófot. A védelem nem
   kapcsolható ki.
+- **⚙️ Beállítások panel:** a `'settings'` gomb a toolbar alatti lenyíló panelt kapcsolja,
+  benne két élő szekcióval:
+    - **Oszlop-láthatóság** — adatoszloponként egy checkbox (a header utolsó sorából).
+      A kikapcsolása egyszerre veszi ki az oszlopot a headerből, a bodyból, a footerből, a
+      fejléc keresősorából és a CSV-exportból. Tisztán megjelenítési állapot, ezért egy
+      átkapcsolás soha nem indít kérést — szerveroldali módban (`externalPaginator: true`)
+      sem —, és a többi session-állapottal együtt megőrződik (lásd
+      [`disableSession`](#disablesession)). Amíg van elrejtett oszlop, megjelenik a
+      **Show all** gomb. Két oszloptípus szándékosan hiányzik a listából: a `show: false`
+      oszlop (ezt a válasz rejtette el, nem a felhasználó dolga felülbírálni) és a
+      `selectable` checkbox-oszlop (elrejtése ott hagyná a meglévő kijelölést). Az utolsó
+      látható oszlop checkboxa tiltott, így a táblázat nem maradhat nulla oszloppal.
+    - **Aktív szűrők** — minden aktív globális keresés, oszlopkeresés és oszlopszűrő egy-egy
+      törölhető badge-ként, plusz egy **Clear all** gomb. Ugyanez a badge-lista — a
+      clear-all gomb és az üres állapot szövege nélkül — a toolbar alsó sorában is ott van.
+      Egy badge törlése az őt birtokló store-akciót hívja, tehát kliensoldalon azonnal
+      újraszeletel, szerveroldalon újra lekér.
 - **Példa:**
 
     ```typescript
@@ -1016,21 +1033,24 @@ Az Aura komponens a következő prop-okat támogatja:
 - **Alapértelmezett:** beépített **angol** szövegkészlet (`DEFAULT_LABELS`)
 - **Leírás:** A beépített, felhasználó-látható UI-szövegek (törlés-megerősítő modal,
   toolbar-gombok, keresés, lapozás, oldalra-ugrás, oldalankénti sorszám-választó, sor-kijelölés,
-  oszlop-szűrő dropdown, hibariasztások) felülírása. **Részlegesen is megadható** — a meg nem
+  oszlop-szűrő dropdown, beállítások panel, hibariasztások) felülírása. **Részlegesen is megadható** — a meg nem
   adott kulcsok az angol alapértékre esnek vissza. Az üres string is érvényes (így egy felirat
   szándékosan elrejthető). A `paginationInfo` sablon a `{from}` / `{to}` / `{total}` tokeneket,
   a `dismissAllErrors` / `hiddenErrors` / `errorOccurrences` sablon a `{count}` tokent, az
   `apiErrorClient` / `apiErrorServer` pedig a `{status}` tokent helyettesíti be.
-- **Elérhető kulcsok (42):** `confirmDeleteTitle`, `confirmDeleteBody`, `cancel`, `confirmDelete`,
+- **Elérhető kulcsok (48):** `confirmDeleteTitle`, `confirmDeleteBody`, `cancel`, `confirmDelete`,
   `refresh`, `export`, `exportCsv`, `settings`, `search`, `clearSearch`, `searchPlaceholder`,
   `paginationInfo`, `noResults`, `previousPage`, `nextPage`, `pageJump`,
   `pageNumberPlaceholder`, `pageNumberInput`, `goToPage`, `go`, `perPage`, `results`,
   `selectRow`, `selectAllRows`, `sortColumn`, `selectAll`, `filterToggle`, `filterOptions`,
-  `filterApply`, `loading`, `close`, `dismissAllErrors`, `hiddenErrors`, `errorOccurrences`,
-  `retry`, `apiErrorNetwork`, `apiErrorTimeout`, `apiErrorClient`, `apiErrorServer`,
-  `apiErrorUnknown`, `apiErrorInvalidResponse`, `emptyState`.
-- **Megjegyzés:** a toolbar találat-infója a `paginationInfo` / `noResults` kulcsokat használja
-  újra — ugyanaz a szöveg jelenik meg a tábla alatt és a toolbarban, ezért nincs önálló kulcsa.
+  `filterApply`, `columnVisibility`, `showAllColumns`, `activeFilters`, `noActiveFilters`,
+  `clearAllFilters`, `removeFilter`, `loading`, `close`, `dismissAllErrors`, `hiddenErrors`,
+  `errorOccurrences`, `retry`, `apiErrorNetwork`, `apiErrorTimeout`, `apiErrorClient`,
+  `apiErrorServer`, `apiErrorUnknown`, `apiErrorInvalidResponse`, `emptyState`.
+- **Megjegyzés:** a `columnVisibility` … `removeFilter` hat kulcs a beállítások panelhez
+  tartozik (lásd [`actionButtons`](#actionbuttons)). A `search` felirat ott újra felhasználásra
+  kerül a globális keresés badge-ének címeként, így a badge nem tud elcsúszni attól a
+  keresőmezőtől, amit töröl.
 - Az **`emptyState`** az egyetlen kulcs, amelynek **nincs** alapértéke a `DEFAULT_LABELS`-ben. Ez
   az üres táblázat üzenete, és ez váltja ki az elavult, top-level
   [`emptyStateMessage`](#emptystatemessage-elavult) config-kulcsot. Feloldási sorrend:

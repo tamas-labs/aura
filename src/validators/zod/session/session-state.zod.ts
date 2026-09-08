@@ -47,6 +47,7 @@ export const FilterItemZod = z.object({
  * - sortItems: array, max 20 items
  * - searchItems: array, max 50 items
  * - globalSearchTerm: nullable, string, max 500 chars if present
+ * - hiddenColumns: array of column keys, max 200 items
  */
 export const SessionStateZod = z.object({
     page: z.number().int().min(1).max(100000),
@@ -59,4 +60,5 @@ export const SessionStateZod = z.object({
         .array(z.union([z.string().max(250), z.number()]))
         .max(10000)
         .optional(),
+    hiddenColumns: z.array(z.string().min(1).max(250)).max(200).optional(),
 });

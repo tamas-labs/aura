@@ -7,6 +7,27 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Added
+
+- **Column visibility in the settings panel.** The settings button's panel now lists every data
+  column with a checkbox; switching one off removes it from the header, the body, the footer, the
+  header search row and the CSV export at once. It is presentation-only state — a toggle never
+  issues a request, in server-side mode (`externalPaginator: true`) either — and it is persisted
+  with the rest of the session state (`hiddenColumns` in `SessionState`). A **Show all** button
+  appears while anything is hidden. `show: false` columns (the response's own decision) and the
+  `selectable` checkbox column are deliberately not offered, and the last remaining visible
+  column's checkbox is disabled so the table can never be left with zero columns.
+  New on the `ApiResourcesStore` surface: `hiddenColumns`, `isColumnHidden`, `hideColumn`,
+  `showColumn`, `toggleColumn`, `setHiddenColumns`, `showAllColumns`.
+- **Active filters as removable badges.** `FilterBadges` in the toolbar's bottom row and the
+  settings panel's *Active filters* section now show every active global search, column search
+  (text and `between` range alike) and column filter as a badge with a remove button; the panel
+  variant adds a **Clear all** button and an empty-state text. Removing a badge calls the store
+  action that owns it, so a client-side table re-slices immediately and a server-side one refetches.
+- **Six new `labels` keys** for the two sections above: `columnVisibility`, `showAllColumns`,
+  `activeFilters`, `noActiveFilters`, `clearAllFilters`, `removeFilter` (42 → 48). The global
+  search badge reuses the existing `search` label as its title.
+
 ### Changed
 
 - **The two loading indicators now hand over instead of stacking.** The thin progress bar
@@ -33,6 +54,8 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   "showing X-Y of Z" information now has a single place, below the table. The empty result set is
   still announced by the table body's own empty state. No public API change: the component was never
   exported from `index.ts`, and no config key or label was removed.
+- **The `SettingsPanel` placeholder texts** — the two hard-coded English literals under the
+  *Column visibility* and *Active filters* headings — replaced by the working controls above.
 
 ## [1.0.0] - 2026-08-26
 

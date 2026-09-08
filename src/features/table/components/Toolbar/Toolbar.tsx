@@ -156,11 +156,18 @@ export const Toolbar = defineComponent({
                         ),
 
                         // Right: Filter Badges
-                        h('div', { class: 'col-12 col-md-8 d-none d-md-block' }, h(FilterBadges)),
+                        h(
+                            'div',
+                            { class: 'col-12 col-md-8 d-none d-md-block' },
+                            h(FilterBadges, { storeId: props.storeId })
+                        ),
                     ]),
 
                     // Settings Panel
-                    h(SettingsPanel, { isOpen: core.isSettingsOpen }),
+                    h(SettingsPanel, {
+                        storeId: props.storeId,
+                        isOpen: core.isSettingsOpen,
+                    }),
                 ]
             );
         };

@@ -221,6 +221,13 @@ export const DEFAULT_LABELS: AuraLabels = {
     filterToggle: 'Filter',
     filterOptions: 'Filter options',
     filterApply: 'Filter',
+    // Settings panel
+    columnVisibility: 'Column visibility',
+    showAllColumns: 'Show all',
+    activeFilters: 'Active filters',
+    noActiveFilters: 'No active filters',
+    clearAllFilters: 'Clear all',
+    removeFilter: 'Remove filter',
     // Loading
     loading: 'Loading...',
     // ErrorHandler

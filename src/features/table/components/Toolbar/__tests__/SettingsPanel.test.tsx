@@ -1,61 +1,106 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { mount } from '@vue/test-utils';
+import { setActivePinia, createPinia } from 'pinia';
 import { SettingsPanel } from '../SettingsPanel';
+import { useCoreStore, useApiResourcesStore } from '../../../../../state';
+import type { AuraProps, ApiResourcesStore } from '../../../../../types';
+
+const HEADER = {
+    rows: [
+        {
+            cells: [
+                { key: 'name', field: 'name', content: 'Name' },
+                { key: 'email', field: 'email', content: 'Mail' },
+            ],
+        },
+    ],
+};
 
 describe('SettingsPanel', () => {
+    let counter = 0;
+    let storeId: string;
+    let resource: ApiResourcesStore;
+
+    const setup = async (isOpen: boolean) => {
+        const core = useCoreStore(storeId, { storeId } as AuraProps);
+        resource = useApiResourcesStore(storeId, core);
+        await resource.processResponse({ header: HEADER, items: [{ name: 'Jane' }] });
+
+        return mount(SettingsPanel, { props: { storeId, isOpen } });
+    };
+
+    /**
+     * `labels` is global config, not a prop, and `useCoreStore` reads it off the mounting
+     * component instance — so the store has to be created *during* the mount.
+     */
+    const setupWithLabels = async (labels: Record<string, string>) => {
+        const pinia = createPinia();
+        setActivePinia(pinia);
+
+        const wrapper = mount(SettingsPanel, {
+            props: { storeId, isOpen: true },
+            global: {
+                plugins: [pinia],
+                config: { globalProperties: { $aura: { labels } } as never },
+            },
+        });
+
+        const core = useCoreStore(storeId, {} as AuraProps);
+        resource = useApiResourcesStore(storeId, core);
+        await resource.processResponse({ header: HEADER, items: [{ name: 'Jane' }] });
+        await wrapper.vm.$nextTick();
+
+        return wrapper;
+    };
+
+    beforeEach(() => {
+        setActivePinia(createPinia());
+        storeId = `settings-panel-${++counter}`;
+    });
+
     describe('rendering', () => {
-        it('should render settings panel container', () => {
-            const wrapper = mount(SettingsPanel, {
-                props: { isOpen: false },
-            });
+        it('should render settings panel container', async () => {
+            const wrapper = await setup(false);
 
             expect(wrapper.find('[data-testid="settings-panel"]').exists()).toBe(true);
         });
 
-        it('should have collapse class', () => {
-            const wrapper = mount(SettingsPanel, {
-                props: { isOpen: false },
-            });
+        it('should have collapse class', async () => {
+            const wrapper = await setup(false);
 
-            const panel = wrapper.find('[data-testid="settings-panel"]');
-            expect(panel.classes()).toContain('collapse');
+            expect(wrapper.find('[data-testid="settings-panel"]').classes()).toContain('collapse');
         });
 
-        it('should render card body inside collapse', () => {
-            const wrapper = mount(SettingsPanel, {
-                props: { isOpen: true },
-            });
+        it('should render card body inside collapse', async () => {
+            const wrapper = await setup(true);
 
-            const cardBody = wrapper.find('.card-body');
-            expect(cardBody.exists()).toBe(true);
+            expect(wrapper.find('.card-body').exists()).toBe(true);
+        });
+
+        it('should have two columns layout', async () => {
+            const wrapper = await setup(true);
+
+            expect(wrapper.findAll('.col-md-6')).toHaveLength(2);
         });
     });
 
     describe('collapse behavior', () => {
-        it('should not have show class when closed', () => {
-            const wrapper = mount(SettingsPanel, {
-                props: { isOpen: false },
-            });
+        it('should not have show class when closed', async () => {
+            const wrapper = await setup(false);
 
-            const panel = wrapper.find('[data-testid="settings-panel"]');
-            expect(panel.classes()).not.toContain('show');
+            expect(wrapper.find('[data-testid="settings-panel"]').classes()).not.toContain('show');
         });
 
-        it('should have show class when open', () => {
-            const wrapper = mount(SettingsPanel, {
-                props: { isOpen: true },
-            });
+        it('should have show class when open', async () => {
+            const wrapper = await setup(true);
 
-            const panel = wrapper.find('[data-testid="settings-panel"]');
-            expect(panel.classes()).toContain('show');
+            expect(wrapper.find('[data-testid="settings-panel"]').classes()).toContain('show');
         });
 
         it('should toggle show class when isOpen changes', async () => {
-            const wrapper = mount(SettingsPanel, {
-                props: { isOpen: false },
-            });
-
+            const wrapper = await setup(false);
             const panel = wrapper.find('[data-testid="settings-panel"]');
+
             expect(panel.classes()).not.toContain('show');
 
             await wrapper.setProps({ isOpen: true });
@@ -67,76 +112,85 @@ describe('SettingsPanel', () => {
     });
 
     describe('content sections', () => {
-        it('should render column visibility section', () => {
-            const wrapper = mount(SettingsPanel, {
-                props: { isOpen: true },
-            });
+        it('should render the column visibility section', async () => {
+            const wrapper = await setup(true);
 
-            const heading = wrapper.findAll('h6').filter(h => h.text() === 'Column visibility');
-            expect(heading.length).toBeGreaterThan(0);
+            expect(wrapper.findAll('h6').map(node => node.text())).toContain('Column visibility');
+            expect(wrapper.find('[data-testid="column-visibility-panel"]').exists()).toBe(true);
         });
 
-        it('should render active filters section', () => {
-            const wrapper = mount(SettingsPanel, {
-                props: { isOpen: true },
-            });
+        it('should render the active filters section', async () => {
+            const wrapper = await setup(true);
 
-            const heading = wrapper.findAll('h6').filter(h => h.text() === 'Active filters');
-            expect(heading.length).toBeGreaterThan(0);
+            expect(wrapper.findAll('h6').map(node => node.text())).toContain('Active filters');
+            expect(wrapper.find('[data-testid="filter-badges"]').exists()).toBe(true);
         });
 
-        it('should have placeholder text for column settings', () => {
-            const wrapper = mount(SettingsPanel, {
-                props: { isOpen: true },
-            });
+        it('should not render placeholder text any more', async () => {
+            const wrapper = await setup(true);
 
-            expect(wrapper.text()).toContain('Placeholder for the column settings');
+            expect(wrapper.text()).not.toContain('Placeholder');
         });
 
-        it('should have placeholder text for filter settings', () => {
-            const wrapper = mount(SettingsPanel, {
-                props: { isOpen: true },
-            });
+        it('should hand the clear-all mode down to the filter list', async () => {
+            const wrapper = await setup(true);
 
-            expect(wrapper.text()).toContain('Placeholder for the filter settings');
+            expect(wrapper.find('[data-testid="filter-badges-empty"]').exists()).toBe(true);
         });
 
-        it('should have two columns layout', () => {
-            const wrapper = mount(SettingsPanel, {
-                props: { isOpen: true },
+        it('should use the configured label overrides', async () => {
+            const wrapper = await setupWithLabels({
+                columnVisibility: 'Oszlopok',
+                activeFilters: 'Aktív szűrők',
+                noActiveFilters: 'Nincs aktív szűrő',
             });
 
-            const columns = wrapper.findAll('.col-md-6');
-            expect(columns.length).toBe(2);
+            expect(wrapper.findAll('h6').map(node => node.text())).toEqual([
+                'Oszlopok',
+                'Aktív szűrők',
+            ]);
+            expect(wrapper.find('[data-testid="filter-badges-empty"]').text()).toBe(
+                'Nincs aktív szűrő'
+            );
+        });
+    });
+
+    describe('wiring', () => {
+        it('should hide a column through the panel', async () => {
+            const wrapper = await setup(true);
+
+            await wrapper.find('[data-testid="column-toggle-email"]').trigger('change');
+
+            expect(resource.hiddenColumns).toEqual(['email']);
+        });
+
+        it('should list an active filter as a badge', async () => {
+            const wrapper = await setup(true);
+
+            resource.addFilter('name', ['Jane']);
+            await wrapper.vm.$nextTick();
+
+            expect(wrapper.find('[data-testid="filter-badge-filter:name"]').exists()).toBe(true);
         });
     });
 
     describe('styling', () => {
-        it('should have bg-light class on card', () => {
-            const wrapper = mount(SettingsPanel, {
-                props: { isOpen: true },
-            });
+        it('should have bg-light class on card', async () => {
+            const wrapper = await setup(true);
 
-            const card = wrapper.find('.card');
-            expect(card.classes()).toContain('bg-light');
+            expect(wrapper.find('.card').classes()).toContain('bg-light');
         });
 
-        it('should have mt-2 class on card', () => {
-            const wrapper = mount(SettingsPanel, {
-                props: { isOpen: true },
-            });
+        it('should have mt-2 class on card', async () => {
+            const wrapper = await setup(true);
 
-            const card = wrapper.find('.card');
-            expect(card.classes()).toContain('mt-2');
+            expect(wrapper.find('.card').classes()).toContain('mt-2');
         });
 
-        it('should have row class for layout', () => {
-            const wrapper = mount(SettingsPanel, {
-                props: { isOpen: true },
-            });
+        it('should have row class for layout', async () => {
+            const wrapper = await setup(true);
 
-            const row = wrapper.find('.row');
-            expect(row.exists()).toBe(true);
+            expect(wrapper.find('.row').exists()).toBe(true);
         });
     });
 });

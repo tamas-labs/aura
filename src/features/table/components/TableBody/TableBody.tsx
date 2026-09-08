@@ -31,6 +31,9 @@ export const TableBody = defineComponent({
         const items = computed(() => resource.displayItems);
         const header = computed(() => resource.header);
 
+        /** Columns the user switched off in the settings panel. */
+        const hiddenColumns = computed(() => resource.hiddenColumns);
+
         /**
          * Empty state text, resolved in priority order:
          * `labels.emptyState` → the deprecated `emptyStateMessage` → the built-in default.
@@ -65,8 +68,8 @@ export const TableBody = defineComponent({
             }
 
             return lastRow.cells.filter(cell => {
-                // show: false columns are excluded (initial hiding)
-                if (!isCellVisible(cell)) return false;
+                // show: false (response side) and user-hidden columns are excluded
+                if (!isCellVisible(cell, hiddenColumns.value)) return false;
                 // Support single-field (cell.field) and multi-field (cell.fields) columns
                 return cell.key && (cell.field || (cell.fields && cell.fields.length > 0));
             });
@@ -87,9 +90,9 @@ export const TableBody = defineComponent({
                 return 1;
             }
 
-            // Hidden (show: false) columns don't count toward the empty-state colspan
+            // Hidden columns don't count toward the empty-state colspan
             return firstRow.cells
-                .filter(isCellVisible)
+                .filter(cell => isCellVisible(cell, hiddenColumns.value))
                 .reduce((acc, cell) => acc + (cell.colspan || 1), 0);
         });
 

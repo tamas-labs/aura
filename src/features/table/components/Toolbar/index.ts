@@ -4,4 +4,5 @@ export * from './GlobalSearch';
 export * from './ToolbarTitle';
 export * from './ActionButtons';
 export * from './FilterBadges';
+export * from './ColumnVisibilityPanel';
 export * from './SettingsPanel';

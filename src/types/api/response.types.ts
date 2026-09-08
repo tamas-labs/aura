@@ -78,6 +78,15 @@ export interface ApiResourcesStore {
     readonly filterItems: FilterItem[];
     readonly globalSearchTerm: string | null;
     readonly selectedRows: RowId[];
+    /**
+     * Column keys the user hid from the settings panel.
+     *
+     * Presentation-only state: it never reaches `queryParams`, so switching a column
+     * off re-renders the table without a request. It is persisted with the rest of the
+     * session state. The response-side `show: false` flag is stronger and independent —
+     * those columns are never rendered and never appear in this list.
+     */
+    readonly hiddenColumns: string[];
     readonly header: Header | null;
     readonly body: Body | null;
     readonly footer: Footer | null;
@@ -111,6 +120,12 @@ export interface ApiResourcesStore {
     selectRows: (ids: RowId[]) => void;
     deselectRows: (ids: RowId[]) => void;
     clearSelection: () => void;
+    isColumnHidden: (key: string) => boolean;
+    hideColumn: (key: string) => void;
+    showColumn: (key: string) => void;
+    toggleColumn: (key: string) => void;
+    setHiddenColumns: (keys: string[]) => void;
+    showAllColumns: () => void;
     setPage: (page: number) => void;
     setLimit: (limit: number) => void;
     fetchData: () => Promise<void>;

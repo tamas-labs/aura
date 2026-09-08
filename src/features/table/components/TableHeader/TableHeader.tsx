@@ -31,6 +31,9 @@ export const TableHeader = defineComponent({
 
         const header = computed(() => resource.header);
 
+        /** Columns the user switched off in the settings panel. */
+        const hiddenColumns = computed(() => resource.hiddenColumns);
+
         /**
          * Checks if any cell in any row is searchable.
          * If global search is enabled (showHeaderSearch: true), local search is hidden.
@@ -42,9 +45,9 @@ export const TableHeader = defineComponent({
             }
 
             if (!header.value || !header.value.rows) return false;
-            // The searchable flag of hidden (show: false) columns doesn't matter
+            // The searchable flag of hidden columns doesn't matter
             return header.value.rows.some(row =>
-                row.cells?.some(cell => cell.searchable && isCellVisible(cell))
+                row.cells?.some(cell => cell.searchable && isCellVisible(cell, hiddenColumns.value))
             );
         });
 
@@ -53,8 +56,12 @@ export const TableHeader = defineComponent({
          */
         const lastRowCells = computed(() => {
             if (!header.value || !header.value.rows || header.value.rows.length === 0) return [];
-            // The search row aligns with the visible columns (show: false ones are excluded)
-            return filterVisibleCells(header.value.rows[header.value.rows.length - 1]?.cells || []);
+            // The search row aligns with the visible columns (show: false and
+            // user-hidden ones are excluded)
+            return filterVisibleCells(
+                header.value.rows[header.value.rows.length - 1]?.cells || [],
+                hiddenColumns.value
+            );
         });
 
         return () => {

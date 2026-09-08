@@ -1,4 +1,5 @@
-import { defineComponent, h, type PropType } from 'vue';
+import { defineComponent, h, computed, type PropType } from 'vue';
+import { useApiResourcesStore, useExistingCoreStore } from '../../../../state';
 import type { HeaderRow } from '../../../../types/api-response.types';
 import { filterVisibleCells } from '../../utils/column-visibility';
 import { TableHeaderCell } from './TableHeaderCell';
@@ -36,10 +37,16 @@ export const TableHeaderRow = defineComponent({
         },
     },
     setup(props) {
+        const core = useExistingCoreStore(props.storeId);
+        const resource = useApiResourcesStore(props.storeId, core);
+
+        /** Columns the user switched off in the settings panel. */
+        const hiddenColumns = computed(() => resource.hiddenColumns);
+
         return () => {
             const { row, rowIndex, storeId } = props;
-            // show: false columns are excluded (initial hiding)
-            const cells = filterVisibleCells(row.cells || []);
+            // show: false (response side) and user-hidden columns are excluded
+            const cells = filterVisibleCells(row.cells || [], hiddenColumns.value);
 
             if (cells.length === 0) {
                 return h('tr', {

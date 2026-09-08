@@ -21,4 +21,6 @@ export interface SessionState {
     globalSearchTerm: string | null;
     /** Selected row identifiers */
     selectedRows?: RowId[];
+    /** Column keys the user hid from the settings panel */
+    hiddenColumns?: string[];
 }

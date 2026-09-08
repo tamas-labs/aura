@@ -39,6 +39,16 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 
+- **The reserved table height no longer holds a gap open, and now works server-side too.** The
+  height measured on a full page (which keeps the pagination from jumping up on a short last page)
+  was invalidated by the response's `items` and by the page size only. Two consequences: a
+  client-side global search / column search / filter that narrowed the list to a few rows kept
+  reserving the *unfiltered* page's height, leaving hundreds of pixels of empty space above the
+  pager; and with `externalPaginator: true` every page brought a new `items` array, which threw the
+  measurement away on exactly the short last page it was meant to cover. The reservation is now
+  keyed to the query without its page number — page size, sorts, searches, filters and the global
+  search term drop it, paging keeps it — and it is capped at the viewport height, so a large page
+  size cannot reserve the controls off the bottom of the screen.
 - **The record count no longer contradicts the pager.** The toolbar's `results-info` line was fed
   from the response's optional `meta.total`, while `PaginationInfo` below the table reads
   `displayMeta`. With the default `externalPaginator: false` a response without a `meta` block made

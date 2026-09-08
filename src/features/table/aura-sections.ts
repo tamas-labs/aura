@@ -56,7 +56,7 @@ export interface AuraRenderContext {
     showLoadingBar: boolean;
     /** Whether a request is in flight, independent of what is drawn for it. */
     isBusy: boolean;
-    /** Height held for the table area, or `0` before the first measurement. */
+    /** Height held for the table area, or `0` before the first measurement (capped at the viewport). */
     reservedHeight: number;
     /** Function ref that hands the table area element back to `setup`. */
     setTableAreaEl: (el: Element | ComponentPublicInstance | null) => void;
@@ -206,6 +206,8 @@ function renderLoadingOverlay(context: AuraRenderContext): VNode {
  * The wrapper reserves the measured height of a full page so the pagination below it
  * stays put: without it the last page — the one page allowed to be short — pulls the
  * controls up by the height of the missing rows, right as the user is about to click.
+ * The measurement itself is capped at the viewport height, so a large page size cannot
+ * reserve the controls off the bottom of the screen.
  *
  * @param context - The render context
  * @returns The positioned table area

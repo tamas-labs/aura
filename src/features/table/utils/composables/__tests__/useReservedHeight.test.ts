@@ -150,6 +150,73 @@ describe('useReservedHeight', () => {
         expect(reserved.value).toBe(120);
     });
 
+    // Past a screenful the reservation cannot prevent a jump the user would see,
+    // but it can push the pagination off the bottom of a short page.
+    it('should cap the reservation at the given maximum', async () => {
+        const { ref: elementRef } = createElement(4000);
+        const rows = ref<unknown[]>([]);
+
+        const reserved = useReservedHeight({
+            element: elementRef,
+            isFullPage: () => true,
+            measureSources: [() => rows.value],
+            resetSources: [],
+            maxHeight: () => 768,
+        });
+
+        rows.value = [1];
+        await nextTick();
+        await nextTick();
+
+        expect(reserved.value).toBe(768);
+    });
+
+    it('should leave the measurement alone when the maximum is not positive', async () => {
+        const { ref: elementRef } = createElement(4000);
+        const rows = ref<unknown[]>([]);
+
+        const reserved = useReservedHeight({
+            element: elementRef,
+            isFullPage: () => true,
+            measureSources: [() => rows.value],
+            resetSources: [],
+            // What a non-layouting environment reports for the viewport
+            maxHeight: () => 0,
+        });
+
+        rows.value = [1];
+        await nextTick();
+        await nextTick();
+
+        expect(reserved.value).toBe(4000);
+    });
+
+    it('should re-read the maximum at every measurement', async () => {
+        const { ref: elementRef } = createElement(4000);
+        const rows = ref<unknown[]>([]);
+        const viewport = ref(500);
+
+        const reserved = useReservedHeight({
+            element: elementRef,
+            isFullPage: () => true,
+            measureSources: [() => rows.value],
+            resetSources: [],
+            maxHeight: () => viewport.value,
+        });
+
+        rows.value = [1];
+        await nextTick();
+        await nextTick();
+        expect(reserved.value).toBe(500);
+
+        viewport.value = 900;
+        rows.value = [2];
+        await nextTick();
+        await nextTick();
+
+        expect(reserved.value).toBe(900);
+    });
+
     it('should reserve nothing while the element is not mounted', async () => {
         const elementRef = ref<HTMLElement | null>(null);
         const rows = ref<unknown[]>([]);

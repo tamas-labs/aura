@@ -166,11 +166,43 @@ export const Aura = defineComponent({
         };
 
         /**
+         * Identity of the row set the table is paging through — the query without
+         * its page number.
+         *
+         * This is what invalidates the reserved height, and the page number is left
+         * out on purpose: paging is the very thing the reservation exists for, so
+         * stepping onto a short last page must keep the previous reading. The
+         * response's `items` cannot serve here either — a server-side table gets a
+         * fresh array on every page, which would drop the reading exactly where it
+         * is needed. A page size, a sort, a search or a filter change, on the other
+         * hand, means a differently sized or differently tall set of rows, so the
+         * old measurement would only hold empty space open under it.
+         *
+         * `JSON.stringify` walks the query arrays, so this also tracks the in-place
+         * edits (a refined search term, a flipped sort direction) that leave the
+         * store's own `queryParams` computed untouched — the same trap
+         * `api-resources.state.ts` documents around `lastSeenQuery`.
+         */
+        const dataSetKey = computed(() =>
+            JSON.stringify([
+                rowsNumber.value,
+                resource.sortItems,
+                resource.searchItems,
+                resource.filterItems,
+                resource.globalSearchTerm,
+            ])
+        );
+
+        /**
          * Height held for the table area so the pagination below it stays put.
          *
          * Without this the last page — the one page that is allowed to be short —
          * pulls the controls up by the height of the missing rows, right as the
          * user is about to click the next page.
+         *
+         * The reservation is capped at the viewport height: past a screenful it can
+         * no longer prevent a jump the user would see, but it can push the controls
+         * off the bottom of a large page size's short page.
          */
         const reservedHeight = useReservedHeight({
             element: tableAreaEl,
@@ -180,7 +212,8 @@ export const Aura = defineComponent({
                 return pageSize > 0 && rendered >= pageSize;
             },
             measureSources: [() => resource.displayItems],
-            resetSources: [() => rowsNumber.value, () => resource.items],
+            resetSources: [() => dataSetKey.value],
+            maxHeight: () => (typeof window === 'undefined' ? 0 : window.innerHeight),
         });
 
         const tableClasses = computed(() => {

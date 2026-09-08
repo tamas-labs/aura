@@ -18,11 +18,24 @@ export interface ReservedHeightDeps {
     /**
      * Watch sources that invalidate the measurement entirely.
      *
-     * A different page size or a different data set means a different full-page
+     * A different page size or a different row set means a different full-page
      * height, so the previous reading must not be carried over — it would leave
      * a gap under a table that legitimately became shorter.
+     *
+     * Paging must *not* be among them: the last page is the one page allowed to
+     * be short, so it is exactly the page that needs the previous reading.
      */
     resetSources: WatchSource[];
+    /**
+     * Upper bound for the reservation in px, re-read at every measurement.
+     *
+     * `0` (and the default of not passing one) means no bound. Above a screenful
+     * the reservation cannot prevent a *visible* jump any more — whatever sits
+     * below the table is off screen either way — while it can push the controls
+     * further out of reach on a short page, so the caller passes the viewport
+     * height here.
+     */
+    maxHeight?: () => number;
 }
 
 /**
@@ -34,15 +47,15 @@ export interface ReservedHeightDeps {
  * Both are the same layout shift from the user's side: the controls they are
  * about to click move out from under the pointer.
  *
- * Only full pages are measured, and the value only ever grows within one data
+ * Only full pages are measured, and the value only ever grows within one row
  * set, so a table that never fills a page reserves nothing at all — there is no
  * jump to prevent there, and reserving would only add empty space.
  *
- * @param deps - Element, full-page predicate, and the measure/reset sources
+ * @param deps - Element, full-page predicate, the measure/reset sources and the optional cap
  * @returns A readonly ref with the height to reserve in px (`0` = reserve nothing)
  */
 export function useReservedHeight(deps: ReservedHeightDeps): Readonly<Ref<number>> {
-    const { element, isFullPage, measureSources, resetSources } = deps;
+    const { element, isFullPage, measureSources, resetSources, maxHeight } = deps;
     const reservedHeight = ref(0);
 
     const measure = async () => {
@@ -57,7 +70,8 @@ export function useReservedHeight(deps: ReservedHeightDeps): Readonly<Ref<number
 
         // `offsetHeight` is 0 in a non-layouting environment (jsdom, a detached
         // node). Reserving that would be a no-op with an extra style attribute.
-        const height = el.offsetHeight;
+        const limit = maxHeight?.() ?? 0;
+        const height = limit > 0 ? Math.min(el.offsetHeight, limit) : el.offsetHeight;
         if (height > reservedHeight.value) {
             reservedHeight.value = height;
         }

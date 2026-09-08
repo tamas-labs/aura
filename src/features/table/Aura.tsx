@@ -84,8 +84,13 @@ export const Aura = defineComponent({
             return core.errorStore.warnings.length > 0;
         });
 
-        const totalRecords = computed(() => resource.meta?.total || 0);
-        const currentPage = computed(() => resource.meta?.current_page || 1);
+        /**
+         * The record counts on screen.
+         *
+         * `displayMeta` is the single source: the raw `resource.meta` is optional in the
+         * response and stays at the server's totals under client-side pagination and
+         * filtering, so anything fed from it drifts away from what the rows show.
+         */
         const paginationMeta = computed(() => resource.displayMeta);
         const rowsNumber = computed(() => resource.queryParams.paginate);
 
@@ -194,8 +199,6 @@ export const Aura = defineComponent({
             hasNonCriticalErrors,
             onRowsChange,
             onRetry,
-            totalRecords,
-            currentPage,
             paginationMeta,
             rowsNumber,
             onPageChange,

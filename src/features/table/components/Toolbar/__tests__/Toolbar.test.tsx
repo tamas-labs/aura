@@ -6,7 +6,6 @@ import { RowsSelect } from '../RowsSelect';
 import { GlobalSearch } from '../GlobalSearch';
 import { ToolbarTitle } from '../ToolbarTitle';
 import { ActionButtons } from '../ActionButtons';
-import { ResultsInfo } from '../ResultsInfo';
 import { FilterBadges } from '../FilterBadges';
 import { SettingsPanel } from '../SettingsPanel';
 import { useCoreStore, useApiResourcesStore } from '../../../../../state';
@@ -18,8 +17,6 @@ describe('Toolbar', () => {
         storeId: TEST_STORE_ID,
         paginateValues: [10, 25, 50, 100],
         rowsNumber: 25,
-        totalRecords: 100,
-        currentPage: 1,
         onRowsChange: vi.fn(),
         onRefresh: vi.fn(),
         onExport: vi.fn(),
@@ -105,13 +102,15 @@ describe('Toolbar', () => {
             expect(filterBadges.exists()).toBe(true);
         });
 
-        it('should render ResultsInfo component', () => {
+        // The record count belongs to `PaginationInfo` alone: the toolbar copy was fed
+        // from the optional response `meta`, so it contradicted the pager as soon as the
+        // pagination was client-side or a filter narrowed the set.
+        it('should not render a record count of its own', () => {
             const wrapper = mount(Toolbar, {
                 props: defaultProps,
             });
 
-            const resultsInfo = wrapper.findComponent(ResultsInfo);
-            expect(resultsInfo.exists()).toBe(true);
+            expect(wrapper.find('[data-testid="results-info"]').exists()).toBe(false);
         });
 
         it('should render SettingsPanel component', () => {
@@ -179,17 +178,6 @@ describe('Toolbar', () => {
 
             const actionButtons = wrapper.findComponent(ActionButtons);
             expect(actionButtons.props('storeId')).toBe(TEST_STORE_ID);
-        });
-
-        it('should forward data props to ResultsInfo', () => {
-            const wrapper = mount(Toolbar, {
-                props: defaultProps,
-            });
-
-            const resultsInfo = wrapper.findComponent(ResultsInfo);
-            expect(resultsInfo.props('currentPage')).toBe(1);
-            expect(resultsInfo.props('rowsPerPage')).toBe(25);
-            expect(resultsInfo.props('totalRecords')).toBe(100);
         });
     });
 
@@ -301,8 +289,6 @@ describe('Toolbar', () => {
                     storeId: integrationStoreId,
                     paginateValues: [10, 25, 50],
                     rowsNumber: 10,
-                    totalRecords: 200,
-                    currentPage: 2,
                     onRowsChange,
                     onRefresh: vi.fn(),
                     onExport: vi.fn(),
@@ -322,16 +308,10 @@ describe('Toolbar', () => {
 
             await wrapper.setProps({
                 rowsNumber: 50,
-                currentPage: 3,
-                totalRecords: 500,
             });
 
             const rowsSelect = wrapper.findComponent(RowsSelect);
             expect(rowsSelect.props('selected')).toBe(50);
-
-            const resultsInfo = wrapper.findComponent(ResultsInfo);
-            expect(resultsInfo.props('currentPage')).toBe(3);
-            expect(resultsInfo.props('totalRecords')).toBe(500);
         });
 
         it('should handle different paginateValues arrays', async () => {
@@ -361,18 +341,6 @@ describe('Toolbar', () => {
             expect(rowsSelect.props('values')).toEqual([]);
         });
 
-        it('should handle zero totalRecords', () => {
-            const wrapper = mount(Toolbar, {
-                props: {
-                    ...defaultProps,
-                    totalRecords: 0,
-                },
-            });
-
-            const resultsInfo = wrapper.findComponent(ResultsInfo);
-            expect(resultsInfo.props('totalRecords')).toBe(0);
-        });
-
         it('should handle single pagination value', () => {
             const wrapper = mount(Toolbar, {
                 props: {
@@ -398,8 +366,6 @@ describe('Toolbar', () => {
                     storeId: edgeStoreId,
                     paginateValues: [10],
                     rowsNumber: 10,
-                    totalRecords: 100,
-                    currentPage: 1,
                     onRowsChange: vi.fn(),
                     onRefresh: vi.fn(),
                     onExport: vi.fn(),
@@ -409,7 +375,6 @@ describe('Toolbar', () => {
             expect(wrapper.findComponent(RowsSelect).exists()).toBe(true);
             expect(wrapper.findComponent(GlobalSearch).exists()).toBe(true);
             expect(wrapper.findComponent(ActionButtons).exists()).toBe(true);
-            expect(wrapper.findComponent(ResultsInfo).exists()).toBe(true);
             expect(wrapper.findComponent(SettingsPanel).exists()).toBe(true);
         });
     });

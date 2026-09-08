@@ -4,7 +4,6 @@ import { RowsSelect } from './RowsSelect';
 import { GlobalSearch } from './GlobalSearch';
 import { ToolbarTitle } from './ToolbarTitle';
 import { ActionButtons } from './ActionButtons';
-import { ResultsInfo } from './ResultsInfo';
 import { FilterBadges } from './FilterBadges';
 import { SettingsPanel } from './SettingsPanel';
 
@@ -17,14 +16,16 @@ import { SettingsPanel } from './SettingsPanel';
  * - When `showHeaderSearch === true`: Layout is 3-6-3 grid (Title | Search | Actions)
  * - When `showHeaderSearch !== true`: Layout is 6-0-6 grid (Title | Actions), search is hidden
  *
+ * The "showing X-Y of Z" line is deliberately *not* part of the toolbar: `PaginationInfo`
+ * already renders it below the table from `displayMeta`, the only source that stays correct
+ * under client-side pagination and filtering.
+ *
  * @example
  * ```tsx
  * <Toolbar
  *     storeId="my-table"
  *     paginateValues={[10, 25, 50]}
  *     rowsNumber={25}
- *     totalRecords={100}
- *     currentPage={1}
  *     onRowsChange={(rows) => console.log(rows)}
  * />
  * ```
@@ -43,20 +44,6 @@ export const Toolbar = defineComponent({
          * Currently selected rows number
          */
         rowsNumber: {
-            type: Number,
-            required: true,
-        },
-        /**
-         * Total number of records
-         */
-        totalRecords: {
-            type: Number,
-            required: true,
-        },
-        /**
-         * Current page number
-         */
-        currentPage: {
             type: Number,
             required: true,
         },
@@ -159,7 +146,7 @@ export const Toolbar = defineComponent({
                         // Left: Rows Select
                         h(
                             'div',
-                            { class: 'col-6 col-md-4' },
+                            { class: 'col-12 col-md-4' },
                             h(RowsSelect, {
                                 values: props.paginateValues,
                                 selected: props.rowsNumber,
@@ -168,20 +155,8 @@ export const Toolbar = defineComponent({
                             })
                         ),
 
-                        // Center: Filter Badges
-                        h('div', { class: 'col-12 col-md-4 d-none d-md-block' }, h(FilterBadges)),
-
-                        // Right: Results Info
-                        h(
-                            'div',
-                            { class: 'col-6 col-md-4 text-end' },
-                            h(ResultsInfo, {
-                                currentPage: props.currentPage,
-                                rowsPerPage: props.rowsNumber,
-                                totalRecords: props.totalRecords,
-                                labels: core.config.labels,
-                            })
-                        ),
+                        // Right: Filter Badges
+                        h('div', { class: 'col-12 col-md-8 d-none d-md-block' }, h(FilterBadges)),
                     ]),
 
                     // Settings Panel

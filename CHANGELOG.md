@@ -7,6 +7,24 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Fixed
+
+- **The record count no longer contradicts the pager.** The toolbar's `results-info` line was fed
+  from the response's optional `meta.total`, while `PaginationInfo` below the table reads
+  `displayMeta`. With the default `externalPaginator: false` a response without a `meta` block made
+  the pager show `1-10 / 42` while the toolbar showed "No results" at the same time; client-side
+  filtering produced the same split, the toolbar keeping the server's total against the filtered
+  count of the pager.
+
+### Removed
+
+- **The `ResultsInfo` component** (toolbar) and with it the `totalRecords` / `currentPage` props of
+  `Toolbar`. It rendered the same `labels.paginationInfo` / `labels.noResults` texts as
+  `PaginationInfo` — the duplication was the reason it could disagree with the pager at all — so the
+  "showing X-Y of Z" information now has a single place, below the table. The empty result set is
+  still announced by the table body's own empty state. No public API change: the component was never
+  exported from `index.ts`, and no config key or label was removed.
+
 ## [1.0.0] - 2026-08-26
 
 ### Added

@@ -1,8 +1,8 @@
 /**
  * Substitutes the tokens of the `labels.paginationInfo` template.
  *
- * Shared by the two components that show the same "showing X-Y of Z" information:
- * `PaginationInfo` (below the table) and `ResultsInfo` (in the toolbar).
+ * Used by `PaginationInfo` (below the table), the single place the "showing X-Y of Z"
+ * information is rendered.
  *
  * @param template - The label template, e.g. `'Showing {from}-{to} of {total}'`
  * @param from - Index of the first visible record (1-based)

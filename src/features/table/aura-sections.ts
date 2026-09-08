@@ -40,10 +40,6 @@ export interface AuraRenderContext {
     onRowsChange: (value: number) => void;
     /** Retry handler of the blocking error state. */
     onRetry: () => void;
-    /** Total row count reported by the response meta. */
-    totalRecords: number;
-    /** Current page number reported by the response meta. */
-    currentPage: number;
     /** Pagination meta of the page on screen, or `null` while there is none. */
     paginationMeta: PaginationMeta | null;
     /** Rows per page. */
@@ -144,14 +140,12 @@ export function renderWarningBanner(context: AuraRenderContext): VNode {
  * @returns The toolbar
  */
 export function renderToolbar(context: AuraRenderContext, paginateValues: number[]): VNode {
-    const { storeId, rowsNumber, totalRecords, currentPage, onRowsChange } = context;
+    const { storeId, rowsNumber, onRowsChange } = context;
 
     return h(Toolbar, {
         storeId: storeId,
         paginateValues: paginateValues,
         rowsNumber: rowsNumber,
-        totalRecords: totalRecords,
-        currentPage: currentPage,
         onRowsChange: onRowsChange,
     });
 }

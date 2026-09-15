@@ -14,6 +14,7 @@ import {
     DEFAULT_ALLOW_EXTERNAL_API,
     DEFAULT_ERROR_REPORTING,
     DEFAULT_ACCENT_INSENSITIVE_SEARCH,
+    DEFAULT_CELL_CLICK_SEARCH,
 } from '../../../lib/default-values.lib';
 
 const defaults: Record<string, boolean> = {
@@ -29,6 +30,7 @@ const defaults: Record<string, boolean> = {
     allowExternalApi: DEFAULT_ALLOW_EXTERNAL_API,
     errorReporting: DEFAULT_ERROR_REPORTING,
     accentInsensitiveSearch: DEFAULT_ACCENT_INSENSITIVE_SEARCH,
+    cellClickSearch: DEFAULT_CELL_CLICK_SEARCH,
 };
 
 /**

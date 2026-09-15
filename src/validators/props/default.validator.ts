@@ -207,5 +207,11 @@ export const defaultValidators = (): Record<string, PropValidator> => {
             required: false,
             validator: (value: unknown) => value === undefined || stringRule(value),
         },
+        cellClickSearch: {
+            type: Boolean,
+            required: false,
+            default: undefined,
+            validator: (value: unknown) => value === undefined || booleanRule(value),
+        },
     };
 };

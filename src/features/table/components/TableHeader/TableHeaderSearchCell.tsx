@@ -1,6 +1,6 @@
 import { defineComponent, h, ref, watch } from 'vue';
 import { htmlSanitizer } from '../../../../validators/sanitizers';
-import { debouncedCellInputProps, useDebouncedCellInput } from '../../utils';
+import { debouncedCellInputProps, isExactSearchCell, useDebouncedCellInput } from '../../utils';
 
 /**
  * TableHeaderSearchCell Component
@@ -45,12 +45,8 @@ export const TableHeaderSearchCell = defineComponent({
             const sanitizedValue = htmlSanitizer(rawValue);
             if (typeof sanitizedValue !== 'string') return;
 
-            // Determine if exact match is required
-            // Support 'type': 'number' from legacy configs as well
-            const isNumber =
-                props.cell.number === true ||
-                (props.cell as unknown as Record<string, unknown>).type === 'number';
-            const isExact = isNumber ? true : undefined;
+            // Number columns (legacy `type: 'number'` included) require an exact match
+            const isExact = isExactSearchCell(props.cell) ? true : undefined;
 
             // Check if search already exists
             const currentTerm = resource.getSearchTerm(field);

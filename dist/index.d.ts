@@ -283,10 +283,11 @@ errorReportingApiKey: Ref<string | null, string | null>;
 accentInsensitiveSearch: Ref<boolean | null, boolean | null>;
 highlightSearchResults: Ref<boolean | null, boolean | null>;
 highlightClass: Ref<string | null, string | null>;
+cellClickSearch: Ref<boolean | null, boolean | null>;
 rawHtmlAllowedTags: Ref<string[] | null, string[] | null>;
 rawHtmlAllowedAttr: Ref<string[] | null, string[] | null>;
 rawHtmlAllowDataAttr: Ref<boolean | null, boolean | null>;
-}, "debug" | "storeId" | "siteName" | "urlParameter" | "urlParameterLastSegment" | "urlStructure" | "siteToken" | "paginateValues" | "rowsNumber" | "classes" | "showFooter" | "actionButtons" | "showLoadingOverlay" | "showLoadingBar" | "showHeaderSearch" | "showToolbarTitle" | "toolbarTitleContent" | "externalPaginator" | "dateStyle" | "timeZone" | "utcOffset" | "localization" | "currencyCode" | "resources" | "requestMethod" | "sessionKey" | "disableSession" | "accentInsensitiveSearch" | "highlightSearchResults" | "highlightClass" | "href" | "allowExternalApi" | "errorReporting" | "sliceEndText" | "icons" | "variants" | "labels" | "errorReportingService" | "errorReportingApiKey" | "renderers" | "callbacks" | "emptyStateMessage" | "errorReportingEndpoint" | "rawHtmlAllowedTags" | "rawHtmlAllowedAttr" | "rawHtmlAllowDataAttr">, Pick<{
+}, "debug" | "storeId" | "siteName" | "urlParameter" | "urlParameterLastSegment" | "urlStructure" | "siteToken" | "paginateValues" | "rowsNumber" | "classes" | "showFooter" | "actionButtons" | "showLoadingOverlay" | "showLoadingBar" | "showHeaderSearch" | "showToolbarTitle" | "toolbarTitleContent" | "externalPaginator" | "dateStyle" | "timeZone" | "utcOffset" | "localization" | "currencyCode" | "resources" | "requestMethod" | "sessionKey" | "disableSession" | "accentInsensitiveSearch" | "highlightSearchResults" | "highlightClass" | "cellClickSearch" | "href" | "allowExternalApi" | "errorReporting" | "sliceEndText" | "icons" | "variants" | "labels" | "errorReportingService" | "errorReportingApiKey" | "renderers" | "callbacks" | "emptyStateMessage" | "errorReportingEndpoint" | "rawHtmlAllowedTags" | "rawHtmlAllowedAttr" | "rawHtmlAllowDataAttr">, Pick<{
 storeId: string;
 debug: Ref<boolean | null, boolean | null>;
 siteToken: Ref<string | boolean | null, string | boolean | null>;
@@ -428,6 +429,7 @@ errorReportingApiKey: Ref<string | null, string | null>;
 accentInsensitiveSearch: Ref<boolean | null, boolean | null>;
 highlightSearchResults: Ref<boolean | null, boolean | null>;
 highlightClass: Ref<string | null, string | null>;
+cellClickSearch: Ref<boolean | null, boolean | null>;
 rawHtmlAllowedTags: Ref<string[] | null, string[] | null>;
 rawHtmlAllowedAttr: Ref<string[] | null, string[] | null>;
 rawHtmlAllowDataAttr: Ref<boolean | null, boolean | null>;
@@ -573,6 +575,7 @@ errorReportingApiKey: Ref<string | null, string | null>;
 accentInsensitiveSearch: Ref<boolean | null, boolean | null>;
 highlightSearchResults: Ref<boolean | null, boolean | null>;
 highlightClass: Ref<string | null, string | null>;
+cellClickSearch: Ref<boolean | null, boolean | null>;
 rawHtmlAllowedTags: Ref<string[] | null, string[] | null>;
 rawHtmlAllowedAttr: Ref<string[] | null, string[] | null>;
 rawHtmlAllowDataAttr: Ref<boolean | null, boolean | null>;
@@ -1009,10 +1012,11 @@ errorReportingApiKey: Ref<string | null, string | null>;
 accentInsensitiveSearch: Ref<boolean | null, boolean | null>;
 highlightSearchResults: Ref<boolean | null, boolean | null>;
 highlightClass: Ref<string | null, string | null>;
+cellClickSearch: Ref<boolean | null, boolean | null>;
 rawHtmlAllowedTags: Ref<string[] | null, string[] | null>;
 rawHtmlAllowedAttr: Ref<string[] | null, string[] | null>;
 rawHtmlAllowDataAttr: Ref<boolean | null, boolean | null>;
-}, "debug" | "storeId" | "siteName" | "urlParameter" | "urlParameterLastSegment" | "urlStructure" | "siteToken" | "paginateValues" | "rowsNumber" | "classes" | "showFooter" | "actionButtons" | "showLoadingOverlay" | "showLoadingBar" | "showHeaderSearch" | "showToolbarTitle" | "toolbarTitleContent" | "externalPaginator" | "dateStyle" | "timeZone" | "utcOffset" | "localization" | "currencyCode" | "resources" | "requestMethod" | "sessionKey" | "disableSession" | "accentInsensitiveSearch" | "highlightSearchResults" | "highlightClass" | "href" | "allowExternalApi" | "errorReporting" | "sliceEndText" | "icons" | "variants" | "labels" | "errorReportingService" | "errorReportingApiKey" | "renderers" | "callbacks" | "emptyStateMessage" | "errorReportingEndpoint" | "rawHtmlAllowedTags" | "rawHtmlAllowedAttr" | "rawHtmlAllowDataAttr">, Pick<{
+}, "debug" | "storeId" | "siteName" | "urlParameter" | "urlParameterLastSegment" | "urlStructure" | "siteToken" | "paginateValues" | "rowsNumber" | "classes" | "showFooter" | "actionButtons" | "showLoadingOverlay" | "showLoadingBar" | "showHeaderSearch" | "showToolbarTitle" | "toolbarTitleContent" | "externalPaginator" | "dateStyle" | "timeZone" | "utcOffset" | "localization" | "currencyCode" | "resources" | "requestMethod" | "sessionKey" | "disableSession" | "accentInsensitiveSearch" | "highlightSearchResults" | "highlightClass" | "cellClickSearch" | "href" | "allowExternalApi" | "errorReporting" | "sliceEndText" | "icons" | "variants" | "labels" | "errorReportingService" | "errorReportingApiKey" | "renderers" | "callbacks" | "emptyStateMessage" | "errorReportingEndpoint" | "rawHtmlAllowedTags" | "rawHtmlAllowedAttr" | "rawHtmlAllowDataAttr">, Pick<{
 storeId: string;
 debug: Ref<boolean | null, boolean | null>;
 siteToken: Ref<string | boolean | null, string | boolean | null>;
@@ -1154,6 +1158,7 @@ errorReportingApiKey: Ref<string | null, string | null>;
 accentInsensitiveSearch: Ref<boolean | null, boolean | null>;
 highlightSearchResults: Ref<boolean | null, boolean | null>;
 highlightClass: Ref<string | null, string | null>;
+cellClickSearch: Ref<boolean | null, boolean | null>;
 rawHtmlAllowedTags: Ref<string[] | null, string[] | null>;
 rawHtmlAllowedAttr: Ref<string[] | null, string[] | null>;
 rawHtmlAllowDataAttr: Ref<boolean | null, boolean | null>;
@@ -1299,6 +1304,7 @@ errorReportingApiKey: Ref<string | null, string | null>;
 accentInsensitiveSearch: Ref<boolean | null, boolean | null>;
 highlightSearchResults: Ref<boolean | null, boolean | null>;
 highlightClass: Ref<string | null, string | null>;
+cellClickSearch: Ref<boolean | null, boolean | null>;
 rawHtmlAllowedTags: Ref<string[] | null, string[] | null>;
 rawHtmlAllowedAttr: Ref<string[] | null, string[] | null>;
 rawHtmlAllowDataAttr: Ref<boolean | null, boolean | null>;
@@ -1735,10 +1741,11 @@ errorReportingApiKey: Ref<string | null, string | null>;
 accentInsensitiveSearch: Ref<boolean | null, boolean | null>;
 highlightSearchResults: Ref<boolean | null, boolean | null>;
 highlightClass: Ref<string | null, string | null>;
+cellClickSearch: Ref<boolean | null, boolean | null>;
 rawHtmlAllowedTags: Ref<string[] | null, string[] | null>;
 rawHtmlAllowedAttr: Ref<string[] | null, string[] | null>;
 rawHtmlAllowDataAttr: Ref<boolean | null, boolean | null>;
-}, "debug" | "storeId" | "siteName" | "urlParameter" | "urlParameterLastSegment" | "urlStructure" | "siteToken" | "paginateValues" | "rowsNumber" | "classes" | "showFooter" | "actionButtons" | "showLoadingOverlay" | "showLoadingBar" | "showHeaderSearch" | "showToolbarTitle" | "toolbarTitleContent" | "externalPaginator" | "dateStyle" | "timeZone" | "utcOffset" | "localization" | "currencyCode" | "resources" | "requestMethod" | "sessionKey" | "disableSession" | "accentInsensitiveSearch" | "highlightSearchResults" | "highlightClass" | "href" | "allowExternalApi" | "errorReporting" | "sliceEndText" | "icons" | "variants" | "labels" | "errorReportingService" | "errorReportingApiKey" | "renderers" | "callbacks" | "emptyStateMessage" | "errorReportingEndpoint" | "rawHtmlAllowedTags" | "rawHtmlAllowedAttr" | "rawHtmlAllowDataAttr">, Pick<{
+}, "debug" | "storeId" | "siteName" | "urlParameter" | "urlParameterLastSegment" | "urlStructure" | "siteToken" | "paginateValues" | "rowsNumber" | "classes" | "showFooter" | "actionButtons" | "showLoadingOverlay" | "showLoadingBar" | "showHeaderSearch" | "showToolbarTitle" | "toolbarTitleContent" | "externalPaginator" | "dateStyle" | "timeZone" | "utcOffset" | "localization" | "currencyCode" | "resources" | "requestMethod" | "sessionKey" | "disableSession" | "accentInsensitiveSearch" | "highlightSearchResults" | "highlightClass" | "cellClickSearch" | "href" | "allowExternalApi" | "errorReporting" | "sliceEndText" | "icons" | "variants" | "labels" | "errorReportingService" | "errorReportingApiKey" | "renderers" | "callbacks" | "emptyStateMessage" | "errorReportingEndpoint" | "rawHtmlAllowedTags" | "rawHtmlAllowedAttr" | "rawHtmlAllowDataAttr">, Pick<{
 storeId: string;
 debug: Ref<boolean | null, boolean | null>;
 siteToken: Ref<string | boolean | null, string | boolean | null>;
@@ -1880,6 +1887,7 @@ errorReportingApiKey: Ref<string | null, string | null>;
 accentInsensitiveSearch: Ref<boolean | null, boolean | null>;
 highlightSearchResults: Ref<boolean | null, boolean | null>;
 highlightClass: Ref<string | null, string | null>;
+cellClickSearch: Ref<boolean | null, boolean | null>;
 rawHtmlAllowedTags: Ref<string[] | null, string[] | null>;
 rawHtmlAllowedAttr: Ref<string[] | null, string[] | null>;
 rawHtmlAllowDataAttr: Ref<boolean | null, boolean | null>;
@@ -2025,6 +2033,7 @@ errorReportingApiKey: Ref<string | null, string | null>;
 accentInsensitiveSearch: Ref<boolean | null, boolean | null>;
 highlightSearchResults: Ref<boolean | null, boolean | null>;
 highlightClass: Ref<string | null, string | null>;
+cellClickSearch: Ref<boolean | null, boolean | null>;
 rawHtmlAllowedTags: Ref<string[] | null, string[] | null>;
 rawHtmlAllowedAttr: Ref<string[] | null, string[] | null>;
 rawHtmlAllowDataAttr: Ref<boolean | null, boolean | null>;
@@ -2491,6 +2500,14 @@ export declare interface AuraConfig {
     /** Highlight CSS class (optional) */
     highlightClass?: string;
     /**
+     * Shift+click a body cell to search for its raw value.
+     *
+     * The value goes into the column's own search input when the column is `searchable`,
+     * otherwise into the global search input (`showHeaderSearch`); with neither, the click
+     * is ignored. Off by default.
+     */
+    cellClickSearch?: boolean;
+    /**
      * Type of the error reporting service.
      *
      * There is one transport: a POST to `errorReportingEndpoint`.
@@ -2709,6 +2726,7 @@ export declare interface AuraProps {
     accentInsensitiveSearch?: boolean;
     highlightSearchResults?: boolean;
     highlightClass?: string | null;
+    cellClickSearch?: boolean;
 }
 
 /**
@@ -3176,6 +3194,8 @@ export declare interface ConfigStore {
     highlightSearchResults: boolean | null;
     /** Highlight CSS class */
     highlightClass: string | null;
+    /** Shift+click a body cell to search for its raw value */
+    cellClickSearch: boolean | null;
     /** Allowed HTML tags for sanitizing raw: true cells (formatRaw) */
     rawHtmlAllowedTags: string[] | null;
     /** Allowed HTML attributes for sanitizing raw: true cells (formatRaw) */
@@ -4482,10 +4502,11 @@ errorReportingApiKey: Ref<string | null, string | null>;
 accentInsensitiveSearch: Ref<boolean | null, boolean | null>;
 highlightSearchResults: Ref<boolean | null, boolean | null>;
 highlightClass: Ref<string | null, string | null>;
+cellClickSearch: Ref<boolean | null, boolean | null>;
 rawHtmlAllowedTags: Ref<string[] | null, string[] | null>;
 rawHtmlAllowedAttr: Ref<string[] | null, string[] | null>;
 rawHtmlAllowDataAttr: Ref<boolean | null, boolean | null>;
-}, "debug" | "storeId" | "siteName" | "urlParameter" | "urlParameterLastSegment" | "urlStructure" | "siteToken" | "paginateValues" | "rowsNumber" | "classes" | "showFooter" | "actionButtons" | "showLoadingOverlay" | "showLoadingBar" | "showHeaderSearch" | "showToolbarTitle" | "toolbarTitleContent" | "externalPaginator" | "dateStyle" | "timeZone" | "utcOffset" | "localization" | "currencyCode" | "resources" | "requestMethod" | "sessionKey" | "disableSession" | "accentInsensitiveSearch" | "highlightSearchResults" | "highlightClass" | "href" | "allowExternalApi" | "errorReporting" | "sliceEndText" | "icons" | "variants" | "labels" | "errorReportingService" | "errorReportingApiKey" | "renderers" | "callbacks" | "emptyStateMessage" | "errorReportingEndpoint" | "rawHtmlAllowedTags" | "rawHtmlAllowedAttr" | "rawHtmlAllowDataAttr">, Pick<{
+}, "debug" | "storeId" | "siteName" | "urlParameter" | "urlParameterLastSegment" | "urlStructure" | "siteToken" | "paginateValues" | "rowsNumber" | "classes" | "showFooter" | "actionButtons" | "showLoadingOverlay" | "showLoadingBar" | "showHeaderSearch" | "showToolbarTitle" | "toolbarTitleContent" | "externalPaginator" | "dateStyle" | "timeZone" | "utcOffset" | "localization" | "currencyCode" | "resources" | "requestMethod" | "sessionKey" | "disableSession" | "accentInsensitiveSearch" | "highlightSearchResults" | "highlightClass" | "cellClickSearch" | "href" | "allowExternalApi" | "errorReporting" | "sliceEndText" | "icons" | "variants" | "labels" | "errorReportingService" | "errorReportingApiKey" | "renderers" | "callbacks" | "emptyStateMessage" | "errorReportingEndpoint" | "rawHtmlAllowedTags" | "rawHtmlAllowedAttr" | "rawHtmlAllowDataAttr">, Pick<{
 storeId: string;
 debug: Ref<boolean | null, boolean | null>;
 siteToken: Ref<string | boolean | null, string | boolean | null>;
@@ -4627,6 +4648,7 @@ errorReportingApiKey: Ref<string | null, string | null>;
 accentInsensitiveSearch: Ref<boolean | null, boolean | null>;
 highlightSearchResults: Ref<boolean | null, boolean | null>;
 highlightClass: Ref<string | null, string | null>;
+cellClickSearch: Ref<boolean | null, boolean | null>;
 rawHtmlAllowedTags: Ref<string[] | null, string[] | null>;
 rawHtmlAllowedAttr: Ref<string[] | null, string[] | null>;
 rawHtmlAllowDataAttr: Ref<boolean | null, boolean | null>;
@@ -4772,6 +4794,7 @@ errorReportingApiKey: Ref<string | null, string | null>;
 accentInsensitiveSearch: Ref<boolean | null, boolean | null>;
 highlightSearchResults: Ref<boolean | null, boolean | null>;
 highlightClass: Ref<string | null, string | null>;
+cellClickSearch: Ref<boolean | null, boolean | null>;
 rawHtmlAllowedTags: Ref<string[] | null, string[] | null>;
 rawHtmlAllowedAttr: Ref<string[] | null, string[] | null>;
 rawHtmlAllowDataAttr: Ref<boolean | null, boolean | null>;
@@ -4934,10 +4957,11 @@ errorReportingApiKey: Ref<string | null, string | null>;
 accentInsensitiveSearch: Ref<boolean | null, boolean | null>;
 highlightSearchResults: Ref<boolean | null, boolean | null>;
 highlightClass: Ref<string | null, string | null>;
+cellClickSearch: Ref<boolean | null, boolean | null>;
 rawHtmlAllowedTags: Ref<string[] | null, string[] | null>;
 rawHtmlAllowedAttr: Ref<string[] | null, string[] | null>;
 rawHtmlAllowDataAttr: Ref<boolean | null, boolean | null>;
-}, "debug" | "storeId" | "siteName" | "urlParameter" | "urlParameterLastSegment" | "urlStructure" | "siteToken" | "paginateValues" | "rowsNumber" | "classes" | "showFooter" | "actionButtons" | "showLoadingOverlay" | "showLoadingBar" | "showHeaderSearch" | "showToolbarTitle" | "toolbarTitleContent" | "externalPaginator" | "dateStyle" | "timeZone" | "utcOffset" | "localization" | "currencyCode" | "resources" | "requestMethod" | "sessionKey" | "disableSession" | "accentInsensitiveSearch" | "highlightSearchResults" | "highlightClass" | "href" | "allowExternalApi" | "errorReporting" | "sliceEndText" | "icons" | "variants" | "labels" | "errorReportingService" | "errorReportingApiKey" | "renderers" | "callbacks" | "emptyStateMessage" | "errorReportingEndpoint" | "rawHtmlAllowedTags" | "rawHtmlAllowedAttr" | "rawHtmlAllowDataAttr">, Pick<{
+}, "debug" | "storeId" | "siteName" | "urlParameter" | "urlParameterLastSegment" | "urlStructure" | "siteToken" | "paginateValues" | "rowsNumber" | "classes" | "showFooter" | "actionButtons" | "showLoadingOverlay" | "showLoadingBar" | "showHeaderSearch" | "showToolbarTitle" | "toolbarTitleContent" | "externalPaginator" | "dateStyle" | "timeZone" | "utcOffset" | "localization" | "currencyCode" | "resources" | "requestMethod" | "sessionKey" | "disableSession" | "accentInsensitiveSearch" | "highlightSearchResults" | "highlightClass" | "cellClickSearch" | "href" | "allowExternalApi" | "errorReporting" | "sliceEndText" | "icons" | "variants" | "labels" | "errorReportingService" | "errorReportingApiKey" | "renderers" | "callbacks" | "emptyStateMessage" | "errorReportingEndpoint" | "rawHtmlAllowedTags" | "rawHtmlAllowedAttr" | "rawHtmlAllowDataAttr">, Pick<{
 storeId: string;
 debug: Ref<boolean | null, boolean | null>;
 siteToken: Ref<string | boolean | null, string | boolean | null>;
@@ -5079,6 +5103,7 @@ errorReportingApiKey: Ref<string | null, string | null>;
 accentInsensitiveSearch: Ref<boolean | null, boolean | null>;
 highlightSearchResults: Ref<boolean | null, boolean | null>;
 highlightClass: Ref<string | null, string | null>;
+cellClickSearch: Ref<boolean | null, boolean | null>;
 rawHtmlAllowedTags: Ref<string[] | null, string[] | null>;
 rawHtmlAllowedAttr: Ref<string[] | null, string[] | null>;
 rawHtmlAllowDataAttr: Ref<boolean | null, boolean | null>;
@@ -5224,6 +5249,7 @@ errorReportingApiKey: Ref<string | null, string | null>;
 accentInsensitiveSearch: Ref<boolean | null, boolean | null>;
 highlightSearchResults: Ref<boolean | null, boolean | null>;
 highlightClass: Ref<string | null, string | null>;
+cellClickSearch: Ref<boolean | null, boolean | null>;
 rawHtmlAllowedTags: Ref<string[] | null, string[] | null>;
 rawHtmlAllowedAttr: Ref<string[] | null, string[] | null>;
 rawHtmlAllowDataAttr: Ref<boolean | null, boolean | null>;
@@ -5660,10 +5686,11 @@ errorReportingApiKey: Ref<string | null, string | null>;
 accentInsensitiveSearch: Ref<boolean | null, boolean | null>;
 highlightSearchResults: Ref<boolean | null, boolean | null>;
 highlightClass: Ref<string | null, string | null>;
+cellClickSearch: Ref<boolean | null, boolean | null>;
 rawHtmlAllowedTags: Ref<string[] | null, string[] | null>;
 rawHtmlAllowedAttr: Ref<string[] | null, string[] | null>;
 rawHtmlAllowDataAttr: Ref<boolean | null, boolean | null>;
-}, "debug" | "storeId" | "siteName" | "urlParameter" | "urlParameterLastSegment" | "urlStructure" | "siteToken" | "paginateValues" | "rowsNumber" | "classes" | "showFooter" | "actionButtons" | "showLoadingOverlay" | "showLoadingBar" | "showHeaderSearch" | "showToolbarTitle" | "toolbarTitleContent" | "externalPaginator" | "dateStyle" | "timeZone" | "utcOffset" | "localization" | "currencyCode" | "resources" | "requestMethod" | "sessionKey" | "disableSession" | "accentInsensitiveSearch" | "highlightSearchResults" | "highlightClass" | "href" | "allowExternalApi" | "errorReporting" | "sliceEndText" | "icons" | "variants" | "labels" | "errorReportingService" | "errorReportingApiKey" | "renderers" | "callbacks" | "emptyStateMessage" | "errorReportingEndpoint" | "rawHtmlAllowedTags" | "rawHtmlAllowedAttr" | "rawHtmlAllowDataAttr">, Pick<{
+}, "debug" | "storeId" | "siteName" | "urlParameter" | "urlParameterLastSegment" | "urlStructure" | "siteToken" | "paginateValues" | "rowsNumber" | "classes" | "showFooter" | "actionButtons" | "showLoadingOverlay" | "showLoadingBar" | "showHeaderSearch" | "showToolbarTitle" | "toolbarTitleContent" | "externalPaginator" | "dateStyle" | "timeZone" | "utcOffset" | "localization" | "currencyCode" | "resources" | "requestMethod" | "sessionKey" | "disableSession" | "accentInsensitiveSearch" | "highlightSearchResults" | "highlightClass" | "cellClickSearch" | "href" | "allowExternalApi" | "errorReporting" | "sliceEndText" | "icons" | "variants" | "labels" | "errorReportingService" | "errorReportingApiKey" | "renderers" | "callbacks" | "emptyStateMessage" | "errorReportingEndpoint" | "rawHtmlAllowedTags" | "rawHtmlAllowedAttr" | "rawHtmlAllowDataAttr">, Pick<{
 storeId: string;
 debug: Ref<boolean | null, boolean | null>;
 siteToken: Ref<string | boolean | null, string | boolean | null>;
@@ -5805,6 +5832,7 @@ errorReportingApiKey: Ref<string | null, string | null>;
 accentInsensitiveSearch: Ref<boolean | null, boolean | null>;
 highlightSearchResults: Ref<boolean | null, boolean | null>;
 highlightClass: Ref<string | null, string | null>;
+cellClickSearch: Ref<boolean | null, boolean | null>;
 rawHtmlAllowedTags: Ref<string[] | null, string[] | null>;
 rawHtmlAllowedAttr: Ref<string[] | null, string[] | null>;
 rawHtmlAllowDataAttr: Ref<boolean | null, boolean | null>;
@@ -5950,6 +5978,7 @@ errorReportingApiKey: Ref<string | null, string | null>;
 accentInsensitiveSearch: Ref<boolean | null, boolean | null>;
 highlightSearchResults: Ref<boolean | null, boolean | null>;
 highlightClass: Ref<string | null, string | null>;
+cellClickSearch: Ref<boolean | null, boolean | null>;
 rawHtmlAllowedTags: Ref<string[] | null, string[] | null>;
 rawHtmlAllowedAttr: Ref<string[] | null, string[] | null>;
 rawHtmlAllowDataAttr: Ref<boolean | null, boolean | null>;
@@ -6386,10 +6415,11 @@ errorReportingApiKey: Ref<string | null, string | null>;
 accentInsensitiveSearch: Ref<boolean | null, boolean | null>;
 highlightSearchResults: Ref<boolean | null, boolean | null>;
 highlightClass: Ref<string | null, string | null>;
+cellClickSearch: Ref<boolean | null, boolean | null>;
 rawHtmlAllowedTags: Ref<string[] | null, string[] | null>;
 rawHtmlAllowedAttr: Ref<string[] | null, string[] | null>;
 rawHtmlAllowDataAttr: Ref<boolean | null, boolean | null>;
-}, "debug" | "storeId" | "siteName" | "urlParameter" | "urlParameterLastSegment" | "urlStructure" | "siteToken" | "paginateValues" | "rowsNumber" | "classes" | "showFooter" | "actionButtons" | "showLoadingOverlay" | "showLoadingBar" | "showHeaderSearch" | "showToolbarTitle" | "toolbarTitleContent" | "externalPaginator" | "dateStyle" | "timeZone" | "utcOffset" | "localization" | "currencyCode" | "resources" | "requestMethod" | "sessionKey" | "disableSession" | "accentInsensitiveSearch" | "highlightSearchResults" | "highlightClass" | "href" | "allowExternalApi" | "errorReporting" | "sliceEndText" | "icons" | "variants" | "labels" | "errorReportingService" | "errorReportingApiKey" | "renderers" | "callbacks" | "emptyStateMessage" | "errorReportingEndpoint" | "rawHtmlAllowedTags" | "rawHtmlAllowedAttr" | "rawHtmlAllowDataAttr">, Pick<{
+}, "debug" | "storeId" | "siteName" | "urlParameter" | "urlParameterLastSegment" | "urlStructure" | "siteToken" | "paginateValues" | "rowsNumber" | "classes" | "showFooter" | "actionButtons" | "showLoadingOverlay" | "showLoadingBar" | "showHeaderSearch" | "showToolbarTitle" | "toolbarTitleContent" | "externalPaginator" | "dateStyle" | "timeZone" | "utcOffset" | "localization" | "currencyCode" | "resources" | "requestMethod" | "sessionKey" | "disableSession" | "accentInsensitiveSearch" | "highlightSearchResults" | "highlightClass" | "cellClickSearch" | "href" | "allowExternalApi" | "errorReporting" | "sliceEndText" | "icons" | "variants" | "labels" | "errorReportingService" | "errorReportingApiKey" | "renderers" | "callbacks" | "emptyStateMessage" | "errorReportingEndpoint" | "rawHtmlAllowedTags" | "rawHtmlAllowedAttr" | "rawHtmlAllowDataAttr">, Pick<{
 storeId: string;
 debug: Ref<boolean | null, boolean | null>;
 siteToken: Ref<string | boolean | null, string | boolean | null>;
@@ -6531,6 +6561,7 @@ errorReportingApiKey: Ref<string | null, string | null>;
 accentInsensitiveSearch: Ref<boolean | null, boolean | null>;
 highlightSearchResults: Ref<boolean | null, boolean | null>;
 highlightClass: Ref<string | null, string | null>;
+cellClickSearch: Ref<boolean | null, boolean | null>;
 rawHtmlAllowedTags: Ref<string[] | null, string[] | null>;
 rawHtmlAllowedAttr: Ref<string[] | null, string[] | null>;
 rawHtmlAllowDataAttr: Ref<boolean | null, boolean | null>;
@@ -6676,6 +6707,7 @@ errorReportingApiKey: Ref<string | null, string | null>;
 accentInsensitiveSearch: Ref<boolean | null, boolean | null>;
 highlightSearchResults: Ref<boolean | null, boolean | null>;
 highlightClass: Ref<string | null, string | null>;
+cellClickSearch: Ref<boolean | null, boolean | null>;
 rawHtmlAllowedTags: Ref<string[] | null, string[] | null>;
 rawHtmlAllowedAttr: Ref<string[] | null, string[] | null>;
 rawHtmlAllowDataAttr: Ref<boolean | null, boolean | null>;

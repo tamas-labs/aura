@@ -48,6 +48,7 @@ import {
     DEFAULT_ACCENT_INSENSITIVE_SEARCH,
     DEFAULT_HIGHLIGHT_SEARCH_RESULTS,
     DEFAULT_HIGHLIGHT_CLASS,
+    DEFAULT_CELL_CLICK_SEARCH,
 } from './default-values.lib';
 
 /**
@@ -98,6 +99,7 @@ export const defaultConfigLib: AuraConfig = {
     accentInsensitiveSearch: DEFAULT_ACCENT_INSENSITIVE_SEARCH,
     highlightSearchResults: DEFAULT_HIGHLIGHT_SEARCH_RESULTS,
     highlightClass: DEFAULT_HIGHLIGHT_CLASS,
+    cellClickSearch: DEFAULT_CELL_CLICK_SEARCH,
     rawHtmlAllowedTags: [...DEFAULT_RAW_CELL_ALLOWED_TAGS],
     rawHtmlAllowedAttr: [...DEFAULT_RAW_CELL_ALLOWED_ATTR],
     rawHtmlAllowDataAttr: DEFAULT_RAW_ALLOW_DATA_ATTR,

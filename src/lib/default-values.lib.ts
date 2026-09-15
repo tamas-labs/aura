@@ -174,6 +174,14 @@ export const DEFAULT_HIGHLIGHT_SEARCH_RESULTS = true;
 export const DEFAULT_HIGHLIGHT_CLASS = 'aura-highlight';
 
 /**
+ * Shift+click a body cell to search for its raw value.
+ *
+ * Off by default: it gives Shift+click a new meaning, which an existing table must not
+ * pick up on an upgrade.
+ */
+export const DEFAULT_CELL_CLICK_SEARCH = false;
+
+/**
  * Default built-in UI texts (English).
  *
  * Any of these can be overridden via the `labels` config key (partially too —

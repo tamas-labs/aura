@@ -4,6 +4,12 @@ import { resolveConditionalConfig } from '../../utils/conditions/resolve-conditi
 import { createMaxDepthReporter } from '../../utils/conditions/report-max-depth';
 import { resolveMappingConfig } from '../../utils/conditions/resolve-mapping-config';
 import { resolveFormattingStyles } from '../../utils/styles/resolveFormattingStyles';
+import {
+    applyCellClickSearch,
+    isCellClickSearchGesture,
+    resolveCellClickSearch,
+    type CellClickSearchTarget,
+} from '../../utils/cell-click-search';
 import type { FormatterInput } from '../../utils';
 import { useApiResourcesStore, useExistingCoreStore } from '../../../../state';
 import type { HeaderCell, ColumnConfig } from '../../../../types/api-response.types';
@@ -133,6 +139,46 @@ export const TableBodyRow = defineComponent({
             return resolveFormattingStyles(resolved as CellFormattingOptions);
         });
 
+        /**
+         * The search a Shift+click on this row resolves to (`cellClickSearch`), or `null`.
+         *
+         * The listener sits on the `<tr>` rather than on every cell, so the clicked column
+         * is read back from the cell's `data-key`. Only a direct child cell counts: a table
+         * nested inside a custom renderer carries `data-key` cells of its own.
+         */
+        const resolveClickSearch = (event: MouseEvent): CellClickSearchTarget | null => {
+            if (!isCellClickSearchGesture(event) || !(event.target instanceof Element)) {
+                return null;
+            }
+
+            const cell = event.target.closest('td[data-key]');
+            if (!cell || cell.parentElement !== event.currentTarget) return null;
+
+            const key = cell.getAttribute('data-key');
+            const column = props.columns.find(candidate => candidate.key === key);
+            if (!column) return null;
+
+            return resolveCellClickSearch(column, props.item, {
+                globalSearchEnabled: coreStore?.config.showHeaderSearch === true,
+                globalSearchableFields: apiStore?.header?.settings?.searchableItems,
+            });
+        };
+
+        const cellClickSearchListeners = {
+            // Shift+mousedown would stretch the text selection up to the clicked cell.
+            onMousedown: (event: MouseEvent) => {
+                if (resolveClickSearch(event)) event.preventDefault();
+            },
+            onClick: (event: MouseEvent) => {
+                const target = resolveClickSearch(event);
+                if (target && apiStore) applyCellClickSearch(apiStore, target);
+            },
+        };
+
+        /** The row's listeners — none unless the table opted into `cellClickSearch`. */
+        const cellClickSearchAttrs = (): Record<string, unknown> =>
+            coreStore?.config.cellClickSearch === true ? cellClickSearchListeners : {};
+
         return () => {
             const { item, columns, rowIndex, storeId } = props;
 
@@ -148,6 +194,7 @@ export const TableBodyRow = defineComponent({
                         if (classes.length > 0) trAttrs.class = classes;
                         if (Object.keys(styles).length > 0) trAttrs.style = styles;
                     }
+                    Object.assign(trAttrs, cellClickSearchAttrs());
                     return trAttrs;
                 })(),
                 columns.map((column, index) => {

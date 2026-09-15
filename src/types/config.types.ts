@@ -364,6 +364,15 @@ export interface AuraConfig {
     highlightClass?: string;
 
     /**
+     * Shift+click a body cell to search for its raw value.
+     *
+     * The value goes into the column's own search input when the column is `searchable`,
+     * otherwise into the global search input (`showHeaderSearch`); with neither, the click
+     * is ignored. Off by default.
+     */
+    cellClickSearch?: boolean;
+
+    /**
      * Type of the error reporting service.
      *
      * There is one transport: a POST to `errorReportingEndpoint`.

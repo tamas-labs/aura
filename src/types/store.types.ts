@@ -99,6 +99,8 @@ export interface ConfigStore {
     highlightSearchResults: boolean | null;
     /** Highlight CSS class */
     highlightClass: string | null;
+    /** Shift+click a body cell to search for its raw value */
+    cellClickSearch: boolean | null;
     /** Allowed HTML tags for sanitizing raw: true cells (formatRaw) */
     rawHtmlAllowedTags: string[] | null;
     /** Allowed HTML attributes for sanitizing raw: true cells (formatRaw) */

@@ -565,6 +565,7 @@ The Aura component supports the following props:
 | `accentInsensitiveSearch` | `boolean`                  | No       | `false`                                                 | Ignore diacritics in the client-side search          |
 | `highlightSearchResults`  | `boolean`                  | No       | `true`                                                  | Highlight search matches                             |
 | `highlightClass`          | `string`                   | No       | `'aura-highlight'`                                      | CSS class of the highlight                           |
+| `cellClickSearch`         | `boolean`                  | No       | `false`                                                 | Shift+click a cell to search for its raw value       |
 
 ## API Reference
 
@@ -1117,6 +1118,30 @@ The Aura component supports the following props:
 
     ```typescript
     app.use(Aura, { highlightClass: 'my-custom-highlight' });
+    ```
+
+##### `cellClickSearch`
+
+- **Type:** `boolean`
+- **Default:** `false`
+- **Description:** **Shift+click** a body cell to search for its value. The value lands in a search input and the search runs right away, exactly as if it had been typed there:
+    - if the column has its own search input (`searchable: true` in the header), it goes there;
+    - otherwise, if the global search is shown ([`showHeaderSearch`](#showheadersearch)), it goes into the global search input;
+    - otherwise the click is ignored.
+- **The raw value is used, not the displayed text.** A currency cell showing `1 234,50 Ft` searches for `1234.5`, a date cell for the value the response sent. Both the column search and the global search compare against the raw data — on the client and, typically, on the backend — so the formatted text would find nothing. On a `number: true` column the column search is an exact match, as it is when typed. The value is read from the field the column searches on (`reference`, then `field`, then `key`).
+- **No minimum length.** Typing into the global search input requires 3 characters, but a clicked value is a complete term, so a single `5` is searched for too.
+- If the column is already being searched, the clicked value replaces the previous term.
+- **Ignored clicks:**
+    - Shift+click on a link, button or form control inside the cell — those keep their own Shift+click behaviour (e.g. a link opening in a new window);
+    - a click with Ctrl, Alt or Cmd held as well;
+    - the selector checkbox column, `between` (range) columns, and multi-field (`fields`) columns without a `reference`;
+    - empty values and values that are not a string, number or boolean;
+    - for the global search: a column whose field is missing from the response's `header.settings.searchableItems`, when that list is given.
+- **Off by default**, since it gives Shift+click a new meaning on an existing table. The gesture is mouse-only — the search inputs remain the keyboard path.
+- **Example:**
+
+    ```typescript
+    app.use(Aura, { cellClickSearch: true, showHeaderSearch: true });
     ```
 
 #### Advanced settings
@@ -3622,6 +3647,7 @@ console.log(configStore.variants.value); // Record<string, string>
 - `accentInsensitiveSearch`: `Ref<boolean | null>` - Ignore diacritics in the client-side search
 - `highlightSearchResults`: `Ref<boolean | null>` - Highlight search matches
 - `highlightClass`: `Ref<string | null>` - CSS class of the highlight
+- `cellClickSearch`: `Ref<boolean | null>` - Shift+click a cell to search for its raw value
 
 **Advanced:**
 

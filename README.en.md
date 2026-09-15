@@ -763,7 +763,9 @@ The Aura component supports the following props:
 
 - **Type:** `boolean`
 - **Default:** `false`
-- **Description:** Show the header search
+- **Description:** Show the header search. When [`actionButtons`](#actionbuttons) is empty, the
+  search takes over the action buttons' right-hand slot at the same width (`col-md-3`): next to the
+  title when that is shown, otherwise right-aligned on its own.
 - **Example:**
 
     ```typescript

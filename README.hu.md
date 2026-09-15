@@ -757,7 +757,9 @@ Az Aura komponens a következő prop-okat támogatja:
 
 - **Típus:** `boolean`
 - **Alapértelmezett:** `false`
-- **Leírás:** Header keresés megjelenítése
+- **Leírás:** Header keresés megjelenítése. Ha az [`actionButtons`](#actionbuttons) üres, a kereső
+  az action gombok jobb oldali helyére kerül, azonos szélességben (`col-md-3`): a cím mellé, ha az
+  látszik, egyébként önállóan, jobbra igazítva.
 - **Példa:**
 
     ```typescript

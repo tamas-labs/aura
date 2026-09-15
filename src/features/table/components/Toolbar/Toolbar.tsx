@@ -7,14 +7,73 @@ import { ActionButtons } from './ActionButtons';
 import { FilterBadges } from './FilterBadges';
 import { SettingsPanel } from './SettingsPanel';
 
+interface ToolbarLayout {
+    titleClass: string;
+    searchClass: string;
+    actionsClass: string;
+}
+
+// Mobile spacing for the columns that stack above another one below the md breakpoint
+const STACKED_SPACING = 'mb-2 mb-md-0';
+// Width of the right-hand slot, shared by the action buttons and the search that replaces them
+const RIGHT_SLOT = 'col-12 col-md-3';
+
+/**
+ * Resolves the top row's grid classes from the three toolbar switches.
+ */
+function resolveToolbarLayout(
+    showTitle: boolean,
+    showSearch: boolean,
+    hasActions: boolean
+): ToolbarLayout {
+    if (showSearch && !hasActions) {
+        // No action buttons: the search takes over their slot at the same width (9-0-3 / 0-0-3)
+        return {
+            titleClass: `col-12 col-md-9 ${STACKED_SPACING}`,
+            searchClass: showTitle ? RIGHT_SLOT : `${RIGHT_SLOT} ms-auto`,
+            actionsClass: '',
+        };
+    }
+
+    const actionsClass = `${RIGHT_SLOT} d-flex justify-content-md-end`;
+
+    if (showTitle && showSearch) {
+        return {
+            titleClass: `col-12 col-md-3 ${STACKED_SPACING}`,
+            searchClass: `col-12 col-md-6 ${STACKED_SPACING}`,
+            actionsClass,
+        };
+    }
+    if (showTitle) {
+        return {
+            titleClass: `col-12 col-md-6 ${STACKED_SPACING}`,
+            searchClass: '',
+            actionsClass: 'col-12 col-md-6 d-flex justify-content-md-end',
+        };
+    }
+    if (showSearch) {
+        return { titleClass: '', searchClass: `col-12 col-md-9 ${STACKED_SPACING}`, actionsClass };
+    }
+    // Nothing on the left side: 0-0-12
+    return {
+        titleClass: '',
+        searchClass: '',
+        actionsClass: 'col-12 d-flex justify-content-md-end',
+    };
+}
+
 /**
  * Toolbar Component
  * Top toolbar containing pagination controls, global search and action buttons.
  *
  * @remarks
- * The GlobalSearch component is conditionally rendered based on the `showHeaderSearch` config value.
- * - When `showHeaderSearch === true`: Layout is 3-6-3 grid (Title | Search | Actions)
- * - When `showHeaderSearch !== true`: Layout is 6-0-6 grid (Title | Actions), search is hidden
+ * Top row layouts (Title | Search | Actions, Bootstrap md columns):
+ * - Title + search + actions: 3-6-3
+ * - Title + actions: 6-0-6
+ * - Search + actions: 0-9-3
+ * - Actions only: 0-0-12
+ * - Search without action buttons: the search moves into the actions' right-hand slot at the
+ *   same `col-md-3` width, next to a `col-md-9` title or on its own (right-aligned)
  *
  * Title, search and action buttons are all off by default. When none of them is enabled the
  * whole top row is skipped, so no empty, margined row sits above the rows select.
@@ -74,30 +133,11 @@ export const Toolbar = defineComponent({
             const actionButtons = core.config.actionButtons || [];
             const hasActionButtons = actionButtons.length > 0;
             const hasTopRow = showToolbarTitle || showHeaderSearch || hasActionButtons;
-
-            // Layout logic
-            // 4 cases are possible (Title ON/OFF x Search ON/OFF)
-            let titleClass = '';
-            let searchClass = '';
-            let actionsClass = '';
-
-            if (showToolbarTitle && showHeaderSearch) {
-                // Original layout: 3-6-3
-                titleClass = 'col-12 col-md-3 mb-2 mb-md-0';
-                searchClass = 'col-12 col-md-6 mb-2 mb-md-0';
-                actionsClass = 'col-12 col-md-3 d-flex justify-content-md-end';
-            } else if (showToolbarTitle && !showHeaderSearch) {
-                // Title present, no search: 6-0-6
-                titleClass = 'col-12 col-md-6 mb-2 mb-md-0';
-                actionsClass = 'col-12 col-md-6 d-flex justify-content-md-end';
-            } else if (!showToolbarTitle && showHeaderSearch) {
-                // No title, search present: 0-9-3
-                searchClass = 'col-12 col-md-9 mb-2 mb-md-0';
-                actionsClass = 'col-12 col-md-3 d-flex justify-content-md-end';
-            } else {
-                // Nothing on the left side: 0-0-12
-                actionsClass = 'col-12 d-flex justify-content-md-end';
-            }
+            const { titleClass, searchClass, actionsClass } = resolveToolbarLayout(
+                showToolbarTitle,
+                showHeaderSearch,
+                hasActionButtons
+            );
 
             return h(
                 'div',
@@ -117,7 +157,7 @@ export const Toolbar = defineComponent({
                                     h(ToolbarTitle, { storeId: props.storeId })
                                 ),
 
-                            // Center: Search
+                            // Center: Search (right-hand slot when there are no action buttons)
                             showHeaderSearch &&
                                 h(
                                     'div',
@@ -128,16 +168,20 @@ export const Toolbar = defineComponent({
                                 ),
 
                             // Right: Actions
-                            hasActionButtons
-                                ? h(
-                                      'div',
-                                      { class: actionsClass },
-                                      h(ActionButtons, {
-                                          storeId: props.storeId,
-                                      })
-                                  )
-                                : // If there's no action button, the grid still needs to be filled
-                                  h('div', { class: actionsClass }),
+                            hasActionButtons &&
+                                h(
+                                    'div',
+                                    { class: actionsClass },
+                                    h(ActionButtons, {
+                                        storeId: props.storeId,
+                                    })
+                                ),
+
+                            // Without action buttons the grid still needs to be filled —
+                            // unless the search has taken over their slot
+                            !hasActionButtons &&
+                                !showHeaderSearch &&
+                                h('div', { class: actionsClass }),
                         ]),
 
                     // Bottom Row

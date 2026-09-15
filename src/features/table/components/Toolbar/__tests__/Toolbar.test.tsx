@@ -39,6 +39,13 @@ describe('Toolbar', () => {
         useApiResourcesStore(TEST_STORE_ID, core);
     });
 
+    const mountWithConfig = (storeId: string, config: Partial<AuraProps> = {}) => {
+        const core = useCoreStore(storeId, { storeId, ...config } as AuraProps);
+        useApiResourcesStore(storeId, core);
+
+        return mount(Toolbar, { props: { ...defaultProps, storeId } });
+    };
+
     describe('rendering', () => {
         it('should render toolbar container', () => {
             const wrapper = mount(Toolbar, {
@@ -668,13 +675,6 @@ describe('Toolbar', () => {
     });
 
     describe('defaults', () => {
-        const mountWithConfig = (storeId: string, config: Partial<AuraProps> = {}) => {
-            const core = useCoreStore(storeId, { storeId, ...config } as AuraProps);
-            useApiResourcesStore(storeId, core);
-
-            return mount(Toolbar, { props: { ...defaultProps, storeId } });
-        };
-
         it('should render neither title, search nor action buttons without config', () => {
             const wrapper = mountWithConfig('defaults-nothing-on');
 
@@ -699,6 +699,51 @@ describe('Toolbar', () => {
             expect(actionsParent?.className).toContain('col-12');
             expect(wrapper.find('[data-testid="action-refresh"]').exists()).toBe(true);
             expect(wrapper.find('[data-testid="action-settings"]').exists()).toBe(false);
+        });
+    });
+
+    describe('search in the action buttons slot', () => {
+        it('should move the search into the actions slot next to the title (9-0-3)', () => {
+            const wrapper = mountWithConfig('search-slot-with-title', {
+                showToolbarTitle: true,
+                showHeaderSearch: true,
+            });
+
+            expect(wrapper.findComponent(ActionButtons).exists()).toBe(false);
+
+            const titleParent = wrapper.findComponent(ToolbarTitle).element.parentElement;
+            expect(titleParent?.className).toContain('col-md-9');
+
+            const searchParent = wrapper.findComponent(GlobalSearch).element.parentElement;
+            expect(searchParent?.className).toContain('col-12 col-md-3');
+            expect(searchParent?.className).not.toContain('ms-auto');
+
+            // No empty filler column after the search
+            const topRow = wrapper.findAll('.row')[0];
+            expect(topRow?.element.children).toHaveLength(2);
+            expect(topRow?.element.lastElementChild).toBe(searchParent);
+        });
+
+        it('should right-align the search at the actions width when it is alone (0-0-3)', () => {
+            const wrapper = mountWithConfig('search-slot-alone', { showHeaderSearch: true });
+
+            expect(wrapper.findComponent(ActionButtons).exists()).toBe(false);
+
+            const searchParent = wrapper.findComponent(GlobalSearch).element.parentElement;
+            expect(searchParent?.className).toContain('col-12 col-md-3');
+            expect(searchParent?.className).toContain('ms-auto');
+
+            const topRow = wrapper.findAll('.row')[0];
+            expect(topRow?.classes()).toContain('mb-2');
+            expect(topRow?.element.children).toHaveLength(1);
+        });
+
+        it('should keep the empty filler column when only the title is shown', () => {
+            const wrapper = mountWithConfig('search-slot-title-only', { showToolbarTitle: true });
+
+            const topRow = wrapper.findAll('.row')[0];
+            expect(topRow?.element.children).toHaveLength(2);
+            expect(topRow?.element.lastElementChild?.className).toContain('col-md-6');
         });
     });
 });

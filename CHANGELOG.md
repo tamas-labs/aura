@@ -44,6 +44,10 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   them is enabled the toolbar leaves out its top row entirely instead of rendering an empty row with
   a bottom margin. **Migration:** to keep the previous toolbar, set `showToolbarTitle: true` and
   `actionButtons: ['refresh', 'export', 'settings']`.
+- **Without action buttons the header search takes over their slot.** With `showHeaderSearch: true`
+  and an empty `actionButtons`, the search used to sit on the left at `col-md-9` (`col-md-6` next to
+  the title) with an empty `col-md-3` column after it. It now renders in that right-hand column at
+  the action buttons' width — beside a `col-md-9` title, or right-aligned on its own.
 
 ### Fixed
 

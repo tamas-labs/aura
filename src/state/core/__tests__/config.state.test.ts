@@ -26,7 +26,8 @@ describe('useConfigStore', () => {
             expect(configStore.showHeaderSearch).toBe(false);
             expect(configStore.showLoadingOverlay).toBe(true);
             expect(configStore.showLoadingBar).toBe(false);
-            expect(configStore.showToolbarTitle).toBe(true);
+            expect(configStore.showToolbarTitle).toBe(false);
+            expect(configStore.actionButtons).toEqual([]);
             expect(configStore.toolbarTitleContent).toBe('');
         });
 

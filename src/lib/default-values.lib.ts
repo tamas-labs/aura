@@ -88,8 +88,8 @@ export const DEFAULT_CALLBACKS: Record<string, AuraCustomCallback> = {};
 
 /** Show footer */
 export const DEFAULT_SHOW_FOOTER = true;
-/** Default action buttons */
-export const DEFAULT_ACTION_BUTTONS: ActionButtonItem[] = ['refresh', 'export', 'settings'];
+/** Default action buttons — none; the host opts in to each one explicitly */
+export const DEFAULT_ACTION_BUTTONS: ActionButtonItem[] = [];
 /** Show header search */
 export const DEFAULT_SHOW_HEADER_SEARCH = false;
 /** Show the built-in loading overlay while a request is in flight */
@@ -111,7 +111,7 @@ export const DEFAULT_SHOW_LOADING_BAR = false;
  */
 export const LOADING_OVERLAY_DELAY_MS = 250;
 /** Show toolbar title */
-export const DEFAULT_SHOW_TOOLBAR_TITLE = true;
+export const DEFAULT_SHOW_TOOLBAR_TITLE = false;
 /** Toolbar title text (empty = fallback) */
 export const DEFAULT_TOOLBAR_TITLE_CONTENT = '';
 /** Use external paginator */

@@ -107,9 +107,9 @@ describe('useCoreStore with error handling', () => {
             expect(store.config.showFooter).toBe(true);
         });
 
-        it('should validate and store actionButtons from config (default: all buttons)', () => {
+        it('should validate and store actionButtons from config (default: none)', () => {
             const store = useCoreStore(storeId, {});
-            expect(store.config.actionButtons).toEqual(['refresh', 'export', 'settings']);
+            expect(store.config.actionButtons).toEqual([]);
         });
 
         it('should validate and store showHeaderSearch from config (default: false)', () => {
@@ -1025,7 +1025,7 @@ describe('useCoreStore with error handling', () => {
 
             it('should respect config actionButtons default when prop is NOT passed', () => {
                 const store = useCoreStore('test-actionbuttons', {});
-                expect(store.config.actionButtons).toEqual(['refresh', 'export', 'settings']);
+                expect(store.config.actionButtons).toEqual([]);
             });
 
             it('should allow explicit actionButtons to override config', () => {
@@ -1149,7 +1149,7 @@ describe('useCoreStore with error handling', () => {
                 // Every Boolean config value should reflect the defaultConfigLib values
                 expect(store.config.showFooter).toBe(true); // DEFAULT_SHOW_FOOTER
                 expect(store.config.debug).toBe(false); // DEFAULT_DEBUG
-                expect(store.config.actionButtons).toEqual(['refresh', 'export', 'settings']); // DEFAULT_ACTION_BUTTONS
+                expect(store.config.actionButtons).toEqual([]); // DEFAULT_ACTION_BUTTONS
                 expect(store.config.externalPaginator).toBe(false); // DEFAULT_EXTERNAL_PAGINATOR
                 expect(store.config.resources).toBe(false); // DEFAULT_RESOURCES
                 expect(store.config.disableSession).toBe(false); // DEFAULT_DISABLE_SESSION
@@ -1171,7 +1171,7 @@ describe('useCoreStore with error handling', () => {
                 expect(store.config.rowsNumber).toBe(25);
 
                 // Props that weren't passed reflect the default config values
-                expect(store.config.actionButtons).toEqual(['refresh', 'export', 'settings']);
+                expect(store.config.actionButtons).toEqual([]);
                 expect(store.config.externalPaginator).toBe(false);
             });
         });

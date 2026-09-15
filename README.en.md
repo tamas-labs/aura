@@ -545,11 +545,11 @@ The Aura component supports the following props:
 | `rowsNumber`              | `number`                   | No       | `10`                                                    | Default number of rows per page                      |
 | `classes`                 | `Record<string, string[]>` | No       | See below                                               | CSS class configuration                              |
 | `showFooter`              | `boolean`                  | No       | `true`                                                  | Show the footer                                      |
-| `actionButtons`           | `ActionButtonItem[]`       | No       | `['refresh', 'export', 'settings']`                     | Action buttons (refresh, export, settings)           |
+| `actionButtons`           | `ActionButtonItem[]`       | No       | `[]`                                                    | Action buttons (refresh, export, settings)           |
 | `showHeaderSearch`        | `boolean`                  | No       | `false`                                                 | Show the header search                               |
 | `showLoadingOverlay`      | `boolean`                  | No       | `true`                                                  | Show the built-in loading overlay while fetching     |
 | `showLoadingBar`          | `boolean`                  | No       | `false`                                                 | Show the thin progress bar while fetching            |
-| `showToolbarTitle`        | `boolean`                  | No       | `true`                                                  | Show the toolbar title                               |
+| `showToolbarTitle`        | `boolean`                  | No       | `false`                                                 | Show the toolbar title                               |
 | `toolbarTitleContent`     | `string`                   | No       | `''`                                                    | Toolbar title content (fallback: 'Logo/Title')       |
 | `externalPaginator`       | `boolean`                  | No       | `false`                                                 | Enable server-side pagination                        |
 | `dateStyle`               | `'short' \| 'medium' \| 'long'`| No       | `'short'`                                               | Date display style                                   |
@@ -708,7 +708,7 @@ The Aura component supports the following props:
 ##### `actionButtons`
 
 - **Type:** `ActionButtonItem[]` (`'refresh' | 'export' | 'settings'`)
-- **Default:** `['refresh', 'export', 'settings']`
+- **Default:** `[]` — no action buttons; each one has to be switched on explicitly
 - **Description:** Show the action buttons (Refresh, Export, Settings). During validation, invalid elements are filtered out (e.g. `['refresh', 'invalid']` -> `['refresh']`), instead of displaying the whole list.
 - **📤 Export:** The `'export'` button shows a dropdown with a single **CSV export**
   item, which downloads the rows of the **current view** (current page, with its active
@@ -746,10 +746,13 @@ The Aura component supports the following props:
 - **Example:**
 
     ```typescript
+    // All three buttons
+    app.use(Aura, { actionButtons: ['refresh', 'export', 'settings'] });
+
     // Only the refresh and settings buttons
     app.use(Aura, { actionButtons: ['refresh', 'settings'] });
 
-    // Empty array = hide the buttons
+    // Empty array (the default) = no buttons
     app.use(Aura, { actionButtons: [] });
 
     // Filtering an invalid element (only 'refresh' appears)
@@ -826,12 +829,14 @@ The Aura component supports the following props:
 ##### `showToolbarTitle`
 
 - **Type:** `boolean`
-- **Default:** `true`
+- **Default:** `false`
 - **Description:** Show the toolbar title. If `false`, the title is fully hidden and the layout is recalculated.
+  When the title, the header search and the action buttons are all off (the default), the toolbar's
+  whole top row is left out, so no empty row sits above the rows select.
 - **Example:**
 
     ```typescript
-    app.use(Aura, { showToolbarTitle: false });
+    app.use(Aura, { showToolbarTitle: true });
     ```
 
 ##### `toolbarTitleContent`

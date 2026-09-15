@@ -16,6 +16,9 @@ import { SettingsPanel } from './SettingsPanel';
  * - When `showHeaderSearch === true`: Layout is 3-6-3 grid (Title | Search | Actions)
  * - When `showHeaderSearch !== true`: Layout is 6-0-6 grid (Title | Actions), search is hidden
  *
+ * Title, search and action buttons are all off by default. When none of them is enabled the
+ * whole top row is skipped, so no empty, margined row sits above the rows select.
+ *
  * The "showing X-Y of Z" line is deliberately *not* part of the toolbar: `PaginationInfo`
  * already renders it below the table from `displayMeta`, the only source that stays correct
  * under client-side pagination and filtering.
@@ -70,6 +73,7 @@ export const Toolbar = defineComponent({
             const showToolbarTitle = core.config.showToolbarTitle === true;
             const actionButtons = core.config.actionButtons || [];
             const hasActionButtons = actionButtons.length > 0;
+            const hasTopRow = showToolbarTitle || showHeaderSearch || hasActionButtons;
 
             // Layout logic
             // 4 cases are possible (Title ON/OFF x Search ON/OFF)
@@ -102,44 +106,39 @@ export const Toolbar = defineComponent({
                     'data-testid': 'aura-toolbar',
                 },
                 [
-                    // Top Row
-                    h('div', { class: 'row align-items-center mb-2' }, [
-                        // Left: Title
-                        ...(showToolbarTitle
-                            ? [
-                                  h(
-                                      'div',
-                                      { class: titleClass },
-                                      h(ToolbarTitle, { storeId: props.storeId })
-                                  ),
-                              ]
-                            : []),
+                    // Top Row — skipped entirely when title, search and actions are all off
+                    hasTopRow &&
+                        h('div', { class: 'row align-items-center mb-2' }, [
+                            // Left: Title
+                            showToolbarTitle &&
+                                h(
+                                    'div',
+                                    { class: titleClass },
+                                    h(ToolbarTitle, { storeId: props.storeId })
+                                ),
 
-                        // Center: Search
-                        ...(showHeaderSearch
-                            ? [
-                                  h(
+                            // Center: Search
+                            showHeaderSearch &&
+                                h(
+                                    'div',
+                                    { class: searchClass },
+                                    h(GlobalSearch, {
+                                        storeId: props.storeId,
+                                    })
+                                ),
+
+                            // Right: Actions
+                            hasActionButtons
+                                ? h(
                                       'div',
-                                      { class: searchClass },
-                                      h(GlobalSearch, {
+                                      { class: actionsClass },
+                                      h(ActionButtons, {
                                           storeId: props.storeId,
                                       })
-                                  ),
-                              ]
-                            : []),
-
-                        // Right: Actions
-                        hasActionButtons
-                            ? h(
-                                  'div',
-                                  { class: actionsClass },
-                                  h(ActionButtons, {
-                                      storeId: props.storeId,
-                                  })
-                              )
-                            : // If there's no action button, the grid still needs to be filled
-                              h('div', { class: actionsClass }),
-                    ]),
+                                  )
+                                : // If there's no action button, the grid still needs to be filled
+                                  h('div', { class: actionsClass }),
+                        ]),
 
                     // Bottom Row
                     h('div', { class: 'row align-items-center' }, [

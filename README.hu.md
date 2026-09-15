@@ -539,11 +539,11 @@ Az Aura komponens a következő prop-okat támogatja:
 | `rowsNumber`              | `number`                   | Nem      | `10`                                                    | Alapértelmezett sorok száma oldalanként              |
 | `classes`                 | `Record<string, string[]>` | Nem      | Lásd alább                                              | CSS osztályok konfigurációja                         |
 | `showFooter`              | `boolean`                  | Nem      | `true`                                                  | Footer megjelenítése                                 |
-| `actionButtons`           | `ActionButtonItem[]`       | Nem      | `['refresh', 'export', 'settings']`                     | Action gombok (refresh, export, settings)            |
+| `actionButtons`           | `ActionButtonItem[]`       | Nem      | `[]`                                                    | Action gombok (refresh, export, settings)            |
 | `showHeaderSearch`        | `boolean`                  | Nem      | `false`                                                 | Header keresés megjelenítése                         |
 | `showLoadingOverlay`      | `boolean`                  | Nem      | `true`                                                  | Beépített betöltési overlay lekérés közben           |
 | `showLoadingBar`          | `boolean`                  | Nem      | `false`                                                 | Vékony folyamatjelző sáv lekérés közben              |
-| `showToolbarTitle`        | `boolean`                  | Nem      | `true`                                                  | Toolbar cím megjelenítése                            |
+| `showToolbarTitle`        | `boolean`                  | Nem      | `false`                                                 | Toolbar cím megjelenítése                            |
 | `toolbarTitleContent`     | `string`                   | Nem      | `''`                                                    | Toolbar cím tartalma (fallback: 'Logo/Cím')          |
 | `externalPaginator`       | `boolean`                  | Nem      | `false`                                                 | Szerver oldali lapozás engedélyezése                 |
 | `dateStyle`               | `'short' \| 'medium' \| 'long'`| Nem      | `'short'`                                               | Dátum megjelenítési stílus                           |
@@ -702,7 +702,7 @@ Az Aura komponens a következő prop-okat támogatja:
 ##### `actionButtons`
 
 - **Típus:** `ActionButtonItem[]` (`'refresh' | 'export' | 'settings'`)
-- **Alapértelmezett:** `['refresh', 'export', 'settings']`
+- **Alapértelmezett:** `[]` — nincs action gomb; mindegyiket külön kell bekapcsolni
 - **Leírás:** Action gombok megjelenítése (Frissítés, Export, Beállítások). A validáció során az érvénytelen elemek kiszűrésre kerülnek (pl. `['refresh', 'invalid']` -> `['refresh']`), a teljes lista megjelenítése helyett.
 - **📤 Export:** Az `'export'` gomb egy dropdownt jelenít meg egyetlen **CSV export**
   ponttal, amely a **látható oszlopok** alapján a **jelenlegi nézet** (aktuális oldal,
@@ -740,10 +740,13 @@ Az Aura komponens a következő prop-okat támogatja:
 - **Példa:**
 
     ```typescript
+    // Mindhárom gomb
+    app.use(Aura, { actionButtons: ['refresh', 'export', 'settings'] });
+
     // Csak frissítés és beállítások gomb
     app.use(Aura, { actionButtons: ['refresh', 'settings'] });
 
-    // Üres tömb = gombok elrejtése
+    // Üres tömb (az alapértelmezés) = nincs gomb
     app.use(Aura, { actionButtons: [] });
     
     // Érvénytelen elem szűrése (csak a 'refresh' jelenik meg)
@@ -821,12 +824,14 @@ Az Aura komponens a következő prop-okat támogatja:
 ##### `showToolbarTitle`
 
 - **Típus:** `boolean`
-- **Alapértelmezett:** `true`
+- **Alapértelmezett:** `false`
 - **Leírás:** Toolbar cím megjelenítése. Ha `false`, a cím teljesen elrejtésre kerül és a layout újraszámolódik.
+  Ha a cím, a header keresés és az action gombok mind ki vannak kapcsolva (ez az alapértelmezés), a
+  toolbar teljes felső sora kimarad, így nem marad üres sor a sorszám-választó fölött.
 - **Példa:**
 
     ```typescript
-    app.use(Aura, { showToolbarTitle: false });
+    app.use(Aura, { showToolbarTitle: true });
     ```
 
 ##### `toolbarTitleContent`

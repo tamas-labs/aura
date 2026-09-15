@@ -37,6 +37,13 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   while it is enabled the bar is never drawn, even when `showLoadingBar` is `true`. Requests shorter
   than the overlay's delay draw no indicator (`aria-busy` still reports them). **Migration:** to
   keep the bar, set `showLoadingBar: true` and `showLoadingOverlay: false`.
+- **The toolbar is now opt-in: `showToolbarTitle` defaults to `false` and `actionButtons` to
+  `[]`.** Previously every table showed the "Logo/Title" placeholder and the Refresh, Export and
+  Settings buttons unless the host switched them off. Now the title, the header search
+  (`showHeaderSearch`, already `false`) and the action buttons all start hidden, and while none of
+  them is enabled the toolbar leaves out its top row entirely instead of rendering an empty row with
+  a bottom margin. **Migration:** to keep the previous toolbar, set `showToolbarTitle: true` and
+  `actionButtons: ['refresh', 'export', 'settings']`.
 
 ### Fixed
 

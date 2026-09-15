@@ -21,12 +21,21 @@ describe('Toolbar', () => {
         onRefresh: vi.fn(),
         onExport: vi.fn(),
     };
+    // Title and action buttons are off by default; tests that inspect the top row switch
+    // them on explicitly (the `defaults` block covers the untouched configuration)
+    const TOP_ROW_ON: Pick<AuraProps, 'showToolbarTitle' | 'actionButtons'> = {
+        showToolbarTitle: true,
+        actionButtons: ['refresh', 'export', 'settings'],
+    };
 
     beforeEach(() => {
         setActivePinia(createPinia());
         vi.clearAllMocks();
         // Initialize stores
-        const core = useCoreStore(TEST_STORE_ID, { storeId: TEST_STORE_ID } as AuraProps);
+        const core = useCoreStore(TEST_STORE_ID, {
+            storeId: TEST_STORE_ID,
+            ...TOP_ROW_ON,
+        } as AuraProps);
         useApiResourcesStore(TEST_STORE_ID, core);
     });
 
@@ -357,6 +366,7 @@ describe('Toolbar', () => {
             const edgeStoreId = TEST_STORE_ID + '-edge';
             const core = useCoreStore(edgeStoreId, {
                 storeId: edgeStoreId,
+                ...TOP_ROW_ON,
                 showHeaderSearch: true,
             } as AuraProps);
             useApiResourcesStore(edgeStoreId, core);
@@ -384,6 +394,7 @@ describe('Toolbar', () => {
             const storeId = 'search-enabled-test';
             const core = useCoreStore(storeId, {
                 storeId,
+                ...TOP_ROW_ON,
                 showHeaderSearch: true,
             } as AuraProps);
             useApiResourcesStore(storeId, core);
@@ -413,6 +424,7 @@ describe('Toolbar', () => {
             const storeId = 'search-disabled-test';
             const core = useCoreStore(storeId, {
                 storeId,
+                ...TOP_ROW_ON,
                 showHeaderSearch: false,
             } as AuraProps);
             useApiResourcesStore(storeId, core);
@@ -439,6 +451,7 @@ describe('Toolbar', () => {
             const storeIdEnabled = 'mobile-test-enabled';
             const coreEnabled = useCoreStore(storeIdEnabled, {
                 storeId: storeIdEnabled,
+                ...TOP_ROW_ON,
                 showHeaderSearch: true,
             } as AuraProps);
             useApiResourcesStore(storeIdEnabled, coreEnabled);
@@ -467,6 +480,7 @@ describe('Toolbar', () => {
             const storeIdDisabled = 'mobile-test-disabled';
             const coreDisabled = useCoreStore(storeIdDisabled, {
                 storeId: storeIdDisabled,
+                ...TOP_ROW_ON,
                 showHeaderSearch: false,
             } as AuraProps);
             useApiResourcesStore(storeIdDisabled, coreDisabled);
@@ -491,6 +505,7 @@ describe('Toolbar', () => {
             const storeId = 'search-null-test';
             const core = useCoreStore(storeId, {
                 storeId,
+                ...TOP_ROW_ON,
                 // showHeaderSearch not provided, will be null after validation
             } as AuraProps);
             useApiResourcesStore(storeId, core);
@@ -518,6 +533,7 @@ describe('Toolbar', () => {
             const storeIdEnabled = 'alignment-test-enabled';
             const coreEnabled = useCoreStore(storeIdEnabled, {
                 storeId: storeIdEnabled,
+                ...TOP_ROW_ON,
                 showHeaderSearch: true,
             } as AuraProps);
             useApiResourcesStore(storeIdEnabled, coreEnabled);
@@ -537,6 +553,7 @@ describe('Toolbar', () => {
             const storeIdDisabled = 'alignment-test-disabled';
             const coreDisabled = useCoreStore(storeIdDisabled, {
                 storeId: storeIdDisabled,
+                ...TOP_ROW_ON,
                 showHeaderSearch: false,
             } as AuraProps);
             useApiResourcesStore(storeIdDisabled, coreDisabled);
@@ -555,10 +572,9 @@ describe('Toolbar', () => {
     });
 
     describe('showToolbarTitle integration', () => {
-        it('should render ToolbarTitle when showToolbarTitle is true (default)', () => {
+        it('should render ToolbarTitle when showToolbarTitle is true', () => {
             const storeId = 'title-enabled-test';
-            // Default showToolbarTitle is true
-            const core = useCoreStore(storeId, { storeId } as AuraProps);
+            const core = useCoreStore(storeId, { storeId, showToolbarTitle: true } as AuraProps);
             useApiResourcesStore(storeId, core);
 
             const wrapper = mount(Toolbar, {
@@ -587,7 +603,7 @@ describe('Toolbar', () => {
             const storeId = 'title-on-search-off';
             const core = useCoreStore(storeId, {
                 storeId,
-                showToolbarTitle: true,
+                ...TOP_ROW_ON,
                 showHeaderSearch: false,
             } as AuraProps);
             useApiResourcesStore(storeId, core);
@@ -607,6 +623,7 @@ describe('Toolbar', () => {
             const storeId = 'title-off-search-on';
             const core = useCoreStore(storeId, {
                 storeId,
+                ...TOP_ROW_ON,
                 showToolbarTitle: false,
                 showHeaderSearch: true,
             } as AuraProps);
@@ -629,6 +646,7 @@ describe('Toolbar', () => {
             const storeId = 'title-off-search-off';
             const core = useCoreStore(storeId, {
                 storeId,
+                ...TOP_ROW_ON,
                 showToolbarTitle: false,
                 showHeaderSearch: false,
             } as AuraProps);
@@ -646,6 +664,41 @@ describe('Toolbar', () => {
             // actionsParent already has col-12 from mobile, but here it's full width on desktop too (no col-md-*)
             // Actually our implementation sets class="col-12 d-flex..." so it applies everywhere
             expect(actionsParent?.className).not.toContain('col-md-');
+        });
+    });
+
+    describe('defaults', () => {
+        const mountWithConfig = (storeId: string, config: Partial<AuraProps> = {}) => {
+            const core = useCoreStore(storeId, { storeId, ...config } as AuraProps);
+            useApiResourcesStore(storeId, core);
+
+            return mount(Toolbar, { props: { ...defaultProps, storeId } });
+        };
+
+        it('should render neither title, search nor action buttons without config', () => {
+            const wrapper = mountWithConfig('defaults-nothing-on');
+
+            expect(wrapper.findComponent(ToolbarTitle).exists()).toBe(false);
+            expect(wrapper.findComponent(GlobalSearch).exists()).toBe(false);
+            expect(wrapper.findComponent(ActionButtons).exists()).toBe(false);
+        });
+
+        it('should skip the top row when title, search and action buttons are all off', () => {
+            const wrapper = mountWithConfig('defaults-no-top-row');
+
+            // The first row is then the bottom row, which carries no mb-2 spacing
+            expect(wrapper.find('.row').classes()).not.toContain('mb-2');
+            expect(wrapper.findComponent(RowsSelect).exists()).toBe(true);
+        });
+
+        it('should render the top row as soon as a single action button is enabled', () => {
+            const wrapper = mountWithConfig('defaults-one-button', { actionButtons: ['refresh'] });
+
+            expect(wrapper.find('.row').classes()).toContain('mb-2');
+            const actionsParent = wrapper.findComponent(ActionButtons).element.parentElement;
+            expect(actionsParent?.className).toContain('col-12');
+            expect(wrapper.find('[data-testid="action-refresh"]').exists()).toBe(true);
+            expect(wrapper.find('[data-testid="action-settings"]').exists()).toBe(false);
         });
     });
 });

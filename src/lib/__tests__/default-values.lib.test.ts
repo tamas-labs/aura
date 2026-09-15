@@ -96,8 +96,8 @@ describe('default-values.lib', () => {
         });
 
         describe('DEFAULT_ACTION_BUTTONS', () => {
-            it('értéke refresh, export, settings tömb', () => {
-                expect(DEFAULT_ACTION_BUTTONS).toEqual(['refresh', 'export', 'settings']);
+            it('értéke üres tömb', () => {
+                expect(DEFAULT_ACTION_BUTTONS).toEqual([]);
             });
 
             it('array típusú', () => {

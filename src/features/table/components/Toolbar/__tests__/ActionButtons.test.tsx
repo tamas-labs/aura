@@ -384,7 +384,7 @@ describe('ActionButtons', () => {
             expect(toggleSpy).toHaveBeenCalled();
         });
 
-        it('should use default config when no actionButtons provided', () => {
+        it('should render no buttons when no actionButtons provided (default)', () => {
             const core = useCoreStore(TEST_STORE_ID + '-default-config', {
                 storeId: TEST_STORE_ID + '-default-config',
             } as AuraProps);
@@ -394,10 +394,11 @@ describe('ActionButtons', () => {
                 props: { storeId: TEST_STORE_ID + '-default-config' },
             });
 
-            // Should render all buttons by default
-            expect(wrapper.find('[data-testid="action-refresh"]').exists()).toBe(true);
-            expect(wrapper.find('[data-testid="action-export-toggle"]').exists()).toBe(true);
-            expect(wrapper.find('[data-testid="action-settings"]').exists()).toBe(true);
+            // Action buttons are opt-in: the default config enables none of them
+            expect(wrapper.find('.btn-group').exists()).toBe(false);
+            expect(wrapper.find('[data-testid="action-refresh"]').exists()).toBe(false);
+            expect(wrapper.find('[data-testid="action-export-toggle"]').exists()).toBe(false);
+            expect(wrapper.find('[data-testid="action-settings"]').exists()).toBe(false);
         });
     });
 

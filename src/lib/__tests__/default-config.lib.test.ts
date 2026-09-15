@@ -182,12 +182,16 @@ describe('defaultConfigLib', () => {
             expect(defaultConfigLib.showFooter).toBe(true);
         });
 
-        it('actionButtons alapértelmezett értéke refresh, export, settings tömb', () => {
-            expect(defaultConfigLib.actionButtons).toEqual(['refresh', 'export', 'settings']);
+        it('actionButtons alapértelmezett értéke üres tömb', () => {
+            expect(defaultConfigLib.actionButtons).toEqual([]);
         });
 
         it('showHeaderSearch alapértelmezett értéke false', () => {
             expect(defaultConfigLib.showHeaderSearch).toBe(false);
+        });
+
+        it('showToolbarTitle alapértelmezett értéke false', () => {
+            expect(defaultConfigLib.showToolbarTitle).toBe(false);
         });
 
         it('externalPaginator alapértelmezett értéke false', () => {

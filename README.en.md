@@ -548,7 +548,7 @@ The Aura component supports the following props:
 | `actionButtons`           | `ActionButtonItem[]`       | No       | `['refresh', 'export', 'settings']`                     | Action buttons (refresh, export, settings)           |
 | `showHeaderSearch`        | `boolean`                  | No       | `false`                                                 | Show the header search                               |
 | `showLoadingOverlay`      | `boolean`                  | No       | `true`                                                  | Show the built-in loading overlay while fetching     |
-| `showLoadingBar`          | `boolean`                  | No       | `true`                                                  | Show the thin progress bar while fetching            |
+| `showLoadingBar`          | `boolean`                  | No       | `false`                                                 | Show the thin progress bar while fetching            |
 | `showToolbarTitle`        | `boolean`                  | No       | `true`                                                  | Show the toolbar title                               |
 | `toolbarTitleContent`     | `string`                   | No       | `''`                                                    | Toolbar title content (fallback: 'Logo/Title')       |
 | `externalPaginator`       | `boolean`                  | No       | `false`                                                 | Enable server-side pagination                        |
@@ -782,10 +782,10 @@ The Aura component supports the following props:
   indicator instead.
 - **Shown after a short delay (250 ms).** The veil dims the rows and blocks the pointer, so a request
   that resolves in a few dozen milliseconds would flash it on and off. Requests below that threshold
-  are signalled by [`showLoadingBar`](#showloadingbar) alone. The delay is not configurable — it is a
-  single shared constant. `aria-busy` on the `<table>` is **not** delayed.
-- **It takes over from the bar.** Once the veil is up the progress bar is removed, so a single request
-  is never reported by two indicators at the same time.
+  draw no indicator at all. The delay is not configurable — it is a single shared constant.
+  `aria-busy` on the `<table>` is **not** delayed.
+- **It excludes the bar.** The two indicators are mutually exclusive and the overlay is the stronger
+  one: while it is enabled, [`showLoadingBar`](#showloadingbar) is ignored, even when set to `true`.
 - **Requires Aura's stylesheet** (`import '@tamas-labs/aura/style.css'`) — the veil's positioning,
   background and stacking come from there. The background and the z-index are customizable with the
   `$aura-loading-overlay-bg` / `$aura-loading-overlay-z-index` SCSS variables; the z-index default
@@ -800,18 +800,14 @@ The Aura component supports the following props:
 ##### `showLoadingBar`
 
 - **Type:** `boolean`
-- **Default:** `true`
+- **Default:** `false`
 - **Description:** Show a thin (3px) indeterminate progress bar pinned to the top edge of the table
-  area while a request is in flight. It is the non-blocking half of the loading feedback: it takes
-  up no space in the layout and does not dim the rows, so it appears **immediately**, while
-  [`showLoadingOverlay`](#showloadingoverlay) waits out a short delay first. A request that resolves
-  inside that delay is therefore signalled by the bar alone — which is what keeps a fast update from
-  flashing a veil over the table.
-- **The two indicators hand over, they do not stack.** The bar covers the delay window, the overlay
-  everything after it: as soon as [`showLoadingOverlay`](#showloadingoverlay) puts the veil up, the
-  bar is removed. With the overlay switched off the bar stays for the whole request instead.
-- **Independent switches.** Keep the bar and drop the veil for feedback that never blocks the
-  pointer, or the other way round.
+  area while a request is in flight — a non-blocking alternative to the overlay. It takes up no
+  space in the layout and does not dim the rows, so it appears **immediately** and stays for the
+  whole request.
+- **Mutually exclusive with the overlay, and the overlay wins.** The bar is only drawn when
+  [`showLoadingOverlay`](#showloadingoverlay) is `false`; with the overlay enabled (its default) this
+  key is ignored, even when set to `true`. To use the bar, switch both keys as in the example below.
 - **Requires Aura's stylesheet** (`import '@tamas-labs/aura/style.css'`) — without it the bar has no
   height, no color and no animation. Customizable with the `$aura-loading-bar-height`,
   `$aura-loading-bar-color`, `$aura-loading-bar-track-bg`, `$aura-loading-bar-duration` and

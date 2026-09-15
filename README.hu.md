@@ -542,7 +542,7 @@ Az Aura komponens a következő prop-okat támogatja:
 | `actionButtons`           | `ActionButtonItem[]`       | Nem      | `['refresh', 'export', 'settings']`                     | Action gombok (refresh, export, settings)            |
 | `showHeaderSearch`        | `boolean`                  | Nem      | `false`                                                 | Header keresés megjelenítése                         |
 | `showLoadingOverlay`      | `boolean`                  | Nem      | `true`                                                  | Beépített betöltési overlay lekérés közben           |
-| `showLoadingBar`          | `boolean`                  | Nem      | `true`                                                  | Vékony folyamatjelző sáv lekérés közben              |
+| `showLoadingBar`          | `boolean`                  | Nem      | `false`                                                 | Vékony folyamatjelző sáv lekérés közben              |
 | `showToolbarTitle`        | `boolean`                  | Nem      | `true`                                                  | Toolbar cím megjelenítése                            |
 | `toolbarTitleContent`     | `string`                   | Nem      | `''`                                                    | Toolbar cím tartalma (fallback: 'Logo/Cím')          |
 | `externalPaginator`       | `boolean`                  | Nem      | `false`                                                 | Szerver oldali lapozás engedélyezése                 |
@@ -776,11 +776,10 @@ Az Aura komponens a következő prop-okat támogatja:
   hoszt saját visszajelzést köthet rá.
 - **Rövid késleltetés (250 ms) után jelenik meg.** A fátyol elsötétíti a sorokat és blokkolja az
   egérmutatót, ezért egy pár tíz ezredmásodperc alatt lefutó kérésnél csak felvillanna. Az e küszöb
-  alatti kéréseket egyedül a [`showLoadingBar`](#showloadingbar) jelzi. A késleltetés nem
-  konfigurálható — egyetlen közös konstans. A `<table>` `aria-busy` attribútuma **nincs**
-  késleltetve.
-- **Átveszi a sáv szerepét.** Amint a fátyol megjelenik, a folyamatjelző sáv eltűnik, így ugyanazt
-  a kérést sosem jelzi egyszerre két indikátor.
+  alatti kéréseknél semmilyen indikátor nem jelenik meg. A késleltetés nem konfigurálható —
+  egyetlen közös konstans. A `<table>` `aria-busy` attribútuma **nincs** késleltetve.
+- **Kizárja a sávot.** A két indikátor kizárja egymást, és az overlay az erősebb: amíg be van
+  kapcsolva, a [`showLoadingBar`](#showloadingbar) figyelmen kívül marad, akkor is, ha `true`.
 - **Az Aura stíluslapját igényli** (`import '@tamas-labs/aura/style.css'`) — a fátyol pozicionálása,
   háttere és rétegsorrendje onnan jön. A háttér és a z-index a `$aura-loading-overlay-bg` /
   `$aura-loading-overlay-z-index` SCSS-változókkal testreszabható; a z-index alapértéke (`3`)
@@ -795,18 +794,15 @@ Az Aura komponens a következő prop-okat támogatja:
 ##### `showLoadingBar`
 
 - **Típus:** `boolean`
-- **Alapértelmezett:** `true`
+- **Alapértelmezett:** `false`
 - **Leírás:** Vékony (3px), határozatlan folyamatjelző sáv megjelenítése a táblázat terület felső
-  élén, amíg kérés van folyamatban. Ez a betöltési visszajelzés nem blokkoló fele: nem foglal helyet
-  a layoutban és nem sötétíti el a sorokat, ezért **azonnal** megjelenik, míg a
-  [`showLoadingOverlay`](#showloadingoverlay) előbb kivár egy rövid késleltetést. Egy ezen a
-  késleltetésen belül befutó kérést így egyedül a sáv jelez — ettől nem villan fel fátyol egy gyors
-  frissítés alatt.
-- **A két indikátor váltja egymást, nem adódik össze.** A sáv a késleltetési ablakot fedi le, az
-  overlay az az utáni részt: amint a [`showLoadingOverlay`](#showloadingoverlay) felteszi a fátylat,
-  a sáv eltűnik. Kikapcsolt overlay mellett a sáv marad a kérés teljes idejére.
-- **Külön kapcsolók.** Maradhat a sáv a fátyol nélkül (a visszajelzés sosem blokkolja az
-  egérmutatót), vagy fordítva.
+  élén, amíg kérés van folyamatban — az overlay nem blokkoló alternatívája. Nem foglal helyet a
+  layoutban és nem sötétíti el a sorokat, ezért **azonnal** megjelenik, és a kérés teljes idejére
+  marad.
+- **Kizárja az overlayt, és az overlay az erősebb.** A sáv csak akkor jelenik meg, ha a
+  [`showLoadingOverlay`](#showloadingoverlay) `false`; bekapcsolt overlay mellett (ez az
+  alapértelmezés) ez a kulcs figyelmen kívül marad, akkor is, ha `true`. A sávhoz mindkét kulcsot
+  át kell állítani, ahogy a lenti példa mutatja.
 - **Az Aura stíluslapját igényli** (`import '@tamas-labs/aura/style.css'`) — enélkül a sávnak nincs
   magassága, színe és animációja. A `$aura-loading-bar-height`, `$aura-loading-bar-color`,
   `$aura-loading-bar-track-bg`, `$aura-loading-bar-duration` és `$aura-loading-bar-z-index`

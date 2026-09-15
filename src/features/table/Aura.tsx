@@ -125,32 +125,35 @@ export const Aura = defineComponent({
         const isBusy = computed(() => resource.loading === true);
 
         /**
+         * Whether the overlay is the configured loading indicator.
+         *
+         * The two indicators are mutually exclusive and the overlay is the
+         * stronger one: while it is enabled the progress bar is never drawn, even
+         * when `showLoadingBar` is set to `true` as well.
+         */
+        const overlayEnabled = computed(() => core.config.showLoadingOverlay !== false);
+
+        /**
          * Whether the built-in loading overlay should be on screen.
          *
          * Delayed on purpose: the overlay veils the rows and blocks the pointer,
          * so a request that resolves in a few dozen milliseconds would flash it
-         * on and off. Requests below the threshold are covered by the progress
-         * bar alone. The store's `loading` is exposed regardless — a host that
+         * on and off. Requests below the threshold are signalled by `aria-busy`
+         * only. The store's `loading` is exposed regardless — a host that
          * switches both indicators off can still bind its own to it.
          */
-        const overlayRequested = computed(() => {
-            return core.config.showLoadingOverlay !== false && isBusy.value;
-        });
+        const overlayRequested = computed(() => overlayEnabled.value && isBusy.value);
         const showOverlay = useDelayedFlag(() => overlayRequested.value, LOADING_OVERLAY_DELAY_MS);
 
         /**
          * Whether the thin progress bar should be on screen.
          *
-         * Unlike the overlay this follows `loading` with no delay — it takes up no
-         * layout space and does not dim the rows, so showing it for a short
-         * request is feedback rather than flicker.
-         *
-         * The two indicators hand over rather than stack: once the overlay's delay
-         * has passed and the spinner is up, the bar steps aside, so the same
-         * request is never reported by two indicators at once.
+         * Opt-in (`showLoadingBar` defaults to `false`) and only honoured with the
+         * overlay switched off. Unlike the overlay it follows `loading` with no
+         * delay — it takes up no layout space and does not dim the rows.
          */
         const showLoadingBar = computed(() => {
-            return core.config.showLoadingBar !== false && isBusy.value && !showOverlay.value;
+            return core.config.showLoadingBar === true && !overlayEnabled.value && isBusy.value;
         });
 
         /**

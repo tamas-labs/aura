@@ -1125,31 +1125,54 @@ describe('Aura Component', () => {
             expect(wrapper.find(OVERLAY_SELECTOR).exists()).toBe(false);
         });
 
-        // The bar covers the window the overlay sits out, so it must not wait.
+        /** The only configuration that draws the bar: opted in, with the overlay off. */
+        const BAR_ONLY = { showLoadingBar: true, showLoadingOverlay: false };
+
+        // The bar has no anti-flicker delay of its own, so it must not wait.
         it('should render the loading bar immediately while a request is in flight', async () => {
-            const wrapper = mountWithLoading('bar-loading', true);
+            const wrapper = mountWithLoading('bar-loading', true, BAR_ONLY);
             await wrapper.vm.$nextTick();
 
             expect(wrapper.find(LOADING_BAR_SELECTOR).exists()).toBe(true);
         });
 
         it('should not render the loading bar when no request is in flight', async () => {
-            const wrapper = mountWithLoading('bar-idle', false);
+            const wrapper = mountWithLoading('bar-idle', false, BAR_ONLY);
             await wrapper.vm.$nextTick();
 
             expect(wrapper.find(LOADING_BAR_SELECTOR).exists()).toBe(false);
         });
 
         it('should not render the loading bar when showLoadingBar is false', async () => {
-            const wrapper = mountWithLoading('bar-disabled', true, { showLoadingBar: false });
+            const wrapper = mountWithLoading('bar-disabled', true, {
+                ...BAR_ONLY,
+                showLoadingBar: false,
+            });
             await wrapper.vm.$nextTick();
 
             expect(wrapper.find(LOADING_BAR_SELECTOR).exists()).toBe(false);
         });
 
+        // The bar is opt-in: with no config at all, a page load must not flash it
+        // before the overlay's delay has passed.
+        it('should not render the loading bar by default', async () => {
+            vi.useFakeTimers();
+            const wrapper = mountWithLoading('bar-default', true);
+            await wrapper.vm.$nextTick();
+
+            expect(wrapper.find(LOADING_BAR_SELECTOR).exists()).toBe(false);
+
+            await vi.advanceTimersByTimeAsync(LOADING_OVERLAY_DELAY_MS);
+            vi.useRealTimers();
+            await wrapper.vm.$nextTick();
+
+            expect(wrapper.find(LOADING_BAR_SELECTOR).exists()).toBe(false);
+            expect(wrapper.find(OVERLAY_SELECTOR).exists()).toBe(true);
+        });
+
         // An indeterminate progressbar is one that reports no `aria-valuenow`.
         it('should expose the loading bar as an indeterminate progressbar', async () => {
-            const wrapper = mountWithLoading('bar-a11y', true);
+            const wrapper = mountWithLoading('bar-a11y', true, BAR_ONLY);
             await wrapper.vm.$nextTick();
 
             const bar = wrapper.find(LOADING_BAR_SELECTOR);
@@ -1158,27 +1181,26 @@ describe('Aura Component', () => {
             expect(bar.attributes('aria-valuenow')).toBeUndefined();
         });
 
-        // The two indicators are independent switches: turning the veil off must
-        // still leave the non-blocking hint in place.
-        it('should keep the loading bar when only the overlay is switched off', async () => {
-            const wrapper = await mountAndSettle('bar-without-overlay', true, {
-                showLoadingOverlay: false,
-            });
+        // With the overlay off the bar is the only indicator, so it must outlast the
+        // overlay's delay rather than step aside for it.
+        it('should keep the loading bar for the whole request when the overlay is off', async () => {
+            const wrapper = await mountAndSettle('bar-without-overlay', true, BAR_ONLY);
 
             expect(wrapper.find(OVERLAY_SELECTOR).exists()).toBe(false);
             expect(wrapper.find(LOADING_BAR_SELECTOR).exists()).toBe(true);
         });
 
-        // The two indicators hand over instead of stacking: the bar covers the delay
-        // window, the overlay everything after it, so the same request is never
-        // reported twice on screen.
-        it('should hand the request over from the bar to the overlay after the delay', async () => {
+        // The indicators are mutually exclusive and the overlay is the stronger one:
+        // switching both on must never draw the bar, not even inside the delay window.
+        it('should let the overlay win when both indicators are switched on', async () => {
             vi.useFakeTimers();
-            const wrapper = mountWithLoading('bar-handover', true);
+            const wrapper = mountWithLoading('bar-and-overlay', true, {
+                showLoadingBar: true,
+                showLoadingOverlay: true,
+            });
             await wrapper.vm.$nextTick();
 
-            expect(wrapper.find(LOADING_BAR_SELECTOR).exists()).toBe(true);
-            expect(wrapper.find(OVERLAY_SELECTOR).exists()).toBe(false);
+            expect(wrapper.find(LOADING_BAR_SELECTOR).exists()).toBe(false);
 
             await vi.advanceTimersByTimeAsync(LOADING_OVERLAY_DELAY_MS);
             vi.useRealTimers();

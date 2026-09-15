@@ -25,6 +25,7 @@ describe('useConfigStore', () => {
             expect(configStore.externalPaginator).toBe(false);
             expect(configStore.showHeaderSearch).toBe(false);
             expect(configStore.showLoadingOverlay).toBe(true);
+            expect(configStore.showLoadingBar).toBe(false);
             expect(configStore.showToolbarTitle).toBe(true);
             expect(configStore.toolbarTitleContent).toBe('');
         });

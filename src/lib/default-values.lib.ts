@@ -94,14 +94,19 @@ export const DEFAULT_ACTION_BUTTONS: ActionButtonItem[] = ['refresh', 'export', 
 export const DEFAULT_SHOW_HEADER_SEARCH = false;
 /** Show the built-in loading overlay while a request is in flight */
 export const DEFAULT_SHOW_LOADING_OVERLAY = true;
-/** Show the thin indeterminate progress bar while a request is in flight */
-export const DEFAULT_SHOW_LOADING_BAR = true;
+/**
+ * Show the thin indeterminate progress bar while a request is in flight.
+ *
+ * Off by default, and only honoured while the overlay is switched off — the two
+ * indicators are mutually exclusive and the overlay wins.
+ */
+export const DEFAULT_SHOW_LOADING_BAR = false;
 /**
  * How long a request may run before the blocking overlay is shown, in ms.
  *
  * A fast response would otherwise make the veil flash for a frame or two, which
  * reads as flicker rather than as feedback. Requests that finish inside this
- * window are covered by the progress bar alone, which does not dim the rows.
+ * window draw no indicator at all; `aria-busy` still reports them.
  * Not a config key on purpose — same reasoning as `CELL_INPUT_DEBOUNCE_MS`.
  */
 export const LOADING_OVERLAY_DELAY_MS = 250;

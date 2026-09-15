@@ -30,12 +30,13 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Changed
 
-- **The two loading indicators now hand over instead of stacking.** The thin progress bar
-  (`showLoadingBar`) is removed from the screen as soon as the delayed overlay
-  (`showLoadingOverlay`) appears, so a request longer than the 250 ms delay is no longer reported by
-  a bar and a spinner at the same time. Short requests are still covered by the bar alone, and with
-  the overlay switched off the bar stays up for the whole request as before. Both config keys keep
-  their meaning and their `true` default — no public API change.
+- **The two loading indicators are now mutually exclusive, and `showLoadingBar` defaults to
+  `false`.** Previously the thin progress bar appeared at the start of every request and the
+  delayed overlay took over after 250 ms, so each page load and table update flashed the bar for a
+  moment. Now the overlay (`showLoadingOverlay`, still `true` by default) is the stronger indicator:
+  while it is enabled the bar is never drawn, even when `showLoadingBar` is `true`. Requests shorter
+  than the overlay's delay draw no indicator (`aria-busy` still reports them). **Migration:** to
+  keep the bar, set `showLoadingBar: true` and `showLoadingOverlay: false`.
 
 ### Fixed
 

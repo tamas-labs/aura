@@ -52,7 +52,7 @@ export interface AuraRenderContext {
     tableClasses: string;
     /** Whether the dimming loading overlay is on screen (delayed). */
     showOverlay: boolean;
-    /** Whether the thin progress bar is on screen (undelayed, and off once the overlay is up). */
+    /** Whether the thin progress bar is on screen (undelayed; never while the overlay is enabled). */
     showLoadingBar: boolean;
     /** Whether a request is in flight, independent of what is drawn for it. */
     isBusy: boolean;

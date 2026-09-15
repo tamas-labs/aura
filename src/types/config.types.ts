@@ -275,7 +275,10 @@ export interface AuraConfig {
     /** Show the built-in loading overlay while a request is in flight (default: true) */
     showLoadingOverlay?: boolean;
 
-    /** Show the thin progress bar above the table while a request is in flight (default: true) */
+    /**
+     * Show the thin progress bar above the table while a request is in flight (default: false).
+     * Ignored while `showLoadingOverlay` is enabled — the overlay wins.
+     */
     showLoadingBar?: boolean;
 
     /** Show toolbar title */

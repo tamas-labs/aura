@@ -869,7 +869,27 @@ destroy: () => Promise<void>;
 }, "destroy" | "addError" | "addSchemaValidationError" | "clearErrors" | "clearByKey" | "clearByComponent" | "clearByType" | "getErrorsBySeverity" | "getErrorsByComponent" | "getErrorsByKey">>;
 isSettingsOpen: Ref<boolean, boolean>;
 toggleSettings: () => void;
-}, "config" | "props" | "errorStore" | "isSettingsOpen">, Pick<{
+searchPrefill: Ref<    {
+kind: "column";
+field: string;
+term: string;
+id: number;
+} | {
+kind: "global";
+term: string;
+id: number;
+} | null, SearchPrefillRequest | {
+kind: "column";
+field: string;
+term: string;
+id: number;
+} | {
+kind: "global";
+term: string;
+id: number;
+} | null>;
+requestSearchPrefill: (target: SearchPrefillTarget) => void;
+}, "config" | "props" | "errorStore" | "isSettingsOpen" | "searchPrefill">, Pick<{
 config: Store<string, Pick<{
 storeId: string;
 debug: Ref<boolean | null, boolean | null>;
@@ -1598,6 +1618,26 @@ destroy: () => Promise<void>;
 }, "destroy" | "addError" | "addSchemaValidationError" | "clearErrors" | "clearByKey" | "clearByComponent" | "clearByType" | "getErrorsBySeverity" | "getErrorsByComponent" | "getErrorsByKey">>;
 isSettingsOpen: Ref<boolean, boolean>;
 toggleSettings: () => void;
+searchPrefill: Ref<    {
+kind: "column";
+field: string;
+term: string;
+id: number;
+} | {
+kind: "global";
+term: string;
+id: number;
+} | null, SearchPrefillRequest | {
+kind: "column";
+field: string;
+term: string;
+id: number;
+} | {
+kind: "global";
+term: string;
+id: number;
+} | null>;
+requestSearchPrefill: (target: SearchPrefillTarget) => void;
 }, never>, Pick<{
 config: Store<string, Pick<{
 storeId: string;
@@ -2327,7 +2367,27 @@ destroy: () => Promise<void>;
 }, "destroy" | "addError" | "addSchemaValidationError" | "clearErrors" | "clearByKey" | "clearByComponent" | "clearByType" | "getErrorsBySeverity" | "getErrorsByComponent" | "getErrorsByKey">>;
 isSettingsOpen: Ref<boolean, boolean>;
 toggleSettings: () => void;
-}, "toggleSettings">>;
+searchPrefill: Ref<    {
+kind: "column";
+field: string;
+term: string;
+id: number;
+} | {
+kind: "global";
+term: string;
+id: number;
+} | null, SearchPrefillRequest | {
+kind: "column";
+field: string;
+term: string;
+id: number;
+} | {
+kind: "global";
+term: string;
+id: number;
+} | null>;
+requestSearchPrefill: (target: SearchPrefillTarget) => void;
+}, "toggleSettings" | "requestSearchPrefill">>;
 hasCriticalOrError: ComputedRef<boolean>;
 hasNonCriticalErrors: ComputedRef<boolean>;
 onRowsChange: (value: number) => void;
@@ -2500,11 +2560,12 @@ export declare interface AuraConfig {
     /** Highlight CSS class (optional) */
     highlightClass?: string;
     /**
-     * Shift+click a body cell to search for its raw value.
+     * Shift+click a body cell to copy its raw value into a search input.
      *
      * The value goes into the column's own search input when the column is `searchable`,
      * otherwise into the global search input (`showHeaderSearch`); with neither, the click
-     * is ignored. Off by default.
+     * is ignored. The input only takes the text and the focus — the user confirms the
+     * search, after trimming the value if needed. Off by default.
      */
     cellClickSearch?: boolean;
     /**
@@ -3194,7 +3255,7 @@ export declare interface ConfigStore {
     highlightSearchResults: boolean | null;
     /** Highlight CSS class */
     highlightClass: string | null;
-    /** Shift+click a body cell to search for its raw value */
+    /** Shift+click a body cell to copy its raw value into a search input */
     cellClickSearch: boolean | null;
     /** Allowed HTML tags for sanitizing raw: true cells (formatRaw) */
     rawHtmlAllowedTags: string[] | null;
@@ -3219,6 +3280,13 @@ export declare interface CoreStore {
     isSettingsOpen: boolean;
     /** Open/close the settings panel */
     toggleSettings: () => void;
+    /** The latest search input pre-fill a Shift+clicked cell asked for (`cellClickSearch`) */
+    searchPrefill: SearchPrefillRequest | null;
+    /**
+     * Ask the matching search input to take a value into its text, without searching
+     * @param target The input to fill and the text to put there
+     */
+    requestSearchPrefill: (target: SearchPrefillTarget) => void;
 }
 
 /**
@@ -4239,6 +4307,31 @@ export declare interface SearchItem {
     /** Upper bound for a range (`between`) search. */
     max?: RangeBound;
 }
+
+/**
+ * A pre-fill request as the core store holds it.
+ *
+ * `id` grows with every request, so clicking the same value twice fills the input
+ * again — even after the user has edited the text in between.
+ */
+declare type SearchPrefillRequest = SearchPrefillTarget & {
+    id: number;
+};
+
+/**
+ * Which search input a pre-fill goes to, and with what text (`cellClickSearch`).
+ *
+ * - `column` — the header search input of the column that searches on `field`.
+ * - `global` — the toolbar's global search input.
+ */
+declare type SearchPrefillTarget = {
+    kind: 'column';
+    field: string;
+    term: string;
+} | {
+    kind: 'global';
+    term: string;
+};
 
 /**
  * The resolved lower/upper bounds of a range (`between`) search.
@@ -5543,7 +5636,27 @@ destroy: () => Promise<void>;
 }, "destroy" | "addError" | "addSchemaValidationError" | "clearErrors" | "clearByKey" | "clearByComponent" | "clearByType" | "getErrorsBySeverity" | "getErrorsByComponent" | "getErrorsByKey">>;
 isSettingsOpen: Ref<boolean, boolean>;
 toggleSettings: () => void;
-}, "config" | "props" | "errorStore" | "isSettingsOpen">, Pick<{
+searchPrefill: Ref<    {
+kind: "column";
+field: string;
+term: string;
+id: number;
+} | {
+kind: "global";
+term: string;
+id: number;
+} | null, SearchPrefillRequest | {
+kind: "column";
+field: string;
+term: string;
+id: number;
+} | {
+kind: "global";
+term: string;
+id: number;
+} | null>;
+requestSearchPrefill: (target: SearchPrefillTarget) => void;
+}, "config" | "props" | "errorStore" | "isSettingsOpen" | "searchPrefill">, Pick<{
 config: Store<string, Pick<{
 storeId: string;
 debug: Ref<boolean | null, boolean | null>;
@@ -6272,6 +6385,26 @@ destroy: () => Promise<void>;
 }, "destroy" | "addError" | "addSchemaValidationError" | "clearErrors" | "clearByKey" | "clearByComponent" | "clearByType" | "getErrorsBySeverity" | "getErrorsByComponent" | "getErrorsByKey">>;
 isSettingsOpen: Ref<boolean, boolean>;
 toggleSettings: () => void;
+searchPrefill: Ref<    {
+kind: "column";
+field: string;
+term: string;
+id: number;
+} | {
+kind: "global";
+term: string;
+id: number;
+} | null, SearchPrefillRequest | {
+kind: "column";
+field: string;
+term: string;
+id: number;
+} | {
+kind: "global";
+term: string;
+id: number;
+} | null>;
+requestSearchPrefill: (target: SearchPrefillTarget) => void;
 }, never>, Pick<{
 config: Store<string, Pick<{
 storeId: string;
@@ -7001,7 +7134,27 @@ destroy: () => Promise<void>;
 }, "destroy" | "addError" | "addSchemaValidationError" | "clearErrors" | "clearByKey" | "clearByComponent" | "clearByType" | "getErrorsBySeverity" | "getErrorsByComponent" | "getErrorsByKey">>;
 isSettingsOpen: Ref<boolean, boolean>;
 toggleSettings: () => void;
-}, "toggleSettings">>;
+searchPrefill: Ref<    {
+kind: "column";
+field: string;
+term: string;
+id: number;
+} | {
+kind: "global";
+term: string;
+id: number;
+} | null, SearchPrefillRequest | {
+kind: "column";
+field: string;
+term: string;
+id: number;
+} | {
+kind: "global";
+term: string;
+id: number;
+} | null>;
+requestSearchPrefill: (target: SearchPrefillTarget) => void;
+}, "toggleSettings" | "requestSearchPrefill">>;
 
 /**
  * Error Handler Store Factory

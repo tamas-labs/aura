@@ -99,7 +99,7 @@ export interface ConfigStore {
     highlightSearchResults: boolean | null;
     /** Highlight CSS class */
     highlightClass: string | null;
-    /** Shift+click a body cell to search for its raw value */
+    /** Shift+click a body cell to copy its raw value into a search input */
     cellClickSearch: boolean | null;
     /** Allowed HTML tags for sanitizing raw: true cells (formatRaw) */
     rawHtmlAllowedTags: string[] | null;
@@ -153,4 +153,29 @@ export interface CoreStore {
     isSettingsOpen: boolean;
     /** Open/close the settings panel */
     toggleSettings: () => void;
+    /** The latest search input pre-fill a Shift+clicked cell asked for (`cellClickSearch`) */
+    searchPrefill: SearchPrefillRequest | null;
+    /**
+     * Ask the matching search input to take a value into its text, without searching
+     * @param target The input to fill and the text to put there
+     */
+    requestSearchPrefill: (target: SearchPrefillTarget) => void;
 }
+
+/**
+ * Which search input a pre-fill goes to, and with what text (`cellClickSearch`).
+ *
+ * - `column` — the header search input of the column that searches on `field`.
+ * - `global` — the toolbar's global search input.
+ */
+export type SearchPrefillTarget =
+    | { kind: 'column'; field: string; term: string }
+    | { kind: 'global'; term: string };
+
+/**
+ * A pre-fill request as the core store holds it.
+ *
+ * `id` grows with every request, so clicking the same value twice fills the input
+ * again — even after the user has edited the text in between.
+ */
+export type SearchPrefillRequest = SearchPrefillTarget & { id: number };

@@ -1,5 +1,22 @@
 import { describe, it, expect } from 'vitest';
-import { resolveCellField } from '../resolve-cell-field';
+import type { HeaderCell } from '../../../../types';
+import { isExactSearchCell, resolveCellField } from '../resolve-cell-field';
+
+describe('isExactSearchCell', () => {
+    it('should be exact for a `number: true` column', () => {
+        expect(isExactSearchCell({ key: 'age', content: 'Age', number: true })).toBe(true);
+    });
+
+    it('should be exact for a legacy `type: number` column', () => {
+        const legacy = { key: 'age', content: 'Age', type: 'number' } as HeaderCell;
+
+        expect(isExactSearchCell(legacy)).toBe(true);
+    });
+
+    it('should not be exact for a text column', () => {
+        expect(isExactSearchCell({ key: 'name', content: 'Name' })).toBe(false);
+    });
+});
 
 describe('resolveCellField', () => {
     it('should return reference when set', () => {

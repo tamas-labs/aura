@@ -2,6 +2,7 @@ import { defineStore, getActivePinia } from 'pinia';
 import { getCurrentInstance, ref } from 'vue';
 import type { AuraProps } from '../../types';
 import type { AuraConfig } from '../../types/config.types';
+import type { SearchPrefillRequest, SearchPrefillTarget } from '../../types/store.types';
 import { defaultConfigLib } from '../../lib/default-config.lib';
 import { useErrorHandlerStore } from './error-handler.state';
 import { useConfigStore } from './config.state';
@@ -64,6 +65,16 @@ export const useCoreStore = (storeId: string, props: AuraProps) => {
             isSettingsOpen.value = !isSettingsOpen.value;
         };
 
+        // UI state: a search input pre-fill asked for by a Shift+clicked body cell. It is
+        // the input's text only — nothing here reaches the query, the session or a badge.
+        const searchPrefill = ref<SearchPrefillRequest | null>(null);
+        let lastPrefillId = 0;
+
+        const requestSearchPrefill = (target: SearchPrefillTarget) => {
+            lastPrefillId += 1;
+            searchPrefill.value = { ...target, id: lastPrefillId };
+        };
+
         return {
             // Access to the config store (contains all validated config values)
             config: configStore,
@@ -75,6 +86,8 @@ export const useCoreStore = (storeId: string, props: AuraProps) => {
             // UI state
             isSettingsOpen,
             toggleSettings,
+            searchPrefill,
+            requestSearchPrefill,
         };
     })();
 };

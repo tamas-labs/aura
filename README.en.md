@@ -1124,13 +1124,13 @@ The Aura component supports the following props:
 
 - **Type:** `boolean`
 - **Default:** `false`
-- **Description:** **Shift+click** a body cell to search for its value. The value lands in a search input and the search runs right away, exactly as if it had been typed there:
+- **Description:** **Shift+click** a body cell to copy its value into a search input, ready to edit. A long value such as `Kiss Gucy Illés` no longer has to be typed, and narrowing it down to `Kiss` takes a few keystrokes. The input receives the focus with the cursor at the end, but **the search does not run yet**: confirm it with Enter or the search button (a column search input also searches on its own once the text is edited, as it does while typing). The value goes:
     - if the column has its own search input (`searchable: true` in the header), it goes there;
     - otherwise, if the global search is shown ([`showHeaderSearch`](#showheadersearch)), it goes into the global search input;
     - otherwise the click is ignored.
 - **The raw value is used, not the displayed text.** A currency cell showing `1 234,50 Ft` searches for `1234.5`, a date cell for the value the response sent. Both the column search and the global search compare against the raw data — on the client and, typically, on the backend — so the formatted text would find nothing. On a `number: true` column the column search is an exact match, as it is when typed. The value is read from the field the column searches on (`reference`, then `field`, then `key`).
-- **No minimum length.** Typing into the global search input requires 3 characters, but a clicked value is a complete term, so a single `5` is searched for too.
-- If the column is already being searched, the clicked value replaces the previous term.
+- **No minimum length for a clicked value.** The global search input requires 3 characters, but a clicked value is a complete term, so a single `5` can be searched for too. Once the text is edited, the usual minimum applies again.
+- Until the search is confirmed nothing is filtered and no filter badge appears; an already active search stays in effect until then. Another Shift+click simply replaces the input's text.
 - **Ignored clicks:**
     - Shift+click on a link, button or form control inside the cell — those keep their own Shift+click behaviour (e.g. a link opening in a new window);
     - a click with Ctrl, Alt or Cmd held as well;

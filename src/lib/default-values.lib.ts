@@ -174,7 +174,7 @@ export const DEFAULT_HIGHLIGHT_SEARCH_RESULTS = true;
 export const DEFAULT_HIGHLIGHT_CLASS = 'aura-highlight';
 
 /**
- * Shift+click a body cell to search for its raw value.
+ * Shift+click a body cell to copy its raw value into a search input.
  *
  * Off by default: it gives Shift+click a new meaning, which an existing table must not
  * pick up on an upgrade.

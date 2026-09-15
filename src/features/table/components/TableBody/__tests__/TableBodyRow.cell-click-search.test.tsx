@@ -8,9 +8,10 @@ import type { HeaderCell } from '../../../../../types/api-response.types';
 
 /**
  * `cellClickSearch` wiring on the row: the listener lives on the `<tr>`, finds the
- * clicked column from the cell's `data-key`, and writes through the store — the search
- * inputs pick the value up from there. The resolution rules themselves are covered in
- * `utils/__tests__/cell-click-search.test.ts`.
+ * clicked column from the cell's `data-key`, and asks the matching search input — via
+ * the core store — to take the value. It never searches by itself. The resolution rules
+ * are covered in `utils/__tests__/cell-click-search.test.ts`, the inputs' side in the
+ * `*.prefill.test.tsx` suites.
  */
 describe('TableBodyRow — cellClickSearch', () => {
     beforeEach(() => {
@@ -30,65 +31,67 @@ describe('TableBodyRow — cellClickSearch', () => {
         const wrapper = mount(TableBodyRow, {
             props: { storeId, item, columns, rowIndex: 0 },
         });
-        return { wrapper, resource };
+        const shiftClick = (key: string) =>
+            wrapper.find(`td[data-key="${key}"]`).trigger('click', { shiftKey: true });
+        return { wrapper, core, resource, shiftClick };
     };
 
-    it('should put the value into the column search on Shift+click', async () => {
-        const { wrapper, resource } = mountRow('ccs-column', { cellClickSearch: true });
+    it('should hand the value to the column search input without searching', async () => {
+        const { core, resource, shiftClick } = mountRow('ccs-column', { cellClickSearch: true });
 
-        await wrapper.find('td[data-key="name"]').trigger('click', { shiftKey: true });
+        await shiftClick('name');
 
-        expect(resource.getSearchTerm('name')).toBe('John');
+        expect(core.searchPrefill).toMatchObject({ kind: 'column', field: 'name', term: 'John' });
+        // No committed search means no filter badge.
+        expect(resource.searchItems).toHaveLength(0);
         expect(resource.globalSearchTerm).toBeNull();
     });
 
-    it('should replace an existing term instead of adding a second search', async () => {
-        const { wrapper, resource } = mountRow('ccs-replace', { cellClickSearch: true });
-        resource.addSearch('name', 'Jane');
-
-        await wrapper.find('td[data-key="name"]').trigger('click', { shiftKey: true });
-
-        expect(resource.getSearchTerm('name')).toBe('John');
-        expect(resource.searchItems).toHaveLength(1);
-    });
-
-    it('should use the global search for a column without its own search input', async () => {
-        const { wrapper, resource } = mountRow('ccs-global', {
+    it('should hand the value to the global search input for a column without its own', async () => {
+        const { core, resource, shiftClick } = mountRow('ccs-global', {
             cellClickSearch: true,
             showHeaderSearch: true,
         });
 
-        await wrapper.find('td[data-key="city"]').trigger('click', { shiftKey: true });
+        await shiftClick('city');
 
-        expect(resource.globalSearchTerm).toBe('Szeged');
-        expect(resource.searchItems).toHaveLength(0);
+        expect(core.searchPrefill).toMatchObject({ kind: 'global', term: 'Szeged' });
+        expect(resource.globalSearchTerm).toBeNull();
+    });
+
+    it('should make a new request on every click, even for the same value', async () => {
+        const { core, shiftClick } = mountRow('ccs-repeat', { cellClickSearch: true });
+
+        await shiftClick('name');
+        const firstId = core.searchPrefill?.id;
+        await shiftClick('name');
+
+        expect(core.searchPrefill?.id).toBeGreaterThan(firstId ?? Infinity);
     });
 
     it('should ignore the click when the column has no search input to fill', async () => {
-        const { wrapper, resource } = mountRow('ccs-none', { cellClickSearch: true });
+        const { core, shiftClick } = mountRow('ccs-none', { cellClickSearch: true });
 
-        await wrapper.find('td[data-key="city"]').trigger('click', { shiftKey: true });
+        await shiftClick('city');
 
-        expect(resource.globalSearchTerm).toBeNull();
-        expect(resource.searchItems).toHaveLength(0);
+        expect(core.searchPrefill).toBeNull();
     });
 
     it('should do nothing while the option is off', async () => {
-        const { wrapper, resource } = mountRow('ccs-off', { showHeaderSearch: true });
+        const { core, shiftClick } = mountRow('ccs-off', { showHeaderSearch: true });
 
-        await wrapper.find('td[data-key="name"]').trigger('click', { shiftKey: true });
-        await wrapper.find('td[data-key="city"]').trigger('click', { shiftKey: true });
+        await shiftClick('name');
+        await shiftClick('city');
 
-        expect(resource.searchItems).toHaveLength(0);
-        expect(resource.globalSearchTerm).toBeNull();
+        expect(core.searchPrefill).toBeNull();
     });
 
     it('should ignore a click without Shift', async () => {
-        const { wrapper, resource } = mountRow('ccs-plain', { cellClickSearch: true });
+        const { wrapper, core } = mountRow('ccs-plain', { cellClickSearch: true });
 
         await wrapper.find('td[data-key="name"]').trigger('click');
 
-        expect(resource.searchItems).toHaveLength(0);
+        expect(core.searchPrefill).toBeNull();
     });
 
     it('should stop Shift+mousedown from extending the text selection only on a search cell', () => {

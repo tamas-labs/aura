@@ -1120,13 +1120,13 @@ Az Aura komponens a következő prop-okat támogatja:
 
 - **Típus:** `boolean`
 - **Alapértelmezett:** `false`
-- **Leírás:** **Shift+klikkel** egy törzscellára a cella értékére lehet keresni. Az érték bekerül egy keresőmezőbe, és a keresés azonnal lefut, pontosan úgy, mintha begépelték volna:
+- **Leírás:** **Shift+klikkel** egy törzscella értéke szerkeszthető szövegként bemásolódik egy keresőmezőbe. Egy hosszú értéket, például a `Kiss Gucy Illés` nevet nem kell begépelni, és ha csak a `Kiss`-ek érdekesek, néhány karakter törlése elég. A mező megkapja a fókuszt, a kurzor a szöveg végére kerül, de **a keresés még nem fut le**: Enterrel vagy a kereső gombbal indul (az oszlop keresőmezője a szöveg szerkesztésekor magától is keres, ugyanúgy, mint gépeléskor). Az érték helye:
     - ha az oszlopnak saját keresőmezője van (`searchable: true` a headerben), abba kerül;
     - különben, ha a globális kereső látható ([`showHeaderSearch`](#showheadersearch)), a globális keresőmezőbe;
     - különben a klikk figyelmen kívül marad.
 - **A nyers értékkel keres, nem a megjelenített szöveggel.** Egy `1 234,50 Ft`-ot mutató pénznemes cella `1234.5`-re keres, egy dátumcella a response-ban érkezett értékre. Az oszlopkeresés és a globális keresés is a nyers adattal hasonlít — kliensoldalon és jellemzően a backenden is —, így a formázott szöveg semmit nem találna. `number: true` oszlopon az oszlopkeresés pontos egyezés, ugyanúgy, mint gépeléskor. Az érték abból a mezőből jön, amelyre az oszlop keres (`reference`, majd `field`, majd `key`).
-- **Nincs minimális hossz.** A globális keresőmezőbe gépeléskor 3 karakter kell, a kattintott érték viszont teljes kifejezés, így egyetlen `5`-re is keres.
-- Ha az oszlopra már van aktív keresés, a kattintott érték lecseréli a korábbi kifejezést.
+- **A kattintott értékre nincs minimális hossz.** A globális keresőmező 3 karaktert kér, a kattintott érték viszont teljes kifejezés, így egyetlen `5`-re is lehet keresni. A szöveg szerkesztése után újra a szokásos minimum érvényes.
+- Amíg a keresést nem indítják el, semmi nem szűr, és szűrő-badge sem jelenik meg; egy már aktív keresés addig érvényben marad. Egy újabb Shift+klikk csak a mező szövegét cseréli le.
 - **Figyelmen kívül hagyott klikkek:**
     - Shift+klikk a cellán belüli linkre, gombra vagy űrlapelemre — ezek megtartják a saját Shift+klikk viselkedésüket (pl. a link új ablakban nyílik);
     - ha a Shift mellett Ctrl, Alt vagy Cmd is le van nyomva;

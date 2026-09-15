@@ -4,12 +4,8 @@ import { resolveConditionalConfig } from '../../utils/conditions/resolve-conditi
 import { createMaxDepthReporter } from '../../utils/conditions/report-max-depth';
 import { resolveMappingConfig } from '../../utils/conditions/resolve-mapping-config';
 import { resolveFormattingStyles } from '../../utils/styles/resolveFormattingStyles';
-import {
-    applyCellClickSearch,
-    isCellClickSearchGesture,
-    resolveCellClickSearch,
-    type CellClickSearchTarget,
-} from '../../utils/cell-click-search';
+import { isCellClickSearchGesture, resolveCellClickSearch } from '../../utils/cell-click-search';
+import type { SearchPrefillTarget } from '../../../../types/store.types';
 import type { FormatterInput } from '../../utils';
 import { useApiResourcesStore, useExistingCoreStore } from '../../../../state';
 import type { HeaderCell, ColumnConfig } from '../../../../types/api-response.types';
@@ -140,13 +136,13 @@ export const TableBodyRow = defineComponent({
         });
 
         /**
-         * The search a Shift+click on this row resolves to (`cellClickSearch`), or `null`.
+         * The search input a Shift+click on this row fills (`cellClickSearch`), or `null`.
          *
          * The listener sits on the `<tr>` rather than on every cell, so the clicked column
          * is read back from the cell's `data-key`. Only a direct child cell counts: a table
          * nested inside a custom renderer carries `data-key` cells of its own.
          */
-        const resolveClickSearch = (event: MouseEvent): CellClickSearchTarget | null => {
+        const resolveClickSearch = (event: MouseEvent): SearchPrefillTarget | null => {
             if (!isCellClickSearchGesture(event) || !(event.target instanceof Element)) {
                 return null;
             }
@@ -169,9 +165,10 @@ export const TableBodyRow = defineComponent({
             onMousedown: (event: MouseEvent) => {
                 if (resolveClickSearch(event)) event.preventDefault();
             },
+            // Only the input's text changes; the user confirms the search from there.
             onClick: (event: MouseEvent) => {
                 const target = resolveClickSearch(event);
-                if (target && apiStore) applyCellClickSearch(apiStore, target);
+                if (target) coreStore?.requestSearchPrefill(target);
             },
         };
 

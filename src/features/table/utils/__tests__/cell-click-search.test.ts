@@ -1,11 +1,9 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import type { HeaderCell } from '../../../../types';
 import {
-    applyCellClickSearch,
     isCellClickSearchGesture,
     resolveCellClickSearch,
     type CellClickSearchContext,
-    type CellClickSearchStore,
 } from '../cell-click-search';
 
 const NO_GLOBAL: CellClickSearchContext = {
@@ -26,7 +24,7 @@ const column = (overrides: Partial<HeaderCell> = {}): HeaderCell => ({
 });
 
 describe('resolveCellClickSearch', () => {
-    describe('column search', () => {
+    describe('column search input', () => {
         it('should target a searchable column with the raw value, not the formatted text', () => {
             const target = resolveCellClickSearch(
                 column({ key: 'price', field: 'price', searchable: true }),
@@ -34,30 +32,17 @@ describe('resolveCellClickSearch', () => {
                 NO_GLOBAL
             );
 
-            expect(target).toEqual({
-                kind: 'column',
-                field: 'price',
-                term: '1234.5',
-                exact: undefined,
-            });
+            expect(target).toEqual({ kind: 'column', field: 'price', term: '1234.5' });
         });
 
-        it('should search a number column exactly, even for a one-character value', () => {
+        it('should hand over a one-character value of a number column', () => {
             const target = resolveCellClickSearch(
                 column({ key: 'age', field: 'age', searchable: true, number: true }),
                 { age: 5 },
                 NO_GLOBAL
             );
 
-            expect(target).toEqual({ kind: 'column', field: 'age', term: '5', exact: true });
-        });
-
-        it('should treat a legacy `type: number` column as exact', () => {
-            const legacy = { ...column({ searchable: true }), type: 'number' } as HeaderCell;
-
-            expect(resolveCellClickSearch(legacy, { name: 7 }, NO_GLOBAL)).toMatchObject({
-                exact: true,
-            });
+            expect(target).toEqual({ kind: 'column', field: 'age', term: '5' });
         });
 
         it('should read the value of the field the column searches on (`reference`)', () => {
@@ -72,10 +57,10 @@ describe('resolveCellClickSearch', () => {
                 NO_GLOBAL
             );
 
-            expect(target).toMatchObject({ kind: 'column', field: 'user.id', term: '7' });
+            expect(target).toEqual({ kind: 'column', field: 'user.id', term: '7' });
         });
 
-        it('should prefer the column search over the global search', () => {
+        it('should prefer the column search input over the global one', () => {
             const target = resolveCellClickSearch(
                 column({ searchable: true }),
                 { name: 'John' },
@@ -108,11 +93,11 @@ describe('resolveCellClickSearch', () => {
                 NO_GLOBAL
             );
 
-            expect(target).toMatchObject({ kind: 'column', field: 'last', term: 'Doe' });
+            expect(target).toEqual({ kind: 'column', field: 'last', term: 'Doe' });
         });
     });
 
-    describe('global search', () => {
+    describe('global search input', () => {
         it('should fall back to global search for a non-searchable column', () => {
             expect(resolveCellClickSearch(column(), { name: 'John' }, GLOBAL)).toEqual({
                 kind: 'global',
@@ -245,49 +230,5 @@ describe('isCellClickSearchGesture', () => {
         const innermost = td.querySelector('span') ?? td.firstElementChild!;
 
         expect(gestureOn(innermost, { shiftKey: true })).toBe(false);
-    });
-});
-
-describe('applyCellClickSearch', () => {
-    const createStore = (existingTerm: string | null = null) => {
-        const store = {
-            setGlobalSearch: vi.fn(),
-            getSearchTerm: vi.fn(() => existingTerm),
-            addSearch: vi.fn(),
-            updateSearchTerm: vi.fn(),
-        };
-        return { store, typed: store as unknown as CellClickSearchStore };
-    };
-
-    it('should set the global search term', () => {
-        const { store, typed } = createStore();
-
-        applyCellClickSearch(typed, { kind: 'global', term: 'John' });
-
-        expect(store.setGlobalSearch).toHaveBeenCalledWith('John');
-        expect(store.addSearch).not.toHaveBeenCalled();
-    });
-
-    it('should add a column search when the column is not searched yet', () => {
-        const { store, typed } = createStore(null);
-
-        applyCellClickSearch(typed, { kind: 'column', field: 'age', term: '5', exact: true });
-
-        expect(store.addSearch).toHaveBeenCalledWith('age', '5', true);
-        expect(store.updateSearchTerm).not.toHaveBeenCalled();
-    });
-
-    it('should replace the term of an already searched column', () => {
-        const { store, typed } = createStore('Jane');
-
-        applyCellClickSearch(typed, {
-            kind: 'column',
-            field: 'name',
-            term: 'John',
-            exact: undefined,
-        });
-
-        expect(store.updateSearchTerm).toHaveBeenCalledWith('name', 'John', undefined);
-        expect(store.addSearch).not.toHaveBeenCalled();
     });
 });

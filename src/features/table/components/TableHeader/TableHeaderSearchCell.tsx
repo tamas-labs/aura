@@ -1,6 +1,7 @@
 import { defineComponent, h, ref, watch } from 'vue';
 import { htmlSanitizer } from '../../../../validators/sanitizers';
 import { debouncedCellInputProps, isExactSearchCell, useDebouncedCellInput } from '../../utils';
+import { useSearchPrefill } from '../../utils/composables/useSearchPrefill';
 
 /**
  * TableHeaderSearchCell Component
@@ -60,6 +61,17 @@ export const TableHeaderSearchCell = defineComponent({
 
         const { debounced: debouncedSearch, cancel: cancelSearch } = debounce(handleSearch);
 
+        // A Shift+clicked cell of this column hands its value over for editing. A search
+        // typed just before must not fire on top of it with the new text.
+        const inputEl = useSearchPrefill(
+            core,
+            request => request.kind === 'column' && request.field === field,
+            term => {
+                cancelSearch();
+                inputValue.value = term;
+            }
+        );
+
         const handleClear = () => {
             cancelSearch();
             resource.removeSearch(field);
@@ -78,6 +90,7 @@ export const TableHeaderSearchCell = defineComponent({
             return h('th', { scope: 'col', 'data-testid': 'table-header-search-cell' }, [
                 h('div', { class: 'input-group input-group-sm' }, [
                     h('input', {
+                        ref: inputEl,
                         type: 'text',
                         class: 'form-control form-control-sm',
                         placeholder:

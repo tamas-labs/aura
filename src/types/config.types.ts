@@ -364,11 +364,12 @@ export interface AuraConfig {
     highlightClass?: string;
 
     /**
-     * Shift+click a body cell to search for its raw value.
+     * Shift+click a body cell to copy its raw value into a search input.
      *
      * The value goes into the column's own search input when the column is `searchable`,
      * otherwise into the global search input (`showHeaderSearch`); with neither, the click
-     * is ignored. Off by default.
+     * is ignored. The input only takes the text and the focus — the user confirms the
+     * search, after trimming the value if needed. Off by default.
      */
     cellClickSearch?: boolean;
 

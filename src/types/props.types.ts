@@ -56,5 +56,4 @@ export interface AuraProps {
     accentInsensitiveSearch?: boolean;
     highlightSearchResults?: boolean;
     highlightClass?: string | null;
-    cellClickSearch?: boolean;
 }

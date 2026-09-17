@@ -9,20 +9,6 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
-- **Shift+click search on body cells (`cellClickSearch`).** With the new opt-in config key and
-  prop, Shift+clicking a body cell copies the cell's value into a search input and focuses it —
-  the column's own header search input when the column is `searchable`, otherwise the global
-  search input when `showHeaderSearch` is on; with neither, the click is ignored. Nothing is
-  searched until the user confirms (Enter or the search button), so a long value can be trimmed
-  first and a mere click never leaves a filter badge behind. The **raw** row
-  value is used, not the formatted text, because the client-side matchers and a backend both
-  compare against raw data. Links, buttons and form controls inside a cell keep their own
-  Shift+click behaviour; the selector column, `between` columns, multi-field columns without a
-  `reference`, empty or non-scalar values and — for the global search — fields outside
-  `header.settings.searchableItems` are ignored. The global search input's 3-character minimum does
-  not apply to an unedited clicked value. New on the core store: `searchPrefill` and
-  `requestSearchPrefill`. Off by default.
-
 - **Column visibility in the settings panel.** The settings button's panel now lists every data
   column with a checkbox; switching one off removes it from the header, the body, the footer, the
   header search row and the CSV export at once. It is presentation-only state — a toggle never

@@ -552,24 +552,6 @@ describe('defaultValidators', () => {
         });
     });
 
-    describe('cellClickSearch validator', () => {
-        const validator = getValidator('cellClickSearch');
-
-        it(TEST_BOOLEAN_ACCEPTED, () => {
-            expect(validator(true)).toBe(true);
-            expect(validator(false)).toBe(true);
-        });
-
-        it(TEST_REJECT_NON_BOOLEAN, () => {
-            expect(validator(null)).toBe(false);
-            expect(validator('shift')).toBe(false);
-        });
-
-        it(TEST_UNDEFINED_ACCEPTED, () => {
-            expect(validator(undefined)).toBe(true);
-        });
-    });
-
     describe('highlightClass validator', () => {
         const validator = getValidator('highlightClass');
 

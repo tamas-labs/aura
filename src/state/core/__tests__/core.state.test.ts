@@ -1076,16 +1076,6 @@ describe('useCoreStore with error handling', () => {
                 expect(store.config.accentInsensitiveSearch).toBe(true);
             });
 
-            it('should default cellClickSearch to false when prop is NOT passed', () => {
-                const store = useCoreStore('test-cellclicksearch', {});
-                expect(store.config.cellClickSearch).toBe(false);
-            });
-
-            it('should allow explicit cellClickSearch: true to override the default', () => {
-                const store = useCoreStore('test-cellclicksearch-true', { cellClickSearch: true });
-                expect(store.config.cellClickSearch).toBe(true);
-            });
-
             it('should respect config highlightSearchResults: true when prop is NOT passed', () => {
                 const store = useCoreStore('test-highlightsearchresults', {});
                 expect(store.config.highlightSearchResults).toBe(true);
@@ -1165,7 +1155,6 @@ describe('useCoreStore with error handling', () => {
                 expect(store.config.disableSession).toBe(false); // DEFAULT_DISABLE_SESSION
                 expect(store.config.highlightSearchResults).toBe(true); // DEFAULT_HIGHLIGHT_SEARCH_RESULTS
                 expect(store.config.accentInsensitiveSearch).toBe(false); // DEFAULT_ACCENT_INSENSITIVE_SEARCH
-                expect(store.config.cellClickSearch).toBe(false); // DEFAULT_CELL_CLICK_SEARCH
             });
 
             it('should merge multiple explicit props correctly', () => {

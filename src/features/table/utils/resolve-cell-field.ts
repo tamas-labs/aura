@@ -23,17 +23,3 @@ import type { HeaderCell } from '../../../types';
 export function resolveCellField(cell: Pick<HeaderCell, 'reference' | 'field' | 'key'>): string {
     return cell.reference || cell.field || cell.key;
 }
-
-/**
- * Whether a text search on this column must match the whole value.
- *
- * Number columns search exactly — `5` must not find `15` — including the legacy
- * `type: 'number'` spelling. Shared by the header search input and the cell-click search,
- * so a clicked value and a typed one filter the same way.
- *
- * @param cell - The header cell configuration.
- * @returns `true` for a number column.
- */
-export function isExactSearchCell(cell: HeaderCell): boolean {
-    return cell.number === true || (cell as unknown as Record<string, unknown>).type === 'number';
-}

@@ -114,8 +114,6 @@ describe('store.types', () => {
                 errorStore: {} as ErrorHandlerStore,
                 isSettingsOpen: false,
                 toggleSettings: () => {},
-                searchPrefill: null,
-                requestSearchPrefill: () => {},
             };
             expect(mockCoreStore).toBeDefined();
         });

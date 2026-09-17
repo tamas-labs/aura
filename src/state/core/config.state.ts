@@ -307,11 +307,6 @@ export const useConfigStore = (
             )
         );
 
-        // Validate cell click search flag
-        const cellClickSearch = ref<boolean | null>(
-            validateBoolean(mergedConfig.cellClickSearch, errorHandlerStoreId, 'cellClickSearch')
-        );
-
         // Whitelist settings for raw HTML (`raw: true` cells) – formatRaw uses these
         // for sanitization; the default is the cell-level base list (style allowed).
         const rawHtmlAllowedTags = ref<string[] | null>(
@@ -386,7 +381,6 @@ export const useConfigStore = (
             accentInsensitiveSearch,
             highlightSearchResults,
             highlightClass,
-            cellClickSearch,
             rawHtmlAllowedTags,
             rawHtmlAllowedAttr,
             rawHtmlAllowDataAttr,

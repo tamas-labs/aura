@@ -283,11 +283,10 @@ errorReportingApiKey: Ref<string | null, string | null>;
 accentInsensitiveSearch: Ref<boolean | null, boolean | null>;
 highlightSearchResults: Ref<boolean | null, boolean | null>;
 highlightClass: Ref<string | null, string | null>;
-cellClickSearch: Ref<boolean | null, boolean | null>;
 rawHtmlAllowedTags: Ref<string[] | null, string[] | null>;
 rawHtmlAllowedAttr: Ref<string[] | null, string[] | null>;
 rawHtmlAllowDataAttr: Ref<boolean | null, boolean | null>;
-}, "debug" | "storeId" | "siteName" | "urlParameter" | "urlParameterLastSegment" | "urlStructure" | "siteToken" | "paginateValues" | "rowsNumber" | "classes" | "showFooter" | "actionButtons" | "showLoadingOverlay" | "showLoadingBar" | "showHeaderSearch" | "showToolbarTitle" | "toolbarTitleContent" | "externalPaginator" | "dateStyle" | "timeZone" | "utcOffset" | "localization" | "currencyCode" | "resources" | "requestMethod" | "sessionKey" | "disableSession" | "accentInsensitiveSearch" | "highlightSearchResults" | "highlightClass" | "cellClickSearch" | "href" | "allowExternalApi" | "errorReporting" | "sliceEndText" | "icons" | "variants" | "labels" | "errorReportingService" | "errorReportingApiKey" | "renderers" | "callbacks" | "emptyStateMessage" | "errorReportingEndpoint" | "rawHtmlAllowedTags" | "rawHtmlAllowedAttr" | "rawHtmlAllowDataAttr">, Pick<{
+}, "debug" | "storeId" | "siteName" | "urlParameter" | "urlParameterLastSegment" | "urlStructure" | "siteToken" | "paginateValues" | "rowsNumber" | "classes" | "showFooter" | "actionButtons" | "showLoadingOverlay" | "showLoadingBar" | "showHeaderSearch" | "showToolbarTitle" | "toolbarTitleContent" | "externalPaginator" | "dateStyle" | "timeZone" | "utcOffset" | "localization" | "currencyCode" | "resources" | "requestMethod" | "sessionKey" | "disableSession" | "accentInsensitiveSearch" | "highlightSearchResults" | "highlightClass" | "href" | "allowExternalApi" | "errorReporting" | "sliceEndText" | "icons" | "variants" | "labels" | "errorReportingService" | "errorReportingApiKey" | "renderers" | "callbacks" | "emptyStateMessage" | "errorReportingEndpoint" | "rawHtmlAllowedTags" | "rawHtmlAllowedAttr" | "rawHtmlAllowDataAttr">, Pick<{
 storeId: string;
 debug: Ref<boolean | null, boolean | null>;
 siteToken: Ref<string | boolean | null, string | boolean | null>;
@@ -429,7 +428,6 @@ errorReportingApiKey: Ref<string | null, string | null>;
 accentInsensitiveSearch: Ref<boolean | null, boolean | null>;
 highlightSearchResults: Ref<boolean | null, boolean | null>;
 highlightClass: Ref<string | null, string | null>;
-cellClickSearch: Ref<boolean | null, boolean | null>;
 rawHtmlAllowedTags: Ref<string[] | null, string[] | null>;
 rawHtmlAllowedAttr: Ref<string[] | null, string[] | null>;
 rawHtmlAllowDataAttr: Ref<boolean | null, boolean | null>;
@@ -575,7 +573,6 @@ errorReportingApiKey: Ref<string | null, string | null>;
 accentInsensitiveSearch: Ref<boolean | null, boolean | null>;
 highlightSearchResults: Ref<boolean | null, boolean | null>;
 highlightClass: Ref<string | null, string | null>;
-cellClickSearch: Ref<boolean | null, boolean | null>;
 rawHtmlAllowedTags: Ref<string[] | null, string[] | null>;
 rawHtmlAllowedAttr: Ref<string[] | null, string[] | null>;
 rawHtmlAllowDataAttr: Ref<boolean | null, boolean | null>;
@@ -869,27 +866,7 @@ destroy: () => Promise<void>;
 }, "destroy" | "addError" | "addSchemaValidationError" | "clearErrors" | "clearByKey" | "clearByComponent" | "clearByType" | "getErrorsBySeverity" | "getErrorsByComponent" | "getErrorsByKey">>;
 isSettingsOpen: Ref<boolean, boolean>;
 toggleSettings: () => void;
-searchPrefill: Ref<    {
-kind: "column";
-field: string;
-term: string;
-id: number;
-} | {
-kind: "global";
-term: string;
-id: number;
-} | null, SearchPrefillRequest | {
-kind: "column";
-field: string;
-term: string;
-id: number;
-} | {
-kind: "global";
-term: string;
-id: number;
-} | null>;
-requestSearchPrefill: (target: SearchPrefillTarget) => void;
-}, "config" | "props" | "errorStore" | "isSettingsOpen" | "searchPrefill">, Pick<{
+}, "config" | "props" | "errorStore" | "isSettingsOpen">, Pick<{
 config: Store<string, Pick<{
 storeId: string;
 debug: Ref<boolean | null, boolean | null>;
@@ -1032,11 +1009,10 @@ errorReportingApiKey: Ref<string | null, string | null>;
 accentInsensitiveSearch: Ref<boolean | null, boolean | null>;
 highlightSearchResults: Ref<boolean | null, boolean | null>;
 highlightClass: Ref<string | null, string | null>;
-cellClickSearch: Ref<boolean | null, boolean | null>;
 rawHtmlAllowedTags: Ref<string[] | null, string[] | null>;
 rawHtmlAllowedAttr: Ref<string[] | null, string[] | null>;
 rawHtmlAllowDataAttr: Ref<boolean | null, boolean | null>;
-}, "debug" | "storeId" | "siteName" | "urlParameter" | "urlParameterLastSegment" | "urlStructure" | "siteToken" | "paginateValues" | "rowsNumber" | "classes" | "showFooter" | "actionButtons" | "showLoadingOverlay" | "showLoadingBar" | "showHeaderSearch" | "showToolbarTitle" | "toolbarTitleContent" | "externalPaginator" | "dateStyle" | "timeZone" | "utcOffset" | "localization" | "currencyCode" | "resources" | "requestMethod" | "sessionKey" | "disableSession" | "accentInsensitiveSearch" | "highlightSearchResults" | "highlightClass" | "cellClickSearch" | "href" | "allowExternalApi" | "errorReporting" | "sliceEndText" | "icons" | "variants" | "labels" | "errorReportingService" | "errorReportingApiKey" | "renderers" | "callbacks" | "emptyStateMessage" | "errorReportingEndpoint" | "rawHtmlAllowedTags" | "rawHtmlAllowedAttr" | "rawHtmlAllowDataAttr">, Pick<{
+}, "debug" | "storeId" | "siteName" | "urlParameter" | "urlParameterLastSegment" | "urlStructure" | "siteToken" | "paginateValues" | "rowsNumber" | "classes" | "showFooter" | "actionButtons" | "showLoadingOverlay" | "showLoadingBar" | "showHeaderSearch" | "showToolbarTitle" | "toolbarTitleContent" | "externalPaginator" | "dateStyle" | "timeZone" | "utcOffset" | "localization" | "currencyCode" | "resources" | "requestMethod" | "sessionKey" | "disableSession" | "accentInsensitiveSearch" | "highlightSearchResults" | "highlightClass" | "href" | "allowExternalApi" | "errorReporting" | "sliceEndText" | "icons" | "variants" | "labels" | "errorReportingService" | "errorReportingApiKey" | "renderers" | "callbacks" | "emptyStateMessage" | "errorReportingEndpoint" | "rawHtmlAllowedTags" | "rawHtmlAllowedAttr" | "rawHtmlAllowDataAttr">, Pick<{
 storeId: string;
 debug: Ref<boolean | null, boolean | null>;
 siteToken: Ref<string | boolean | null, string | boolean | null>;
@@ -1178,7 +1154,6 @@ errorReportingApiKey: Ref<string | null, string | null>;
 accentInsensitiveSearch: Ref<boolean | null, boolean | null>;
 highlightSearchResults: Ref<boolean | null, boolean | null>;
 highlightClass: Ref<string | null, string | null>;
-cellClickSearch: Ref<boolean | null, boolean | null>;
 rawHtmlAllowedTags: Ref<string[] | null, string[] | null>;
 rawHtmlAllowedAttr: Ref<string[] | null, string[] | null>;
 rawHtmlAllowDataAttr: Ref<boolean | null, boolean | null>;
@@ -1324,7 +1299,6 @@ errorReportingApiKey: Ref<string | null, string | null>;
 accentInsensitiveSearch: Ref<boolean | null, boolean | null>;
 highlightSearchResults: Ref<boolean | null, boolean | null>;
 highlightClass: Ref<string | null, string | null>;
-cellClickSearch: Ref<boolean | null, boolean | null>;
 rawHtmlAllowedTags: Ref<string[] | null, string[] | null>;
 rawHtmlAllowedAttr: Ref<string[] | null, string[] | null>;
 rawHtmlAllowDataAttr: Ref<boolean | null, boolean | null>;
@@ -1618,26 +1592,6 @@ destroy: () => Promise<void>;
 }, "destroy" | "addError" | "addSchemaValidationError" | "clearErrors" | "clearByKey" | "clearByComponent" | "clearByType" | "getErrorsBySeverity" | "getErrorsByComponent" | "getErrorsByKey">>;
 isSettingsOpen: Ref<boolean, boolean>;
 toggleSettings: () => void;
-searchPrefill: Ref<    {
-kind: "column";
-field: string;
-term: string;
-id: number;
-} | {
-kind: "global";
-term: string;
-id: number;
-} | null, SearchPrefillRequest | {
-kind: "column";
-field: string;
-term: string;
-id: number;
-} | {
-kind: "global";
-term: string;
-id: number;
-} | null>;
-requestSearchPrefill: (target: SearchPrefillTarget) => void;
 }, never>, Pick<{
 config: Store<string, Pick<{
 storeId: string;
@@ -1781,11 +1735,10 @@ errorReportingApiKey: Ref<string | null, string | null>;
 accentInsensitiveSearch: Ref<boolean | null, boolean | null>;
 highlightSearchResults: Ref<boolean | null, boolean | null>;
 highlightClass: Ref<string | null, string | null>;
-cellClickSearch: Ref<boolean | null, boolean | null>;
 rawHtmlAllowedTags: Ref<string[] | null, string[] | null>;
 rawHtmlAllowedAttr: Ref<string[] | null, string[] | null>;
 rawHtmlAllowDataAttr: Ref<boolean | null, boolean | null>;
-}, "debug" | "storeId" | "siteName" | "urlParameter" | "urlParameterLastSegment" | "urlStructure" | "siteToken" | "paginateValues" | "rowsNumber" | "classes" | "showFooter" | "actionButtons" | "showLoadingOverlay" | "showLoadingBar" | "showHeaderSearch" | "showToolbarTitle" | "toolbarTitleContent" | "externalPaginator" | "dateStyle" | "timeZone" | "utcOffset" | "localization" | "currencyCode" | "resources" | "requestMethod" | "sessionKey" | "disableSession" | "accentInsensitiveSearch" | "highlightSearchResults" | "highlightClass" | "cellClickSearch" | "href" | "allowExternalApi" | "errorReporting" | "sliceEndText" | "icons" | "variants" | "labels" | "errorReportingService" | "errorReportingApiKey" | "renderers" | "callbacks" | "emptyStateMessage" | "errorReportingEndpoint" | "rawHtmlAllowedTags" | "rawHtmlAllowedAttr" | "rawHtmlAllowDataAttr">, Pick<{
+}, "debug" | "storeId" | "siteName" | "urlParameter" | "urlParameterLastSegment" | "urlStructure" | "siteToken" | "paginateValues" | "rowsNumber" | "classes" | "showFooter" | "actionButtons" | "showLoadingOverlay" | "showLoadingBar" | "showHeaderSearch" | "showToolbarTitle" | "toolbarTitleContent" | "externalPaginator" | "dateStyle" | "timeZone" | "utcOffset" | "localization" | "currencyCode" | "resources" | "requestMethod" | "sessionKey" | "disableSession" | "accentInsensitiveSearch" | "highlightSearchResults" | "highlightClass" | "href" | "allowExternalApi" | "errorReporting" | "sliceEndText" | "icons" | "variants" | "labels" | "errorReportingService" | "errorReportingApiKey" | "renderers" | "callbacks" | "emptyStateMessage" | "errorReportingEndpoint" | "rawHtmlAllowedTags" | "rawHtmlAllowedAttr" | "rawHtmlAllowDataAttr">, Pick<{
 storeId: string;
 debug: Ref<boolean | null, boolean | null>;
 siteToken: Ref<string | boolean | null, string | boolean | null>;
@@ -1927,7 +1880,6 @@ errorReportingApiKey: Ref<string | null, string | null>;
 accentInsensitiveSearch: Ref<boolean | null, boolean | null>;
 highlightSearchResults: Ref<boolean | null, boolean | null>;
 highlightClass: Ref<string | null, string | null>;
-cellClickSearch: Ref<boolean | null, boolean | null>;
 rawHtmlAllowedTags: Ref<string[] | null, string[] | null>;
 rawHtmlAllowedAttr: Ref<string[] | null, string[] | null>;
 rawHtmlAllowDataAttr: Ref<boolean | null, boolean | null>;
@@ -2073,7 +2025,6 @@ errorReportingApiKey: Ref<string | null, string | null>;
 accentInsensitiveSearch: Ref<boolean | null, boolean | null>;
 highlightSearchResults: Ref<boolean | null, boolean | null>;
 highlightClass: Ref<string | null, string | null>;
-cellClickSearch: Ref<boolean | null, boolean | null>;
 rawHtmlAllowedTags: Ref<string[] | null, string[] | null>;
 rawHtmlAllowedAttr: Ref<string[] | null, string[] | null>;
 rawHtmlAllowDataAttr: Ref<boolean | null, boolean | null>;
@@ -2367,27 +2318,7 @@ destroy: () => Promise<void>;
 }, "destroy" | "addError" | "addSchemaValidationError" | "clearErrors" | "clearByKey" | "clearByComponent" | "clearByType" | "getErrorsBySeverity" | "getErrorsByComponent" | "getErrorsByKey">>;
 isSettingsOpen: Ref<boolean, boolean>;
 toggleSettings: () => void;
-searchPrefill: Ref<    {
-kind: "column";
-field: string;
-term: string;
-id: number;
-} | {
-kind: "global";
-term: string;
-id: number;
-} | null, SearchPrefillRequest | {
-kind: "column";
-field: string;
-term: string;
-id: number;
-} | {
-kind: "global";
-term: string;
-id: number;
-} | null>;
-requestSearchPrefill: (target: SearchPrefillTarget) => void;
-}, "toggleSettings" | "requestSearchPrefill">>;
+}, "toggleSettings">>;
 hasCriticalOrError: ComputedRef<boolean>;
 hasNonCriticalErrors: ComputedRef<boolean>;
 onRowsChange: (value: number) => void;
@@ -2559,15 +2490,6 @@ export declare interface AuraConfig {
     highlightSearchResults?: boolean;
     /** Highlight CSS class (optional) */
     highlightClass?: string;
-    /**
-     * Shift+click a body cell to copy its raw value into a search input.
-     *
-     * The value goes into the column's own search input when the column is `searchable`,
-     * otherwise into the global search input (`showHeaderSearch`); with neither, the click
-     * is ignored. The input only takes the text and the focus — the user confirms the
-     * search, after trimming the value if needed. Off by default.
-     */
-    cellClickSearch?: boolean;
     /**
      * Type of the error reporting service.
      *
@@ -2787,7 +2709,6 @@ export declare interface AuraProps {
     accentInsensitiveSearch?: boolean;
     highlightSearchResults?: boolean;
     highlightClass?: string | null;
-    cellClickSearch?: boolean;
 }
 
 /**
@@ -3255,8 +3176,6 @@ export declare interface ConfigStore {
     highlightSearchResults: boolean | null;
     /** Highlight CSS class */
     highlightClass: string | null;
-    /** Shift+click a body cell to copy its raw value into a search input */
-    cellClickSearch: boolean | null;
     /** Allowed HTML tags for sanitizing raw: true cells (formatRaw) */
     rawHtmlAllowedTags: string[] | null;
     /** Allowed HTML attributes for sanitizing raw: true cells (formatRaw) */
@@ -3280,13 +3199,6 @@ export declare interface CoreStore {
     isSettingsOpen: boolean;
     /** Open/close the settings panel */
     toggleSettings: () => void;
-    /** The latest search input pre-fill a Shift+clicked cell asked for (`cellClickSearch`) */
-    searchPrefill: SearchPrefillRequest | null;
-    /**
-     * Ask the matching search input to take a value into its text, without searching
-     * @param target The input to fill and the text to put there
-     */
-    requestSearchPrefill: (target: SearchPrefillTarget) => void;
 }
 
 /**
@@ -4309,31 +4221,6 @@ export declare interface SearchItem {
 }
 
 /**
- * A pre-fill request as the core store holds it.
- *
- * `id` grows with every request, so clicking the same value twice fills the input
- * again — even after the user has edited the text in between.
- */
-declare type SearchPrefillRequest = SearchPrefillTarget & {
-    id: number;
-};
-
-/**
- * Which search input a pre-fill goes to, and with what text (`cellClickSearch`).
- *
- * - `column` — the header search input of the column that searches on `field`.
- * - `global` — the toolbar's global search input.
- */
-declare type SearchPrefillTarget = {
-    kind: 'column';
-    field: string;
-    term: string;
-} | {
-    kind: 'global';
-    term: string;
-};
-
-/**
  * The resolved lower/upper bounds of a range (`between`) search.
  */
 declare interface SearchRange {
@@ -4595,11 +4482,10 @@ errorReportingApiKey: Ref<string | null, string | null>;
 accentInsensitiveSearch: Ref<boolean | null, boolean | null>;
 highlightSearchResults: Ref<boolean | null, boolean | null>;
 highlightClass: Ref<string | null, string | null>;
-cellClickSearch: Ref<boolean | null, boolean | null>;
 rawHtmlAllowedTags: Ref<string[] | null, string[] | null>;
 rawHtmlAllowedAttr: Ref<string[] | null, string[] | null>;
 rawHtmlAllowDataAttr: Ref<boolean | null, boolean | null>;
-}, "debug" | "storeId" | "siteName" | "urlParameter" | "urlParameterLastSegment" | "urlStructure" | "siteToken" | "paginateValues" | "rowsNumber" | "classes" | "showFooter" | "actionButtons" | "showLoadingOverlay" | "showLoadingBar" | "showHeaderSearch" | "showToolbarTitle" | "toolbarTitleContent" | "externalPaginator" | "dateStyle" | "timeZone" | "utcOffset" | "localization" | "currencyCode" | "resources" | "requestMethod" | "sessionKey" | "disableSession" | "accentInsensitiveSearch" | "highlightSearchResults" | "highlightClass" | "cellClickSearch" | "href" | "allowExternalApi" | "errorReporting" | "sliceEndText" | "icons" | "variants" | "labels" | "errorReportingService" | "errorReportingApiKey" | "renderers" | "callbacks" | "emptyStateMessage" | "errorReportingEndpoint" | "rawHtmlAllowedTags" | "rawHtmlAllowedAttr" | "rawHtmlAllowDataAttr">, Pick<{
+}, "debug" | "storeId" | "siteName" | "urlParameter" | "urlParameterLastSegment" | "urlStructure" | "siteToken" | "paginateValues" | "rowsNumber" | "classes" | "showFooter" | "actionButtons" | "showLoadingOverlay" | "showLoadingBar" | "showHeaderSearch" | "showToolbarTitle" | "toolbarTitleContent" | "externalPaginator" | "dateStyle" | "timeZone" | "utcOffset" | "localization" | "currencyCode" | "resources" | "requestMethod" | "sessionKey" | "disableSession" | "accentInsensitiveSearch" | "highlightSearchResults" | "highlightClass" | "href" | "allowExternalApi" | "errorReporting" | "sliceEndText" | "icons" | "variants" | "labels" | "errorReportingService" | "errorReportingApiKey" | "renderers" | "callbacks" | "emptyStateMessage" | "errorReportingEndpoint" | "rawHtmlAllowedTags" | "rawHtmlAllowedAttr" | "rawHtmlAllowDataAttr">, Pick<{
 storeId: string;
 debug: Ref<boolean | null, boolean | null>;
 siteToken: Ref<string | boolean | null, string | boolean | null>;
@@ -4741,7 +4627,6 @@ errorReportingApiKey: Ref<string | null, string | null>;
 accentInsensitiveSearch: Ref<boolean | null, boolean | null>;
 highlightSearchResults: Ref<boolean | null, boolean | null>;
 highlightClass: Ref<string | null, string | null>;
-cellClickSearch: Ref<boolean | null, boolean | null>;
 rawHtmlAllowedTags: Ref<string[] | null, string[] | null>;
 rawHtmlAllowedAttr: Ref<string[] | null, string[] | null>;
 rawHtmlAllowDataAttr: Ref<boolean | null, boolean | null>;
@@ -4887,7 +4772,6 @@ errorReportingApiKey: Ref<string | null, string | null>;
 accentInsensitiveSearch: Ref<boolean | null, boolean | null>;
 highlightSearchResults: Ref<boolean | null, boolean | null>;
 highlightClass: Ref<string | null, string | null>;
-cellClickSearch: Ref<boolean | null, boolean | null>;
 rawHtmlAllowedTags: Ref<string[] | null, string[] | null>;
 rawHtmlAllowedAttr: Ref<string[] | null, string[] | null>;
 rawHtmlAllowDataAttr: Ref<boolean | null, boolean | null>;
@@ -5050,11 +4934,10 @@ errorReportingApiKey: Ref<string | null, string | null>;
 accentInsensitiveSearch: Ref<boolean | null, boolean | null>;
 highlightSearchResults: Ref<boolean | null, boolean | null>;
 highlightClass: Ref<string | null, string | null>;
-cellClickSearch: Ref<boolean | null, boolean | null>;
 rawHtmlAllowedTags: Ref<string[] | null, string[] | null>;
 rawHtmlAllowedAttr: Ref<string[] | null, string[] | null>;
 rawHtmlAllowDataAttr: Ref<boolean | null, boolean | null>;
-}, "debug" | "storeId" | "siteName" | "urlParameter" | "urlParameterLastSegment" | "urlStructure" | "siteToken" | "paginateValues" | "rowsNumber" | "classes" | "showFooter" | "actionButtons" | "showLoadingOverlay" | "showLoadingBar" | "showHeaderSearch" | "showToolbarTitle" | "toolbarTitleContent" | "externalPaginator" | "dateStyle" | "timeZone" | "utcOffset" | "localization" | "currencyCode" | "resources" | "requestMethod" | "sessionKey" | "disableSession" | "accentInsensitiveSearch" | "highlightSearchResults" | "highlightClass" | "cellClickSearch" | "href" | "allowExternalApi" | "errorReporting" | "sliceEndText" | "icons" | "variants" | "labels" | "errorReportingService" | "errorReportingApiKey" | "renderers" | "callbacks" | "emptyStateMessage" | "errorReportingEndpoint" | "rawHtmlAllowedTags" | "rawHtmlAllowedAttr" | "rawHtmlAllowDataAttr">, Pick<{
+}, "debug" | "storeId" | "siteName" | "urlParameter" | "urlParameterLastSegment" | "urlStructure" | "siteToken" | "paginateValues" | "rowsNumber" | "classes" | "showFooter" | "actionButtons" | "showLoadingOverlay" | "showLoadingBar" | "showHeaderSearch" | "showToolbarTitle" | "toolbarTitleContent" | "externalPaginator" | "dateStyle" | "timeZone" | "utcOffset" | "localization" | "currencyCode" | "resources" | "requestMethod" | "sessionKey" | "disableSession" | "accentInsensitiveSearch" | "highlightSearchResults" | "highlightClass" | "href" | "allowExternalApi" | "errorReporting" | "sliceEndText" | "icons" | "variants" | "labels" | "errorReportingService" | "errorReportingApiKey" | "renderers" | "callbacks" | "emptyStateMessage" | "errorReportingEndpoint" | "rawHtmlAllowedTags" | "rawHtmlAllowedAttr" | "rawHtmlAllowDataAttr">, Pick<{
 storeId: string;
 debug: Ref<boolean | null, boolean | null>;
 siteToken: Ref<string | boolean | null, string | boolean | null>;
@@ -5196,7 +5079,6 @@ errorReportingApiKey: Ref<string | null, string | null>;
 accentInsensitiveSearch: Ref<boolean | null, boolean | null>;
 highlightSearchResults: Ref<boolean | null, boolean | null>;
 highlightClass: Ref<string | null, string | null>;
-cellClickSearch: Ref<boolean | null, boolean | null>;
 rawHtmlAllowedTags: Ref<string[] | null, string[] | null>;
 rawHtmlAllowedAttr: Ref<string[] | null, string[] | null>;
 rawHtmlAllowDataAttr: Ref<boolean | null, boolean | null>;
@@ -5342,7 +5224,6 @@ errorReportingApiKey: Ref<string | null, string | null>;
 accentInsensitiveSearch: Ref<boolean | null, boolean | null>;
 highlightSearchResults: Ref<boolean | null, boolean | null>;
 highlightClass: Ref<string | null, string | null>;
-cellClickSearch: Ref<boolean | null, boolean | null>;
 rawHtmlAllowedTags: Ref<string[] | null, string[] | null>;
 rawHtmlAllowedAttr: Ref<string[] | null, string[] | null>;
 rawHtmlAllowDataAttr: Ref<boolean | null, boolean | null>;
@@ -5636,27 +5517,7 @@ destroy: () => Promise<void>;
 }, "destroy" | "addError" | "addSchemaValidationError" | "clearErrors" | "clearByKey" | "clearByComponent" | "clearByType" | "getErrorsBySeverity" | "getErrorsByComponent" | "getErrorsByKey">>;
 isSettingsOpen: Ref<boolean, boolean>;
 toggleSettings: () => void;
-searchPrefill: Ref<    {
-kind: "column";
-field: string;
-term: string;
-id: number;
-} | {
-kind: "global";
-term: string;
-id: number;
-} | null, SearchPrefillRequest | {
-kind: "column";
-field: string;
-term: string;
-id: number;
-} | {
-kind: "global";
-term: string;
-id: number;
-} | null>;
-requestSearchPrefill: (target: SearchPrefillTarget) => void;
-}, "config" | "props" | "errorStore" | "isSettingsOpen" | "searchPrefill">, Pick<{
+}, "config" | "props" | "errorStore" | "isSettingsOpen">, Pick<{
 config: Store<string, Pick<{
 storeId: string;
 debug: Ref<boolean | null, boolean | null>;
@@ -5799,11 +5660,10 @@ errorReportingApiKey: Ref<string | null, string | null>;
 accentInsensitiveSearch: Ref<boolean | null, boolean | null>;
 highlightSearchResults: Ref<boolean | null, boolean | null>;
 highlightClass: Ref<string | null, string | null>;
-cellClickSearch: Ref<boolean | null, boolean | null>;
 rawHtmlAllowedTags: Ref<string[] | null, string[] | null>;
 rawHtmlAllowedAttr: Ref<string[] | null, string[] | null>;
 rawHtmlAllowDataAttr: Ref<boolean | null, boolean | null>;
-}, "debug" | "storeId" | "siteName" | "urlParameter" | "urlParameterLastSegment" | "urlStructure" | "siteToken" | "paginateValues" | "rowsNumber" | "classes" | "showFooter" | "actionButtons" | "showLoadingOverlay" | "showLoadingBar" | "showHeaderSearch" | "showToolbarTitle" | "toolbarTitleContent" | "externalPaginator" | "dateStyle" | "timeZone" | "utcOffset" | "localization" | "currencyCode" | "resources" | "requestMethod" | "sessionKey" | "disableSession" | "accentInsensitiveSearch" | "highlightSearchResults" | "highlightClass" | "cellClickSearch" | "href" | "allowExternalApi" | "errorReporting" | "sliceEndText" | "icons" | "variants" | "labels" | "errorReportingService" | "errorReportingApiKey" | "renderers" | "callbacks" | "emptyStateMessage" | "errorReportingEndpoint" | "rawHtmlAllowedTags" | "rawHtmlAllowedAttr" | "rawHtmlAllowDataAttr">, Pick<{
+}, "debug" | "storeId" | "siteName" | "urlParameter" | "urlParameterLastSegment" | "urlStructure" | "siteToken" | "paginateValues" | "rowsNumber" | "classes" | "showFooter" | "actionButtons" | "showLoadingOverlay" | "showLoadingBar" | "showHeaderSearch" | "showToolbarTitle" | "toolbarTitleContent" | "externalPaginator" | "dateStyle" | "timeZone" | "utcOffset" | "localization" | "currencyCode" | "resources" | "requestMethod" | "sessionKey" | "disableSession" | "accentInsensitiveSearch" | "highlightSearchResults" | "highlightClass" | "href" | "allowExternalApi" | "errorReporting" | "sliceEndText" | "icons" | "variants" | "labels" | "errorReportingService" | "errorReportingApiKey" | "renderers" | "callbacks" | "emptyStateMessage" | "errorReportingEndpoint" | "rawHtmlAllowedTags" | "rawHtmlAllowedAttr" | "rawHtmlAllowDataAttr">, Pick<{
 storeId: string;
 debug: Ref<boolean | null, boolean | null>;
 siteToken: Ref<string | boolean | null, string | boolean | null>;
@@ -5945,7 +5805,6 @@ errorReportingApiKey: Ref<string | null, string | null>;
 accentInsensitiveSearch: Ref<boolean | null, boolean | null>;
 highlightSearchResults: Ref<boolean | null, boolean | null>;
 highlightClass: Ref<string | null, string | null>;
-cellClickSearch: Ref<boolean | null, boolean | null>;
 rawHtmlAllowedTags: Ref<string[] | null, string[] | null>;
 rawHtmlAllowedAttr: Ref<string[] | null, string[] | null>;
 rawHtmlAllowDataAttr: Ref<boolean | null, boolean | null>;
@@ -6091,7 +5950,6 @@ errorReportingApiKey: Ref<string | null, string | null>;
 accentInsensitiveSearch: Ref<boolean | null, boolean | null>;
 highlightSearchResults: Ref<boolean | null, boolean | null>;
 highlightClass: Ref<string | null, string | null>;
-cellClickSearch: Ref<boolean | null, boolean | null>;
 rawHtmlAllowedTags: Ref<string[] | null, string[] | null>;
 rawHtmlAllowedAttr: Ref<string[] | null, string[] | null>;
 rawHtmlAllowDataAttr: Ref<boolean | null, boolean | null>;
@@ -6385,26 +6243,6 @@ destroy: () => Promise<void>;
 }, "destroy" | "addError" | "addSchemaValidationError" | "clearErrors" | "clearByKey" | "clearByComponent" | "clearByType" | "getErrorsBySeverity" | "getErrorsByComponent" | "getErrorsByKey">>;
 isSettingsOpen: Ref<boolean, boolean>;
 toggleSettings: () => void;
-searchPrefill: Ref<    {
-kind: "column";
-field: string;
-term: string;
-id: number;
-} | {
-kind: "global";
-term: string;
-id: number;
-} | null, SearchPrefillRequest | {
-kind: "column";
-field: string;
-term: string;
-id: number;
-} | {
-kind: "global";
-term: string;
-id: number;
-} | null>;
-requestSearchPrefill: (target: SearchPrefillTarget) => void;
 }, never>, Pick<{
 config: Store<string, Pick<{
 storeId: string;
@@ -6548,11 +6386,10 @@ errorReportingApiKey: Ref<string | null, string | null>;
 accentInsensitiveSearch: Ref<boolean | null, boolean | null>;
 highlightSearchResults: Ref<boolean | null, boolean | null>;
 highlightClass: Ref<string | null, string | null>;
-cellClickSearch: Ref<boolean | null, boolean | null>;
 rawHtmlAllowedTags: Ref<string[] | null, string[] | null>;
 rawHtmlAllowedAttr: Ref<string[] | null, string[] | null>;
 rawHtmlAllowDataAttr: Ref<boolean | null, boolean | null>;
-}, "debug" | "storeId" | "siteName" | "urlParameter" | "urlParameterLastSegment" | "urlStructure" | "siteToken" | "paginateValues" | "rowsNumber" | "classes" | "showFooter" | "actionButtons" | "showLoadingOverlay" | "showLoadingBar" | "showHeaderSearch" | "showToolbarTitle" | "toolbarTitleContent" | "externalPaginator" | "dateStyle" | "timeZone" | "utcOffset" | "localization" | "currencyCode" | "resources" | "requestMethod" | "sessionKey" | "disableSession" | "accentInsensitiveSearch" | "highlightSearchResults" | "highlightClass" | "cellClickSearch" | "href" | "allowExternalApi" | "errorReporting" | "sliceEndText" | "icons" | "variants" | "labels" | "errorReportingService" | "errorReportingApiKey" | "renderers" | "callbacks" | "emptyStateMessage" | "errorReportingEndpoint" | "rawHtmlAllowedTags" | "rawHtmlAllowedAttr" | "rawHtmlAllowDataAttr">, Pick<{
+}, "debug" | "storeId" | "siteName" | "urlParameter" | "urlParameterLastSegment" | "urlStructure" | "siteToken" | "paginateValues" | "rowsNumber" | "classes" | "showFooter" | "actionButtons" | "showLoadingOverlay" | "showLoadingBar" | "showHeaderSearch" | "showToolbarTitle" | "toolbarTitleContent" | "externalPaginator" | "dateStyle" | "timeZone" | "utcOffset" | "localization" | "currencyCode" | "resources" | "requestMethod" | "sessionKey" | "disableSession" | "accentInsensitiveSearch" | "highlightSearchResults" | "highlightClass" | "href" | "allowExternalApi" | "errorReporting" | "sliceEndText" | "icons" | "variants" | "labels" | "errorReportingService" | "errorReportingApiKey" | "renderers" | "callbacks" | "emptyStateMessage" | "errorReportingEndpoint" | "rawHtmlAllowedTags" | "rawHtmlAllowedAttr" | "rawHtmlAllowDataAttr">, Pick<{
 storeId: string;
 debug: Ref<boolean | null, boolean | null>;
 siteToken: Ref<string | boolean | null, string | boolean | null>;
@@ -6694,7 +6531,6 @@ errorReportingApiKey: Ref<string | null, string | null>;
 accentInsensitiveSearch: Ref<boolean | null, boolean | null>;
 highlightSearchResults: Ref<boolean | null, boolean | null>;
 highlightClass: Ref<string | null, string | null>;
-cellClickSearch: Ref<boolean | null, boolean | null>;
 rawHtmlAllowedTags: Ref<string[] | null, string[] | null>;
 rawHtmlAllowedAttr: Ref<string[] | null, string[] | null>;
 rawHtmlAllowDataAttr: Ref<boolean | null, boolean | null>;
@@ -6840,7 +6676,6 @@ errorReportingApiKey: Ref<string | null, string | null>;
 accentInsensitiveSearch: Ref<boolean | null, boolean | null>;
 highlightSearchResults: Ref<boolean | null, boolean | null>;
 highlightClass: Ref<string | null, string | null>;
-cellClickSearch: Ref<boolean | null, boolean | null>;
 rawHtmlAllowedTags: Ref<string[] | null, string[] | null>;
 rawHtmlAllowedAttr: Ref<string[] | null, string[] | null>;
 rawHtmlAllowDataAttr: Ref<boolean | null, boolean | null>;
@@ -7134,27 +6969,7 @@ destroy: () => Promise<void>;
 }, "destroy" | "addError" | "addSchemaValidationError" | "clearErrors" | "clearByKey" | "clearByComponent" | "clearByType" | "getErrorsBySeverity" | "getErrorsByComponent" | "getErrorsByKey">>;
 isSettingsOpen: Ref<boolean, boolean>;
 toggleSettings: () => void;
-searchPrefill: Ref<    {
-kind: "column";
-field: string;
-term: string;
-id: number;
-} | {
-kind: "global";
-term: string;
-id: number;
-} | null, SearchPrefillRequest | {
-kind: "column";
-field: string;
-term: string;
-id: number;
-} | {
-kind: "global";
-term: string;
-id: number;
-} | null>;
-requestSearchPrefill: (target: SearchPrefillTarget) => void;
-}, "toggleSettings" | "requestSearchPrefill">>;
+}, "toggleSettings">>;
 
 /**
  * Error Handler Store Factory

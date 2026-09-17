@@ -559,7 +559,6 @@ Az Aura komponens a következő prop-okat támogatja:
 | `accentInsensitiveSearch` | `boolean`                  | Nem      | `false`                                                 | Ékezetek figyelmen kívül hagyása a kliensoldali keresésben |
 | `highlightSearchResults`  | `boolean`                  | Nem      | `true`                                                  | Keresési találatok kiemelése                         |
 | `highlightClass`          | `string`                   | Nem      | `'aura-highlight'`                                      | Kiemelés CSS osztálya                                |
-| `cellClickSearch`         | `boolean`                  | Nem      | `false`                                                 | Shift+klikk egy cellára: keresés a nyers értékére    |
 
 ## API Referencia
 
@@ -1114,30 +1113,6 @@ Az Aura komponens a következő prop-okat támogatja:
 
     ```typescript
     app.use(Aura, { highlightClass: 'my-custom-highlight' });
-    ```
-
-##### `cellClickSearch`
-
-- **Típus:** `boolean`
-- **Alapértelmezett:** `false`
-- **Leírás:** **Shift+klikkel** egy törzscella értéke szerkeszthető szövegként bemásolódik egy keresőmezőbe. Egy hosszú értéket, például a `Kiss Gucy Illés` nevet nem kell begépelni, és ha csak a `Kiss`-ek érdekesek, néhány karakter törlése elég. A mező megkapja a fókuszt, a kurzor a szöveg végére kerül, de **a keresés még nem fut le**: Enterrel vagy a kereső gombbal indul (az oszlop keresőmezője a szöveg szerkesztésekor magától is keres, ugyanúgy, mint gépeléskor). Az érték helye:
-    - ha az oszlopnak saját keresőmezője van (`searchable: true` a headerben), abba kerül;
-    - különben, ha a globális kereső látható ([`showHeaderSearch`](#showheadersearch)), a globális keresőmezőbe;
-    - különben a klikk figyelmen kívül marad.
-- **A nyers értékkel keres, nem a megjelenített szöveggel.** Egy `1 234,50 Ft`-ot mutató pénznemes cella `1234.5`-re keres, egy dátumcella a response-ban érkezett értékre. Az oszlopkeresés és a globális keresés is a nyers adattal hasonlít — kliensoldalon és jellemzően a backenden is —, így a formázott szöveg semmit nem találna. `number: true` oszlopon az oszlopkeresés pontos egyezés, ugyanúgy, mint gépeléskor. Az érték abból a mezőből jön, amelyre az oszlop keres (`reference`, majd `field`, majd `key`).
-- **A kattintott értékre nincs minimális hossz.** A globális keresőmező 3 karaktert kér, a kattintott érték viszont teljes kifejezés, így egyetlen `5`-re is lehet keresni. A szöveg szerkesztése után újra a szokásos minimum érvényes.
-- Amíg a keresést nem indítják el, semmi nem szűr, és szűrő-badge sem jelenik meg; egy már aktív keresés addig érvényben marad. Egy újabb Shift+klikk csak a mező szövegét cseréli le.
-- **Figyelmen kívül hagyott klikkek:**
-    - Shift+klikk a cellán belüli linkre, gombra vagy űrlapelemre — ezek megtartják a saját Shift+klikk viselkedésüket (pl. a link új ablakban nyílik);
-    - ha a Shift mellett Ctrl, Alt vagy Cmd is le van nyomva;
-    - a kijelölő checkbox oszlop, a `between` (tól–ig) oszlopok és a `reference` nélküli több mezős (`fields`) oszlopok;
-    - az üres értékek, és ami nem string, szám vagy boolean;
-    - globális keresésnél: az az oszlop, amelynek mezője nem szerepel a response `header.settings.searchableItems` listájában, ha a lista meg van adva.
-- **Alapból kikapcsolva**, mert egy meglévő táblázaton új jelentést adna a Shift+klikknek. A gesztus csak egérrel érhető el — billentyűzettel a keresőmezők maradnak az út.
-- **Példa:**
-
-    ```typescript
-    app.use(Aura, { cellClickSearch: true, showHeaderSearch: true });
     ```
 
 #### Haladó beállítások
@@ -3658,7 +3633,6 @@ console.log(configStore.variants.value); // Record<string, string>
 - `accentInsensitiveSearch`: `Ref<boolean | null>` - Ékezetek figyelmen kívül hagyása a kliensoldali keresésben
 - `highlightSearchResults`: `Ref<boolean | null>` - Keresési találatok kiemelése
 - `highlightClass`: `Ref<string | null>` - Kiemelés CSS osztálya
-- `cellClickSearch`: `Ref<boolean | null>` - Shift+klikk egy cellára: keresés a nyers értékére
 
 **Haladó:**
 

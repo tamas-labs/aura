@@ -1,6 +1,5 @@
 import { defineComponent, h, ref, computed, type PropType, watch } from 'vue';
 import { useApiResourcesStore, useExistingCoreStore } from '../../../../state';
-import { useSearchPrefill } from '../../utils/composables/useSearchPrefill';
 
 /**
  * GlobalSearch Component
@@ -61,31 +60,10 @@ export const GlobalSearch = defineComponent({
 
         const searchQuery = ref(resource.globalSearchTerm || '');
 
-        /**
-         * The text a Shift+clicked cell put into the input (`cellClickSearch`).
-         *
-         * A picked value is a complete term, so while the input still holds exactly that
-         * text the minimum length does not apply — a single `5` can be searched for. Once
-         * the text is edited, the usual minimum is back.
-         */
-        const prefilledTerm = ref<string | null>(null);
-
         const isValid = computed(() => {
-            if (prefilledTerm.value !== null && searchQuery.value === prefilledTerm.value) {
-                return true;
-            }
             // Trim whitespace for validation check
             return searchQuery.value.trim().length >= props.minLength;
         });
-
-        const inputEl = useSearchPrefill(
-            core,
-            request => request.kind === 'global',
-            term => {
-                searchQuery.value = term;
-                prefilledTerm.value = term;
-            }
-        );
 
         // Two-way synchronization with the store
         watch(
@@ -106,7 +84,6 @@ export const GlobalSearch = defineComponent({
         const handleClear = () => {
             resource.clearGlobalSearch();
             searchQuery.value = '';
-            prefilledTerm.value = null;
         };
 
         const handleKeydown = (event: KeyboardEvent) => {
@@ -136,7 +113,6 @@ export const GlobalSearch = defineComponent({
                 [
                     // Search Input
                     h('input', {
-                        ref: inputEl,
                         type: 'text',
                         class: 'form-control',
                         placeholder: props.placeholder || labels.searchPlaceholder,

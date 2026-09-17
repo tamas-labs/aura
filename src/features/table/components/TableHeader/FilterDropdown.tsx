@@ -1,18 +1,8 @@
-import {
-    defineComponent,
-    h,
-    ref,
-    computed,
-    watch,
-    nextTick,
-    Teleport,
-    onMounted,
-    onBeforeUnmount,
-    type PropType,
-} from 'vue';
+import { defineComponent, h, ref, computed, watch, nextTick, Teleport, type PropType } from 'vue';
 import type { FilterElement } from '../../../../types';
 import type { AuraLabels } from '../../../../types/config.types';
 import { DEFAULT_LABELS } from '../../../../lib/default-values.lib';
+import { useTeleportedDropdown } from './use-teleported-dropdown';
 
 /**
  * Minimum width of the dropdown menu in pixels.
@@ -76,22 +66,11 @@ export const FilterDropdown = defineComponent({
     emits: ['apply', 'update:selected'],
     setup(props, { emit }) {
         const instanceId = nextInstanceId++;
-        const isOpen = ref(false);
         const internalSelection = ref<unknown[]>([]);
-        const toggleRef = ref<HTMLElement | null>(null);
         const selectAllRef = ref<HTMLInputElement | null>(null);
 
-        /**
-         * Fixed position coordinates for the teleported dropdown.
-         * Calculated from the toggle button's viewport position.
-         */
-        const dropdownPosition = ref({ top: 0, left: 0 });
-
-        /**
-         * Horizontal alignment: 'left' means dropdown's left edge aligns with button,
-         * 'right' means dropdown's right edge aligns with button's right edge.
-         */
-        const dropdownAlignment = ref<'left' | 'right'>('right');
+        const { isOpen, toggleRef, dropdownPosition, toggleDropdown, closeDropdown } =
+            useTeleportedDropdown(DROPDOWN_MIN_WIDTH);
 
         // Sync internal selection with props when dropdown opens, then focus select-all
         watch(
@@ -104,33 +83,6 @@ export const FilterDropdown = defineComponent({
                 }
             }
         );
-
-        /**
-         * Calculates the fixed position and alignment for the dropdown.
-         * Uses the toggle button's getBoundingClientRect() to determine
-         * where to place the dropdown in the viewport.
-         *
-         * - If the button is close to the left edge, aligns left (dropdown opens to the right)
-         * - Otherwise, aligns right (dropdown opens to the left)
-         */
-        const updateDropdownPosition = () => {
-            if (!toggleRef.value) return;
-
-            const rect = toggleRef.value.getBoundingClientRect();
-
-            // Top: directly below the button
-            dropdownPosition.value.top = rect.bottom;
-
-            if (rect.left < DROPDOWN_MIN_WIDTH) {
-                // Button is near left edge: align dropdown left edge with button left edge
-                dropdownAlignment.value = 'left';
-                dropdownPosition.value.left = rect.left;
-            } else {
-                // Button has enough space: align dropdown right edge with button right edge
-                dropdownAlignment.value = 'right';
-                dropdownPosition.value.left = rect.right - DROPDOWN_MIN_WIDTH;
-            }
-        };
 
         const allSelected = computed(() => {
             return (
@@ -145,17 +97,6 @@ export const FilterDropdown = defineComponent({
             ).length;
             return selectedCount > 0 && selectedCount < props.elements.length;
         });
-
-        const toggleDropdown = () => {
-            if (!isOpen.value) {
-                updateDropdownPosition();
-            }
-            isOpen.value = !isOpen.value;
-        };
-
-        const closeDropdown = () => {
-            isOpen.value = false;
-        };
 
         const toggleAll = () => {
             if (allSelected.value) {
@@ -179,57 +120,6 @@ export const FilterDropdown = defineComponent({
             emit('update:selected', [...internalSelection.value]);
             closeDropdown();
         };
-
-        /**
-         * Closes the dropdown when clicking outside.
-         * Attached to document when dropdown is open.
-         */
-        const handleClickOutside = (e: MouseEvent) => {
-            if (!isOpen.value) return;
-
-            const target = e.target as Node;
-
-            // Don't close if clicking the toggle button (handled by toggleDropdown)
-            if (toggleRef.value?.contains(target)) return;
-
-            // Close if clicking outside the dropdown
-            closeDropdown();
-        };
-
-        /**
-         * Handles keyboard events for accessibility.
-         * Closes the dropdown when Escape key is pressed.
-         */
-        const handleKeyDown = (e: KeyboardEvent) => {
-            if (isOpen.value && e.key === 'Escape') {
-                closeDropdown();
-                toggleRef.value?.focus();
-            }
-        };
-
-        /**
-         * Closes the dropdown when scroll or resize events occur.
-         * Dropdown position becomes stale after these events.
-         */
-        const handleCloseOnEvent = () => {
-            if (isOpen.value) {
-                closeDropdown();
-            }
-        };
-
-        onMounted(() => {
-            document.addEventListener('click', handleClickOutside);
-            document.addEventListener('keydown', handleKeyDown);
-            window.addEventListener('scroll', handleCloseOnEvent, { passive: true, capture: true });
-            window.addEventListener('resize', handleCloseOnEvent);
-        });
-
-        onBeforeUnmount(() => {
-            document.removeEventListener('click', handleClickOutside);
-            document.removeEventListener('keydown', handleKeyDown);
-            window.removeEventListener('scroll', handleCloseOnEvent, true);
-            window.removeEventListener('resize', handleCloseOnEvent);
-        });
 
         return () => {
             const children: ReturnType<typeof h>[] = [

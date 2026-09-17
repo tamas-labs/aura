@@ -1863,6 +1863,129 @@ describe('TableHeaderCell', () => {
         });
     });
 
+    describe('date filter (calendar)', () => {
+        it('should render FilterCalendar instead of FilterDropdown for a filterable date column', () => {
+            const cell: HeaderCell = {
+                content: 'Created at',
+                key: 'created_at',
+                filterable: true,
+                date: true,
+            };
+
+            const wrapper = mount(TableHeaderCell, {
+                props: { cell, cellIndex: 0, storeId },
+            });
+
+            expect(wrapper.findComponent({ name: 'FilterCalendar' }).exists()).toBe(true);
+            expect(wrapper.findComponent({ name: 'FilterDropdown' }).exists()).toBe(false);
+        });
+
+        it('should not render FilterCalendar for a date column that is not filterable', () => {
+            const cell: HeaderCell = {
+                content: 'Created at',
+                key: 'created_at',
+                date: true,
+            };
+
+            const wrapper = mount(TableHeaderCell, {
+                props: { cell, cellIndex: 0, storeId },
+            });
+
+            expect(wrapper.findComponent({ name: 'FilterCalendar' }).exists()).toBe(false);
+        });
+
+        it('should render FilterDropdown, not FilterCalendar, for a filterable non-date column', () => {
+            const cell: HeaderCell = {
+                content: 'Status',
+                key: 'status',
+                filterable: true,
+                elements: [{ value: 'active', label: 'Active' }],
+            };
+
+            const wrapper = mount(TableHeaderCell, {
+                props: { cell, cellIndex: 0, storeId },
+            });
+
+            expect(wrapper.findComponent({ name: 'FilterCalendar' }).exists()).toBe(false);
+            expect(wrapper.findComponent({ name: 'FilterDropdown' }).exists()).toBe(true);
+        });
+
+        it('should add a single-value filter when FilterCalendar emits apply', async () => {
+            const cell: HeaderCell = {
+                content: 'Created at',
+                key: 'created_at',
+                field: 'created_at',
+                filterable: true,
+                date: true,
+            };
+
+            const wrapper = mount(TableHeaderCell, {
+                props: { cell, cellIndex: 0, storeId },
+            });
+
+            const filterCalendar = wrapper.findComponent({ name: 'FilterCalendar' });
+            await filterCalendar.vm.$emit('apply', ['2026-03-15']);
+
+            expect(resource.getFilterValues('created_at')).toEqual(['2026-03-15']);
+        });
+
+        it('should remove the filter when FilterCalendar emits apply with an empty array', async () => {
+            const cell: HeaderCell = {
+                content: 'Created at',
+                key: 'created_at',
+                field: 'created_at',
+                filterable: true,
+                date: true,
+            };
+
+            resource.addFilter('created_at', ['2026-03-15']);
+
+            const wrapper = mount(TableHeaderCell, {
+                props: { cell, cellIndex: 0, storeId },
+            });
+
+            const filterCalendar = wrapper.findComponent({ name: 'FilterCalendar' });
+            await filterCalendar.vm.$emit('apply', []);
+
+            expect(resource.getFilterValues('created_at')).toBeNull();
+        });
+
+        it('should pass the current filter value to FilterCalendar as the value prop', () => {
+            const cell: HeaderCell = {
+                content: 'Created at',
+                key: 'created_at',
+                field: 'created_at',
+                filterable: true,
+                date: true,
+            };
+
+            resource.addFilter('created_at', ['2026-03-15']);
+
+            const wrapper = mount(TableHeaderCell, {
+                props: { cell, cellIndex: 0, storeId },
+            });
+
+            const filterCalendar = wrapper.findComponent({ name: 'FilterCalendar' });
+            expect(filterCalendar.props('value')).toBe('2026-03-15');
+        });
+
+        it('should pass null as the value prop when no filter exists', () => {
+            const cell: HeaderCell = {
+                content: 'Created at',
+                key: 'created_at',
+                filterable: true,
+                date: true,
+            };
+
+            const wrapper = mount(TableHeaderCell, {
+                props: { cell, cellIndex: 0, storeId },
+            });
+
+            const filterCalendar = wrapper.findComponent({ name: 'FilterCalendar' });
+            expect(filterCalendar.props('value')).toBeNull();
+        });
+    });
+
     describe('accessibility', () => {
         const SORT_BUTTON_SELECTOR = '[data-testid="sort-button"]';
 

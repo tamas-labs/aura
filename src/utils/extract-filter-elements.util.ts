@@ -8,6 +8,10 @@ import { resolveValue } from './resolve-value.util';
  * it collects unique values from the `items` array based on the cell's `field`.
  * Only string and number values are collected.
  *
+ * A `date: true` cell is skipped: it renders a calendar filter (`FilterCalendar`) instead
+ * of a checkbox list, so a distinct-value list would be collected for nothing — and for a
+ * date column that list is exactly the high-cardinality case the calendar exists to avoid.
+ *
  * @param header - The table header configuration
  * @param items - The data items array
  * @returns A new header object with populated elements, or the original header if no changes needed
@@ -44,6 +48,7 @@ export const extractFilterElements = (
             // Check if cell is filterable and elements are missing
             if (
                 cell.filterable === true &&
+                cell.date !== true &&
                 (cell.elements === null || cell.elements === undefined)
             ) {
                 const field = cell.field;

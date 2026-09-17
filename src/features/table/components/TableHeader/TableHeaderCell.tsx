@@ -9,6 +9,7 @@ import {
 } from '../header-footer-cell.shared';
 import { resolveCellField } from '../../utils/resolve-cell-field';
 import { FilterDropdown } from './FilterDropdown';
+import { FilterCalendar } from './FilterCalendar';
 
 /**
  * TableHeaderCell Component
@@ -87,6 +88,14 @@ export const TableHeaderCell = defineComponent({
         });
 
         /**
+         * A `filterable: true, date: true` column gets a calendar (`FilterCalendar`) instead
+         * of the checkbox-list dropdown: a date field is exactly the high-cardinality case a
+         * distinct-value checkbox list doesn't scale to. `extractFilterElements` already skips
+         * auto-collecting `elements` for such a cell, so this is also the only signal available.
+         */
+        const isDateFilter = computed(() => !!props.cell.filterable && !!props.cell.date);
+
+        /**
          * Determines if the current cell has filterable elements.
          *
          * Note: for `filterable: true` columns without `elements`, the store's
@@ -95,7 +104,7 @@ export const TableHeaderCell = defineComponent({
          * auto-distinct logic of its own.
          */
         const isFilterable = computed(() => {
-            return normalizedElements.value.length > 0;
+            return isDateFilter.value || normalizedElements.value.length > 0;
         });
 
         /**
@@ -238,7 +247,15 @@ export const TableHeaderCell = defineComponent({
                 );
             }
 
-            if (isFilterable.value) {
+            if (isDateFilter.value) {
+                controls.push(
+                    h(FilterCalendar, {
+                        value: (currentFilterValues.value[0] as string | undefined) ?? null,
+                        onApply: handleFilterApply,
+                        labels: core.config.labels,
+                    })
+                );
+            } else if (isFilterable.value) {
                 controls.push(
                     h(FilterDropdown, {
                         elements: normalizedElements.value,

@@ -9,6 +9,15 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
+- **Calendar filter for date columns.** A header cell with `filterable: true` and `date: true`
+  now renders `FilterCalendar` — a native `<input type="date">` picker — instead of the
+  checkbox-list `FilterDropdown`. It exists for the case `FilterDropdown`'s auto-extracted
+  `elements` list doesn't scale to: a date field's distinct values. `extractFilterElements` skips
+  such a cell instead of collecting that list for nothing. The selection is still one value in the
+  existing `values[]` filter shape (`addFilter`/`updateFilterValues`/`removeFilter`), so the
+  server-side query contract, `FilterBadges`, and session persistence need no changes. The shared
+  teleported-panel positioning/dismiss logic (`FilterDropdown` had it inline) moved to
+  `useTeleportedDropdown`, reused by both components.
 - **Column visibility in the settings panel.** The settings button's panel now lists every data
   column with a checkbox; switching one off removes it from the header, the body, the footer, the
   header search row and the CSV export at once. It is presentation-only state — a toggle never

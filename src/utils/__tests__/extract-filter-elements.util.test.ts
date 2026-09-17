@@ -380,4 +380,31 @@ describe('extractFilterElements', () => {
         const firstCell = result!.rows![0]!.cells![0];
         expect(firstCell!.elements).toEqual(['OnlyOne']);
     });
+
+    it('should skip a filterable date column instead of collecting its distinct values', () => {
+        const header: Header = {
+            rows: [
+                {
+                    cells: [
+                        {
+                            key: 'created_at',
+                            field: 'created_at',
+                            filterable: true,
+                            date: true,
+                            content: 'Created at',
+                        },
+                    ],
+                },
+            ],
+        };
+
+        const items = [{ created_at: '2026-01-01' }, { created_at: '2026-02-01' }];
+
+        const result = extractFilterElements(header, items);
+
+        // Nothing changed, so the original header object comes back untouched.
+        expect(result).toBe(header);
+        const firstCell = result!.rows![0]!.cells![0];
+        expect(firstCell!.elements).toBeUndefined();
+    });
 });

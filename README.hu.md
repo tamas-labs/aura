@@ -397,7 +397,7 @@ interface HeaderCell {
     fields?: string[];    // Több mező egymás után; ha egy elem szerepel a columnConfigs-ban → config renderelés, egyébként adat érték
     sortable?: boolean;   // Rendezhető-e
     searchable?: boolean; // Kereshető-e
-    filterable?: boolean; // Szűrhető-e (legördülő). Ha `true` és nincs `elements`, a szűrő-lista a betöltött sorok distinct értékeiből épül automatikusan (kliens-oldal)
+    filterable?: boolean; // Szűrhető-e (legördülő). Ha `true` és nincs `elements`, a szűrő-lista a betöltött sorok distinct értékeiből épül automatikusan (kliens-oldal). Ha `true` a `date: true` mellett, a checkbox-lista helyett natív dátumválasztó (naptár) jelenik meg — nincs szükség `elements`-re, és nem is gyűjti azt
     between?: boolean;    // Tartomány-keresés (min/max) a kereső-sorban (szám/dátum oszlop)
     reference?: string;   // Melyik mezőre menjen a rendezés/keresés/szűrés (több `fields` esetén)
     selectable?: boolean; // Kijelölő checkbox-oszlop (a `field` a sor-azonosító, default `id`)

@@ -401,7 +401,7 @@ interface HeaderCell {
     fields?: string[];    // Several fields in sequence; if an element is present in columnConfigs → config rendering, otherwise data value
     sortable?: boolean;   // Whether it is sortable
     searchable?: boolean; // Whether it is searchable
-    filterable?: boolean; // Whether it is filterable (dropdown). If `true` and there is no `elements`, the filter list is built automatically from the distinct values of the loaded rows (client side)
+    filterable?: boolean; // Whether it is filterable (dropdown). If `true` and there is no `elements`, the filter list is built automatically from the distinct values of the loaded rows (client side). If `true` together with `date: true`, a native date-picker (calendar) replaces the checkbox list instead — no `elements` needed or collected
     between?: boolean;    // Range search (min/max) in the search row (number/date column)
     reference?: string;   // Which field the sort/search/filter should target (when there are several `fields`)
     selectable?: boolean; // Selection checkbox column (the `field` is the row identifier, default `id`)

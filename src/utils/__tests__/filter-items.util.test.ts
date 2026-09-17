@@ -265,6 +265,74 @@ describe('filterItemsByFilter', () => {
         });
     });
 
+    describe('date-column matching (dateFilterFields)', () => {
+        it('should match a bare yyyy-mm-dd row value by exact day', () => {
+            const dateItems = [
+                { id: 1, created_at: '2026-03-15' },
+                { id: 2, created_at: '2026-03-16' },
+            ];
+            const filters: FilterItem[] = [{ field: 'created_at', values: ['2026-03-15'] }];
+            const result = filterItemsByFilter(dateItems, filters, new Set(['created_at']));
+
+            expect(result).toHaveLength(1);
+            expect((result[0] as any).id).toBe(1);
+        });
+
+        it('should match a full-timestamp row value anywhere within the calendar day', () => {
+            const dateItems = [
+                { id: 1, created_at: '2026-03-15T00:00:00' },
+                { id: 2, created_at: '2026-03-15T13:45:30' },
+                { id: 3, created_at: '2026-03-15T23:59:59' },
+                { id: 4, created_at: '2026-03-16T00:00:00' },
+                { id: 5, created_at: '2026-03-14T23:59:59' },
+            ];
+            const filters: FilterItem[] = [{ field: 'created_at', values: ['2026-03-15'] }];
+            const result = filterItemsByFilter(dateItems, filters, new Set(['created_at']));
+
+            expect((result as any[]).map(r => r.id)).toEqual([1, 2, 3]);
+        });
+
+        it('should not day-match a field absent from dateFilterFields', () => {
+            const dateItems = [{ id: 1, created_at: '2026-03-15T13:45:30' }];
+            const filters: FilterItem[] = [{ field: 'created_at', values: ['2026-03-15'] }];
+            const result = filterItemsByFilter(dateItems, filters);
+
+            // Falls back to exact-value matching: a timestamp never equals a bare date string
+            expect(result).toHaveLength(0);
+        });
+
+        it('should not match an invalid or non-date-only filter value', () => {
+            const dateItems = [{ id: 1, created_at: '2026-03-15T13:45:30' }];
+            const filters: FilterItem[] = [{ field: 'created_at', values: ['not-a-date'] }];
+            const result = filterItemsByFilter(dateItems, filters, new Set(['created_at']));
+
+            expect(result).toHaveLength(0);
+        });
+
+        it('should not match a row value that fails to parse as a date', () => {
+            const dateItems = [{ id: 1, created_at: 'garbage' }];
+            const filters: FilterItem[] = [{ field: 'created_at', values: ['2026-03-15'] }];
+            const result = filterItemsByFilter(dateItems, filters, new Set(['created_at']));
+
+            expect(result).toHaveLength(0);
+        });
+
+        it('should leave non-date fields on the same item unaffected', () => {
+            const dateItems = [
+                { id: 1, created_at: '2026-03-15T10:00:00', status: 'active' },
+                { id: 2, created_at: '2026-03-15T10:00:00', status: 'inactive' },
+            ];
+            const filters: FilterItem[] = [
+                { field: 'created_at', values: ['2026-03-15'] },
+                { field: 'status', values: ['active'] },
+            ];
+            const result = filterItemsByFilter(dateItems, filters, new Set(['created_at']));
+
+            expect(result).toHaveLength(1);
+            expect((result[0] as any).id).toBe(1);
+        });
+    });
+
     describe('edge cases', () => {
         it('should return empty array when filtering empty items', () => {
             const filters: FilterItem[] = [{ field: 'status', values: ['active'] }];

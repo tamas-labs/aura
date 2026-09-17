@@ -1,5 +1,4 @@
-import { resolveDateValue } from './resolve-date-value';
-import { readOwnEntry } from '../../../../utils';
+import { resolveDateValue, readOwnEntry } from '../../../../utils';
 
 type NumericCompare = (a: number, b: number) => boolean;
 

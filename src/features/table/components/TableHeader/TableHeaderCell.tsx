@@ -7,7 +7,7 @@ import {
     buildRawAwareContent,
     resolveHeaderScope,
 } from '../header-footer-cell.shared';
-import { resolveCellField } from '../../utils/resolve-cell-field';
+import { resolveCellField } from '../../../../utils/resolve-cell-field.util';
 import { FilterDropdown } from './FilterDropdown';
 import { FilterCalendar } from './FilterCalendar';
 
@@ -253,6 +253,7 @@ export const TableHeaderCell = defineComponent({
                         value: (currentFilterValues.value[0] as string | undefined) ?? null,
                         onApply: handleFilterApply,
                         labels: core.config.labels,
+                        icons: core.config.icons,
                     })
                 );
             } else if (isFilterable.value) {

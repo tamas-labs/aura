@@ -1,6 +1,6 @@
-import { defineComponent, h, ref, watch, nextTick, Teleport, type PropType } from 'vue';
+import { defineComponent, h, ref, computed, watch, nextTick, Teleport, type PropType } from 'vue';
 import type { AuraLabels } from '../../../../types/config.types';
-import { DEFAULT_LABELS } from '../../../../lib/default-values.lib';
+import { DEFAULT_LABELS, DEFAULT_ICONS } from '../../../../lib/default-values.lib';
 import { useTeleportedDropdown } from './use-teleported-dropdown';
 
 /** Minimum width of the calendar panel in pixels, also used for the alignment heuristic. */
@@ -26,6 +26,8 @@ const CALENDAR_MIN_WIDTH = 220;
  * @displayName FilterCalendar
  * @prop {string | null} value - Currently selected date (ISO `yyyy-mm-dd`), or `null`
  * @prop {Partial<AuraLabels>} labels - Overridable UI texts (`config.labels`)
+ * @prop {{filterable?: string[], filterableChecked?: string[]}} icons - Overridable toggle icon
+ *   (`config.icons`). Falls back to `DEFAULT_ICONS.filterable` / `.filterableChecked`
  * @emits apply - Emits `[]` (cleared) or `[isoDate]` when the Apply button is pressed
  */
 export const FilterCalendar = defineComponent({
@@ -43,6 +45,15 @@ export const FilterCalendar = defineComponent({
             type: Object as PropType<Partial<AuraLabels>>,
             default: () => DEFAULT_LABELS,
         },
+        /**
+         * Overridable toggle-button icon pair (`config.icons`). Same convention as
+         * `FilterDropdown`'s toggle icon, so a date column reads as "filterable" the same
+         * way a checkbox-list column does. Missing keys fall back to `DEFAULT_ICONS`.
+         */
+        icons: {
+            type: Object as PropType<{ filterable?: string[]; filterableChecked?: string[] }>,
+            default: () => ({}),
+        },
     },
     emits: ['apply'],
     setup(props, { emit }) {
@@ -51,6 +62,17 @@ export const FilterCalendar = defineComponent({
 
         const { isOpen, toggleRef, dropdownPosition, toggleDropdown, closeDropdown } =
             useTeleportedDropdown(CALENDAR_MIN_WIDTH);
+
+        /**
+         * The toggle-button icon: `filterableChecked` while this column has an active filter
+         * (`value` set), `filterable` otherwise — same on/off convention as the checkbox
+         * dropdown, just reused here instead of the unrelated `fa-calendar` glyph.
+         */
+        const filterIcon = computed(() => {
+            return props.value
+                ? (props.icons.filterableChecked ?? DEFAULT_ICONS.filterableChecked)
+                : (props.icons.filterable ?? DEFAULT_ICONS.filterable);
+        });
 
         // Sync internal value with props when the panel opens, then focus the date input
         watch(
@@ -71,7 +93,7 @@ export const FilterCalendar = defineComponent({
 
         return () => {
             const children: ReturnType<typeof h>[] = [
-                // Toggle Button (Calendar Icon)
+                // Toggle Button (Filter Icon)
                 h(
                     'button',
                     {
@@ -87,7 +109,7 @@ export const FilterCalendar = defineComponent({
                             toggleDropdown();
                         },
                     },
-                    h('i', { class: 'fas fa-calendar' })
+                    h('i', { class: filterIcon.value })
                 ),
             ];
 

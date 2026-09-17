@@ -17,7 +17,18 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   existing `values[]` filter shape (`addFilter`/`updateFilterValues`/`removeFilter`), so the
   server-side query contract, `FilterBadges`, and session persistence need no changes. The shared
   teleported-panel positioning/dismiss logic (`FilterDropdown` had it inline) moved to
-  `useTeleportedDropdown`, reused by both components.
+  `useTeleportedDropdown`, reused by both components. The toggle icon now follows
+  `config.icons.filterable` / `.filterableChecked` (swapping to the checked variant while the
+  column has an active filter), same as the rest of the filter chrome, instead of a hardcoded
+  glyph. In client-side mode (`externalPaginator: false`), a `FilterCalendar` selection now
+  matches the whole calendar day instead of only an exact value: a row's date-only value
+  (`yyyy-mm-dd`) is compared as a string, and a row value that also carries a time component is
+  matched against that day's `00:00:00`–`23:59:59.999` bounds (`filterItemsByFilter`'s new
+  `dateFilterFields` parameter, fed by the new `collectDateFilterFields`). Server-side mode
+  (`externalPaginator: true`) is unaffected — the day/range interpretation of the `yyyy-mm-dd`
+  filter value is up to the API. `resolveCellField` and `resolveDateValue` moved from
+  `features/table/utils/` to the neutral `utils/` layer so both the state layer and this utility
+  could reach them without a `utils/ → features/` import.
 - **Column visibility in the settings panel.** The settings button's panel now lists every data
   column with a checkbox; switching one off removes it from the header, the body, the footer, the
   header search row and the CSV export at once. It is presentation-only state — a toggle never

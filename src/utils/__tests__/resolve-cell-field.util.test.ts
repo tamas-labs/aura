@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { resolveCellField } from '../resolve-cell-field';
+import { resolveCellField } from '../resolve-cell-field.util';
 
 describe('resolveCellField', () => {
     it('should return reference when set', () => {

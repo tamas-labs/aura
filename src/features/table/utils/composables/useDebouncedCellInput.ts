@@ -3,7 +3,7 @@ import type { CoreStore, HeaderCell } from '../../../../types';
 import type { ApiResourcesStore } from '../../../../types/api-response.types';
 import { useApiResourcesStore, useExistingCoreStore } from '../../../../state';
 import { useDebounce } from '../../../../utils/composables/useDebounce';
-import { resolveCellField } from '../resolve-cell-field';
+import { resolveCellField } from '../../../../utils/resolve-cell-field.util';
 
 /**
  * How long a header search input waits after the last keystroke before writing to the

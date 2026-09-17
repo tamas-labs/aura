@@ -1,4 +1,4 @@
-import type { HeaderCell } from '../../../types';
+import type { HeaderCell } from '../types/api-response.types';
 
 /**
  * Resolves which field a column's data operations (sorting, searching, filtering)

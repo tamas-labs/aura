@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { resolveDateValue } from '../resolve-date-value';
+import { resolveDateValue } from '../resolve-date-value.util';
 
 describe('resolveDateValue', () => {
     describe('special date strings', () => {

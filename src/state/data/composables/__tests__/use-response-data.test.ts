@@ -290,6 +290,36 @@ describe('useResponseData', () => {
             expect(ids(slice.displayItems.value)).toEqual([2, 4]);
         });
 
+        // externalPaginator defaults to false, so this exercises the client-side path
+        // `FilterCalendar` relies on: the store only ever holds the selected day as a
+        // bare `yyyy-mm-dd`, and a full-timestamp row must still match that whole day.
+        it('should match a filterable date column by calendar day rather than exact value', () => {
+            const { slice, filterItems } = setup();
+            slice.header.value = {
+                rows: [
+                    {
+                        cells: [
+                            {
+                                content: 'Created at',
+                                key: 'created_at',
+                                field: 'created_at',
+                                filterable: true,
+                                date: true,
+                            },
+                        ],
+                    },
+                ],
+            };
+            slice.items.value = [
+                { id: 1, created_at: '2026-03-15T09:00:00' },
+                { id: 2, created_at: '2026-03-15T23:59:59' },
+                { id: 3, created_at: '2026-03-16T00:00:00' },
+            ];
+            filterItems.value = [{ field: 'created_at', values: ['2026-03-15'] }];
+
+            expect(ids(slice.displayItems.value)).toEqual([1, 2]);
+        });
+
         it('should sort the items', () => {
             const { slice, sortItems } = setup();
             slice.items.value = ROWS;

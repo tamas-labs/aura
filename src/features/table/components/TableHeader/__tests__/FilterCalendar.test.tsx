@@ -19,13 +19,50 @@ describe('FilterCalendar', () => {
     });
 
     describe('rendering', () => {
-        it('should render toggle button with calendar icon', () => {
+        it('should render toggle button with the default filter icon when no filter is active', () => {
             const wrapper = mount(FilterCalendar);
 
             const button = wrapper.find('button[type="button"]');
             expect(button.exists()).toBe(true);
-            expect(button.find('i.fa-calendar').exists()).toBe(true);
+            expect(button.find('i.fa-filter').exists()).toBe(true);
+            expect(button.find('i.fa-filter-circle-dot').exists()).toBe(false);
             wrapper.unmount();
+        });
+
+        it('should render the filterableChecked icon when a filter value is active', () => {
+            const wrapper = mount(FilterCalendar, { props: { value: '2026-03-15' } });
+
+            const button = wrapper.find('button[type="button"]');
+            expect(button.find('i.fa-filter-circle-dot').exists()).toBe(true);
+            expect(button.find('i.fa-filter:not(.fa-filter-circle-dot)').exists()).toBe(false);
+            wrapper.unmount();
+        });
+
+        it('should honour icons overrides from config.icons', () => {
+            const wrapper = mount(FilterCalendar, {
+                props: {
+                    icons: {
+                        filterable: ['fas', 'fa-custom'],
+                        filterableChecked: ['fas', 'fa-active'],
+                    },
+                },
+            });
+
+            expect(wrapper.find('i.fa-custom').exists()).toBe(true);
+            wrapper.unmount();
+
+            const activeWrapper = mount(FilterCalendar, {
+                props: {
+                    value: '2026-03-15',
+                    icons: {
+                        filterable: ['fas', 'fa-custom'],
+                        filterableChecked: ['fas', 'fa-active'],
+                    },
+                },
+            });
+
+            expect(activeWrapper.find('i.fa-active').exists()).toBe(true);
+            activeWrapper.unmount();
         });
 
         it('should not show the panel initially', () => {

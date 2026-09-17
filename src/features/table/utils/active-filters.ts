@@ -1,5 +1,5 @@
 import type { FilterItem, Header, SearchItem } from '../../../types/api-response.types';
-import { resolveCellField } from './resolve-cell-field';
+import { resolveCellField } from '../../../utils/resolve-cell-field.util';
 
 /** What removing a badge has to call on the store. */
 export type ActiveFilterKind = 'global' | 'search' | 'filter';

@@ -10,6 +10,7 @@ import {
     lazyValidateBody,
 } from '../../../validators/schemas/response';
 import {
+    collectDateFilterFields,
     extractFilterElements,
     filterItemsByFilter,
     filterItemsBySearch,
@@ -183,6 +184,13 @@ export const useResponseData = (deps: ResponseDataDeps) => {
         return null;
     });
 
+    /**
+     * Field keys backed by a `FilterCalendar` (`filterable: true, date: true`), so
+     * `clientProcessedItems` can match their stored `yyyy-mm-dd` filter value by calendar
+     * day instead of exact value equality — see `collectDateFilterFields`.
+     */
+    const dateFilterFields = computed(() => collectDateFilterFields(header.value));
+
     // Helper computed for client-side filtering and sorting
     const clientProcessedItems = computed<unknown[] | null>(() => {
         if (!items.value) return null;
@@ -212,7 +220,7 @@ export const useResponseData = (deps: ResponseDataDeps) => {
         filtered = filterItemsBySearch(filtered, searchItems.value, accentInsensitive);
 
         // 3. Filter by local filters
-        filtered = filterItemsByFilter(filtered, filterItems.value);
+        filtered = filterItemsByFilter(filtered, filterItems.value, dateFilterFields.value);
 
         // 4. Sort — with the configured locale, so the order matches the locale
         // the dates and numbers are formatted in rather than the browser's.

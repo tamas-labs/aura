@@ -2,7 +2,7 @@ import { defineComponent, h } from 'vue';
 import { useExistingCoreStore, useApiResourcesStore } from '../../../../state';
 import type { HeaderCell } from '../../../../types';
 import { filterVisibleCells } from '../../utils/column-visibility';
-import { resolveCellField } from '../../utils/resolve-cell-field';
+import { resolveCellField } from '../../../../utils/resolve-cell-field.util';
 import { buildCsv, triggerCsvDownload, type CsvColumn } from '../../utils/export/build-csv';
 
 /** The filename of the exported CSV. */

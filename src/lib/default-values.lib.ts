@@ -54,7 +54,7 @@ export const DEFAULT_ICONS = {
         both: ['fas', 'fa-sort'],
     },
     filterable: ['fas', 'fa-filter'],
-    filterableChecked: ['fas', 'fa-filter-circle-dot'],
+    filterableChecked: ['fas', 'fa-filter-circle-xmark'],
     settings: ['fas', 'fa-gears'],
     save: ['fas', 'fa-floppy-disk'],
     close: ['fas', 'fa-circle-left'],
@@ -229,10 +229,6 @@ export const DEFAULT_LABELS: AuraLabels = {
     // Settings panel
     columnVisibility: 'Column visibility',
     showAllColumns: 'Show all',
-    activeFilters: 'Active filters',
-    noActiveFilters: 'No active filters',
-    clearAllFilters: 'Clear all',
-    removeFilter: 'Remove filter',
     // Loading
     loading: 'Loading...',
     // ErrorHandler

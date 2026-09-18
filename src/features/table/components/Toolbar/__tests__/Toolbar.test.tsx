@@ -6,7 +6,6 @@ import { RowsSelect } from '../RowsSelect';
 import { GlobalSearch } from '../GlobalSearch';
 import { ToolbarTitle } from '../ToolbarTitle';
 import { ActionButtons } from '../ActionButtons';
-import { FilterBadges } from '../FilterBadges';
 import { SettingsPanel } from '../SettingsPanel';
 import { useCoreStore, useApiResourcesStore } from '../../../../../state';
 import type { AuraProps } from '../../../../../types';
@@ -107,15 +106,6 @@ describe('Toolbar', () => {
 
             const rowsSelect = wrapper.findComponent(RowsSelect);
             expect(rowsSelect.exists()).toBe(true);
-        });
-
-        it('should render FilterBadges component', () => {
-            const wrapper = mount(Toolbar, {
-                props: defaultProps,
-            });
-
-            const filterBadges = wrapper.findComponent(FilterBadges);
-            expect(filterBadges.exists()).toBe(true);
         });
 
         // The record count belongs to `PaginationInfo` alone: the toolbar copy was fed

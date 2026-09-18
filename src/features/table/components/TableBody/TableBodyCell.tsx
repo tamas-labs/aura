@@ -1,4 +1,4 @@
-import { defineComponent, h, computed, ref, type PropType, type VNode } from 'vue';
+import { defineComponent, h, computed, ref, shallowRef, type PropType, type VNode } from 'vue';
 import { useExistingCoreStore, useApiResourcesStore } from '../../../../state';
 import { watchAsyncEffect } from '../../../../utils/composables/watch-async-effect';
 import type { BodyCellConfig, FieldSegment } from '../../../../types';
@@ -295,7 +295,10 @@ export const TableBodyCell = defineComponent({
 
         // ─── Multi-field mode logic ───
 
-        const segmentContents = ref<VNode[]>([]);
+        // `shallowRef`, not `ref`: a deep ref would wrap every VNode in a reactive proxy,
+        // and the renderer writes back onto the vnode (`el`, `component`) while patching —
+        // which would retrigger the render that read it, looping until Vue's recursion cap.
+        const segmentContents = shallowRef<VNode[]>([]);
 
         watchAsyncEffect(async isStale => {
             if (!props.fieldSegments || props.fieldSegments.length === 0) {

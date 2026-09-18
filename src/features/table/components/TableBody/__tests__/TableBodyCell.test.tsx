@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { mount, flushPromises } from '@vue/test-utils';
 import { createPinia, setActivePinia } from 'pinia';
+import { isReactive } from 'vue';
 import type * as SpecialFormatter from '../../../utils/formatters/special.formatter';
 
 // formatRaw relies on DOMPurify, which doesn't preserve safe tags in the
@@ -1095,6 +1096,30 @@ describe('TableBodyCell', () => {
                 await flushPromises();
                 const spans = wrapper.findAll('span');
                 expect(spans[0]?.text()).toBe('');
+            });
+
+            // The segment vnodes are held in a `shallowRef`. A deep `ref` would hand the
+            // renderer reactive proxies, and patching writes back onto a vnode (`el`,
+            // `component`) — retriggering the render that read it, until Vue aborts with
+            // "Maximum recursive updates exceeded in component <TableBodyCell>".
+            it('should not expose the segment vnodes as reactive proxies', async () => {
+                const segments = [{ type: 'value' as const, value: 'Alice' }];
+
+                const wrapper = mount(TableBodyCell, {
+                    props: {
+                        columnKey: 'name',
+                        cellIndex: 0,
+                        fieldSegments: segments as any,
+                    },
+                });
+
+                await flushPromises();
+
+                const children = (wrapper.vm.$ as unknown as { subTree: { children: unknown[] } })
+                    .subTree.children;
+
+                expect(isReactive(children)).toBe(false);
+                expect(children.every(child => !isReactive(child))).toBe(true);
             });
         });
 

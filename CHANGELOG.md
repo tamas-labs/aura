@@ -15,7 +15,7 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   `elements` list doesn't scale to: a date field's distinct values. `extractFilterElements` skips
   such a cell instead of collecting that list for nothing. The selection is still one value in the
   existing `values[]` filter shape (`addFilter`/`updateFilterValues`/`removeFilter`), so the
-  server-side query contract, `FilterBadges`, and session persistence need no changes. The shared
+  server-side query contract and session persistence need no changes. The shared
   teleported-panel positioning/dismiss logic (`FilterDropdown` had it inline) moved to
   `useTeleportedDropdown`, reused by both components. The toggle icon now follows
   `config.icons.filterable` / `.filterableChecked` (swapping to the checked variant while the
@@ -39,14 +39,8 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   column's checkbox is disabled so the table can never be left with zero columns.
   New on the `ApiResourcesStore` surface: `hiddenColumns`, `isColumnHidden`, `hideColumn`,
   `showColumn`, `toggleColumn`, `setHiddenColumns`, `showAllColumns`.
-- **Active filters as removable badges.** `FilterBadges` in the toolbar's bottom row and the
-  settings panel's *Active filters* section now show every active global search, column search
-  (text and `between` range alike) and column filter as a badge with a remove button; the panel
-  variant adds a **Clear all** button and an empty-state text. Removing a badge calls the store
-  action that owns it, so a client-side table re-slices immediately and a server-side one refetches.
-- **Six new `labels` keys** for the two sections above: `columnVisibility`, `showAllColumns`,
-  `activeFilters`, `noActiveFilters`, `clearAllFilters`, `removeFilter` (42 → 48). The global
-  search badge reuses the existing `search` label as its title.
+- **Two new `labels` keys** for the section above: `columnVisibility`, `showAllColumns`
+  (42 → 44).
 
 ### Changed
 
@@ -87,6 +81,18 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   the pager show `1-10 / 42` while the toolbar showed "No results" at the same time; client-side
   filtering produced the same split, the toolbar keeping the server's total against the filtered
   count of the pager.
+- **A multi-field cell could lock the table up with "Maximum recursive updates exceeded in
+  component `<TableBodyCell>`".** `TableBodyCell` held its rendered segment vnodes in a deep
+  `ref`, so every vnode became a reactive proxy — and the renderer writes back onto a vnode
+  (`el`, `component`) while patching it. That write retriggered the render that had read the
+  vnode, and the two chased each other until Vue aborted the update and left the cell's
+  promise rejected. It needed an asynchronous segment renderer (`link`, `button`) to surface,
+  which is why it showed up on applying a column filter over a table with a linked column:
+  the re-slice and the pending format resolution landed in the same flush. The vnodes are now
+  kept in a `shallowRef`, which is what holding render output requires.
+- **`DEFAULT_ICONS.filterableChecked` pointed at a Font Awesome class that does not exist**
+  (`fa-filter-circle-dot`), so the checked-filter toggle icon silently rendered nothing. Changed
+  to `fa-filter-circle-xmark`, one of the two `filter-circle-*` glyphs Font Awesome actually ships.
 
 ### Removed
 
@@ -98,6 +104,14 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   exported from `index.ts`, and no config key or label was removed.
 - **The `SettingsPanel` placeholder texts** — the two hard-coded English literals under the
   *Column visibility* and *Active filters* headings — replaced by the working controls above.
+- **`FilterBadges` and the *Active filters* section**, unreleased additions from earlier in this
+  same cycle, removed again: the toolbar's bottom-row badge list, the settings panel's *Active
+  filters* section, `buildActiveFilterBadges` (`features/table/utils/active-filters.ts`) and the
+  four labels that only served them (`activeFilters`, `noActiveFilters`, `clearAllFilters`,
+  `removeFilter`). The settings panel now shows Column visibility alone. Session persistence, the
+  store's `searchItems`/`filterItems`/`globalSearchTerm` state and the
+  `removeSearch`/`removeFilter`/`clearAllSearches`/`clearAllFilters`/`clearGlobalSearch` store
+  actions those badges called are untouched — only the badge UI is gone.
 
 ## [1.0.0] - 2026-08-26
 

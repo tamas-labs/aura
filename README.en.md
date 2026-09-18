@@ -726,23 +726,17 @@ The Aura component supports the following props:
   numeric literals are exempt** (`-5`, `+1.5`, `-1e3` stay as they are), so negative
   numbers are not apostrophe-prefixed. The guard cannot be turned off.
 - **⚙️ Settings panel:** the `'settings'` button toggles a collapsible panel below the
-  toolbar with two live sections:
-    - **Column visibility** — a checkbox per data column (taken from the last header
-      row). Unchecking one drops it from the header, the body, the footer, the header
-      search row and the CSV export at once. It is presentation-only state, so a toggle
-      never issues a request, not even in server-side mode (`externalPaginator: true`),
-      and it is persisted with the rest of the session state (see
-      [`disableSession`](#disablesession)). A **Show all** button appears while anything
-      is hidden. Two kinds of column are deliberately absent from the list: a
-      `show: false` column (the response hid it, and that is not the user's to override)
-      and the `selectable` checkbox column (hiding it would strand the current
-      selection). The last remaining visible column's checkbox is disabled, so the table
-      can never be left with zero columns.
-    - **Active filters** — every active global search, column search and column filter
-      as a removable badge, plus a **Clear all** button. The same badge list — without
-      the clear-all button and the empty-state text — also sits in the toolbar's bottom
-      row. Removing a badge calls the store action that owns it, so a client-side table
-      re-slices immediately and a server-side one refetches.
+  toolbar with **Column visibility** — a checkbox per data column (taken from the last
+  header row). Unchecking one drops it from the header, the body, the footer, the header
+  search row and the CSV export at once. It is presentation-only state, so a toggle never
+  issues a request, not even in server-side mode (`externalPaginator: true`), and it is
+  persisted with the rest of the session state (see
+  [`disableSession`](#disablesession)). A **Show all** button appears while anything is
+  hidden. Two kinds of column are deliberately absent from the list: a `show: false`
+  column (the response hid it, and that is not the user's to override) and the
+  `selectable` checkbox column (hiding it would strand the current selection). The last
+  remaining visible column's checkbox is disabled, so the table can never be left with
+  zero columns.
 - **Example:**
 
     ```typescript
@@ -1046,18 +1040,16 @@ The Aura component supports the following props:
   hidden). The `paginationInfo` template substitutes the `{from}` / `{to}` / `{total}` tokens, the
   `dismissAllErrors` / `hiddenErrors` / `errorOccurrences` templates the `{count}` token, and
   `apiErrorClient` / `apiErrorServer` the `{status}` token.
-- **Available keys (48):** `confirmDeleteTitle`, `confirmDeleteBody`, `cancel`, `confirmDelete`,
+- **Available keys (44):** `confirmDeleteTitle`, `confirmDeleteBody`, `cancel`, `confirmDelete`,
   `refresh`, `export`, `exportCsv`, `settings`, `search`, `clearSearch`, `searchPlaceholder`,
   `paginationInfo`, `noResults`, `previousPage`, `nextPage`, `pageJump`,
   `pageNumberPlaceholder`, `pageNumberInput`, `goToPage`, `go`, `perPage`, `results`,
   `selectRow`, `selectAllRows`, `sortColumn`, `selectAll`, `filterToggle`, `filterOptions`,
-  `filterApply`, `columnVisibility`, `showAllColumns`, `activeFilters`, `noActiveFilters`,
-  `clearAllFilters`, `removeFilter`, `loading`, `close`, `dismissAllErrors`, `hiddenErrors`,
-  `errorOccurrences`, `retry`, `apiErrorNetwork`, `apiErrorTimeout`, `apiErrorClient`,
-  `apiErrorServer`, `apiErrorUnknown`, `apiErrorInvalidResponse`, `emptyState`.
-- **Note:** the six `columnVisibility` … `removeFilter` keys belong to the settings panel
-  (see [`actionButtons`](#actionbuttons)). The `search` label is reused there as the title
-  of the global-search badge, so the badge cannot drift from the search box it removes.
+  `filterApply`, `columnVisibility`, `showAllColumns`, `loading`, `close`, `dismissAllErrors`,
+  `hiddenErrors`, `errorOccurrences`, `retry`, `apiErrorNetwork`, `apiErrorTimeout`,
+  `apiErrorClient`, `apiErrorServer`, `apiErrorUnknown`, `apiErrorInvalidResponse`, `emptyState`.
+- **Note:** the `columnVisibility` / `showAllColumns` keys belong to the settings panel
+  (see [`actionButtons`](#actionbuttons)).
 - **`emptyState`** is the only key **without** a default in `DEFAULT_LABELS`. It is the message
   shown when the table has no rows, and it supersedes the deprecated top-level
   [`emptyStateMessage`](#emptystatemessage-deprecated) config key. Resolution order:

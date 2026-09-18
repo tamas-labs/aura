@@ -25,7 +25,7 @@ describe('FilterCalendar', () => {
             const button = wrapper.find('button[type="button"]');
             expect(button.exists()).toBe(true);
             expect(button.find('i.fa-filter').exists()).toBe(true);
-            expect(button.find('i.fa-filter-circle-dot').exists()).toBe(false);
+            expect(button.find('i.fa-filter-circle-xmark').exists()).toBe(false);
             wrapper.unmount();
         });
 
@@ -33,8 +33,8 @@ describe('FilterCalendar', () => {
             const wrapper = mount(FilterCalendar, { props: { value: '2026-03-15' } });
 
             const button = wrapper.find('button[type="button"]');
-            expect(button.find('i.fa-filter-circle-dot').exists()).toBe(true);
-            expect(button.find('i.fa-filter:not(.fa-filter-circle-dot)').exists()).toBe(false);
+            expect(button.find('i.fa-filter-circle-xmark').exists()).toBe(true);
+            expect(button.find('i.fa-filter:not(.fa-filter-circle-xmark)').exists()).toBe(false);
             wrapper.unmount();
         });
 

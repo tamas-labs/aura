@@ -4,7 +4,6 @@ import { RowsSelect } from './RowsSelect';
 import { GlobalSearch } from './GlobalSearch';
 import { ToolbarTitle } from './ToolbarTitle';
 import { ActionButtons } from './ActionButtons';
-import { FilterBadges } from './FilterBadges';
 import { SettingsPanel } from './SettingsPanel';
 
 interface ToolbarLayout {
@@ -186,7 +185,6 @@ export const Toolbar = defineComponent({
 
                     // Bottom Row
                     h('div', { class: 'row align-items-center' }, [
-                        // Left: Rows Select
                         h(
                             'div',
                             { class: 'col-12 col-md-4' },
@@ -196,13 +194,6 @@ export const Toolbar = defineComponent({
                                 onChange: props.onRowsChange,
                                 labels: core.config.labels,
                             })
-                        ),
-
-                        // Right: Filter Badges
-                        h(
-                            'div',
-                            { class: 'col-12 col-md-8 d-none d-md-block' },
-                            h(FilterBadges, { storeId: props.storeId })
                         ),
                     ]),
 

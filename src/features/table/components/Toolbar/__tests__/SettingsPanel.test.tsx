@@ -76,12 +76,6 @@ describe('SettingsPanel', () => {
 
             expect(wrapper.find('.card-body').exists()).toBe(true);
         });
-
-        it('should have two columns layout', async () => {
-            const wrapper = await setup(true);
-
-            expect(wrapper.findAll('.col-md-6')).toHaveLength(2);
-        });
     });
 
     describe('collapse behavior', () => {
@@ -119,39 +113,18 @@ describe('SettingsPanel', () => {
             expect(wrapper.find('[data-testid="column-visibility-panel"]').exists()).toBe(true);
         });
 
-        it('should render the active filters section', async () => {
-            const wrapper = await setup(true);
-
-            expect(wrapper.findAll('h6').map(node => node.text())).toContain('Active filters');
-            expect(wrapper.find('[data-testid="filter-badges"]').exists()).toBe(true);
-        });
-
         it('should not render placeholder text any more', async () => {
             const wrapper = await setup(true);
 
             expect(wrapper.text()).not.toContain('Placeholder');
         });
 
-        it('should hand the clear-all mode down to the filter list', async () => {
-            const wrapper = await setup(true);
-
-            expect(wrapper.find('[data-testid="filter-badges-empty"]').exists()).toBe(true);
-        });
-
         it('should use the configured label overrides', async () => {
             const wrapper = await setupWithLabels({
                 columnVisibility: 'Oszlopok',
-                activeFilters: 'Aktív szűrők',
-                noActiveFilters: 'Nincs aktív szűrő',
             });
 
-            expect(wrapper.findAll('h6').map(node => node.text())).toEqual([
-                'Oszlopok',
-                'Aktív szűrők',
-            ]);
-            expect(wrapper.find('[data-testid="filter-badges-empty"]').text()).toBe(
-                'Nincs aktív szűrő'
-            );
+            expect(wrapper.findAll('h6').map(node => node.text())).toEqual(['Oszlopok']);
         });
     });
 
@@ -162,15 +135,6 @@ describe('SettingsPanel', () => {
             await wrapper.find('[data-testid="column-toggle-email"]').trigger('change');
 
             expect(resource.hiddenColumns).toEqual(['email']);
-        });
-
-        it('should list an active filter as a badge', async () => {
-            const wrapper = await setup(true);
-
-            resource.addFilter('name', ['Jane']);
-            await wrapper.vm.$nextTick();
-
-            expect(wrapper.find('[data-testid="filter-badge-filter:name"]').exists()).toBe(true);
         });
     });
 
@@ -185,12 +149,6 @@ describe('SettingsPanel', () => {
             const wrapper = await setup(true);
 
             expect(wrapper.find('.card').classes()).toContain('mt-2');
-        });
-
-        it('should have row class for layout', async () => {
-            const wrapper = await setup(true);
-
-            expect(wrapper.find('.row').exists()).toBe(true);
         });
     });
 });
